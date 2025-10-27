@@ -1,0 +1,59 @@
+using UnityEngine;
+using Bird.Idle.Core;
+using Bird.Idle.Data;
+
+namespace Bird.Idle.Gameplay
+{
+    /// <summary>
+    /// 몬스터 스폰 및 처치를 관리하고, 처치 시 재화를 지급
+    /// </summary>
+    public class EnemyManager : MonoBehaviour
+    {
+        [SerializeField] private float spawnInterval = 1.0f; // 몬스터 스폰 주기
+        [SerializeField] private long goldPerKill = 100; // 몬스터 처치당 골드
+        [SerializeField] private int maxMonsterCount = 5; // 최대 몬스터 수
+
+        private float currentSpawnTime;
+        private int currentMonsterCount = 0;
+
+        public long GoldPerKill => goldPerKill;
+
+        private void Update()
+        {
+            currentSpawnTime += Time.deltaTime;
+
+            if (currentMonsterCount < maxMonsterCount && currentSpawnTime >= spawnInterval)
+            {
+                SpawnMonster();
+                currentSpawnTime = 0f;
+            }
+        }
+
+        private void SpawnMonster()
+        {
+            currentMonsterCount++;
+            // TODO: 몬스터 프리팹 인스턴스화 로직
+            Debug.Log($"[EnemyManager] 몬스터 스폰! 현재 수: {currentMonsterCount}");
+        }
+
+        /// <summary>
+        /// 몬스터 처치 시 호출되어 보상을 지급
+        /// </summary>
+        public void KillMonster()
+        {
+            if (currentMonsterCount <= 0) return;
+
+            currentMonsterCount--;
+
+            if (CurrencyManager.Instance != null)
+            {
+                CurrencyManager.Instance.ChangeCurrency(CurrencyType.Gold, goldPerKill);
+            }
+            
+            Debug.Log($"[EnemyManager] 몬스터 처치! 골드 {goldPerKill} 획득.");
+        }
+
+        [ContextMenu("몬스터 즉시 처치")]
+        public void TestKillMonster() => KillMonster();
+    }
+}
