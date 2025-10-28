@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Bird.Idle.Core;
 using Bird.Idle.Data;
@@ -9,6 +10,8 @@ namespace Bird.Idle.Gameplay
     /// </summary>
     public class EnemyManager : MonoBehaviour
     {
+        public static EnemyManager Instance { get; private set; }
+        
         [SerializeField] private float spawnInterval = 1.0f; // 몬스터 스폰 주기
         [SerializeField] private long goldPerKill = 100; // 몬스터 처치당 골드
         [SerializeField] private long expPerKill = 50;  // 몬스터 처치당 경험치
@@ -18,6 +21,17 @@ namespace Bird.Idle.Gameplay
         private int currentMonsterCount = 0;
 
         public long GoldPerKill => goldPerKill;
+
+        private void Awake()
+        {
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
 
         private void Update()
         {
