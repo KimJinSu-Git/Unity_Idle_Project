@@ -11,6 +11,7 @@ namespace Bird.Idle.Gameplay
     {
         [SerializeField] private float spawnInterval = 1.0f; // 몬스터 스폰 주기
         [SerializeField] private long goldPerKill = 100; // 몬스터 처치당 골드
+        [SerializeField] private long expPerKill = 50;  // 몬스터 처치당 경험치
         [SerializeField] private int maxMonsterCount = 5; // 최대 몬스터 수
 
         private float currentSpawnTime;
@@ -50,7 +51,12 @@ namespace Bird.Idle.Gameplay
                 CurrencyManager.Instance.ChangeCurrency(CurrencyType.Gold, goldPerKill);
             }
             
-            Debug.Log($"[EnemyManager] 몬스터 처치! 골드 {goldPerKill} 획득.");
+            if (CharacterManager.Instance != null)
+            {
+                CharacterManager.Instance.GainExperience(expPerKill);
+            }
+            
+            Debug.Log($"[EnemyManager] 몬스터 처치! 골드 {goldPerKill}, EXP {expPerKill} 획득.");
         }
 
         [ContextMenu("몬스터 즉시 처치")]
