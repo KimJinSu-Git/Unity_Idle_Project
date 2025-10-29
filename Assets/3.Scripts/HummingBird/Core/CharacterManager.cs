@@ -26,6 +26,7 @@ namespace Bird.Idle.Core
 
         // 레벨 업 이벤트 TODO :: UI 업데이트
         public Action<int> OnLevelUp;
+        public Action<long, long> OnExpChanged;
 
         private void Awake()
         {
@@ -48,6 +49,8 @@ namespace Bird.Idle.Core
             
             currentExp += expAmount;
             Debug.Log($"[CharacterManager] 경험치 획득: +{expAmount}. 현재: {currentExp}");
+            
+            OnExpChanged?.Invoke(currentExp, requiredExpToNextLevel);
 
             CheckForLevelUp();
         }
@@ -71,9 +74,21 @@ namespace Bird.Idle.Core
                 baseMaxHealth += 20f;
 
                 OnLevelUp?.Invoke(characterLevel);
+                
+                OnExpChanged?.Invoke(currentExp, requiredExpToNextLevel);
 
                 Debug.Log($"[CharacterManager] 레벨 업! Lv.{characterLevel}. 다음 EXP: {requiredExpToNextLevel}");
             }
         }
+        
+        /// <summary>
+        /// 현재 누적 경험치량을 반환
+        /// </summary>
+        public long GetCurrentExp() => currentExp;
+
+        /// <summary>
+        /// 다음 레벨까지 필요한 경험치량을 반환
+        /// </summary>
+        public long GetRequiredExpToNextLevel() => requiredExpToNextLevel;
     }
 }
