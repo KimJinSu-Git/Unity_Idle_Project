@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
+using Bird.Idle.UI;
 
 namespace Bird.Idle.Core
 {
@@ -132,11 +133,21 @@ namespace Bird.Idle.Core
                 
                 CurrencyManager.Instance.ChangeCurrency(Data.CurrencyType.Gold, rewardedGold);
                 
-                Debug.Log($"방치 시간: {idleDuration.Hours}시간 {idleDuration.Minutes}분. 골드 보상: {rewardedGold}");
+                Debug.Log($"[AFK] 방치 시간: {idleDuration.Hours}시간 {idleDuration.Minutes}분. 골드 보상: {rewardedGold}");
+                
+                AFKRewardPopup popup = FindObjectOfType<AFKRewardPopup>(true); 
+                if (popup != null)
+                {
+                    popup.Show(idleDuration, rewardedGold);
+                }
             }
             else
             {
                 Debug.Log("방치 시간이 짧아 보상 지급 대상이 아닙니다.");
+                if (GameManager.Instance != null)
+                {
+                    GameManager.Instance.ResumeGameAfterAFK();
+                }
             }
             
             lastExitTime = DateTime.UtcNow;

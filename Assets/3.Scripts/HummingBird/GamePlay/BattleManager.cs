@@ -17,6 +17,8 @@ namespace Bird.Idle.Gameplay
         private CharacterManager characterManager;
         private EnemyManager enemyManager;
         
+        private bool isBattleActiveInternal = false;
+        
         private void Awake()
         {
             if (Instance != null && Instance != this)
@@ -35,6 +37,9 @@ namespace Bird.Idle.Gameplay
 
         private void Update()
         {
+            // 상태가 true일 때만 전투 실행
+            if (!isBattleActiveInternal) return;
+            
             currentAttackCooldown -= Time.deltaTime;
 
             if (currentAttackCooldown <= 0f)
@@ -42,6 +47,14 @@ namespace Bird.Idle.Gameplay
                 TryAutoAttack();
                 currentAttackCooldown = attackInterval;
             }
+        }
+        
+        /// <summary>
+        /// GameManager로부터 호출되어 전투 상태를 설정
+        /// </summary>
+        public void SetBattleActive(bool active)
+        {
+            isBattleActiveInternal = active;
         }
 
         /// <summary>
