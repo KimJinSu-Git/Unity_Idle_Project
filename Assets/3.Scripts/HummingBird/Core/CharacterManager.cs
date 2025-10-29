@@ -14,11 +14,14 @@ namespace Bird.Idle.Core
         [Header("Base Stats")]
         [SerializeField] private int characterLevel = 1;
         [SerializeField] private long currentExp = 0;
-        [SerializeField] private long requiredExpToNextLevel = 100;
+        // [SerializeField] private long requiredExpToNextLevel = 100;
         
         [Header("Battle Stats")]
         [SerializeField] private float baseAttackPower = 10f; // 기본 공격력
         [SerializeField] private float baseMaxHealth = 100f; // 최대 체력
+        
+        [Header("Data References")]
+        [SerializeField] private LevelData levelData;
 
         public int CharacterLevel => characterLevel;
         public float AttackPower => baseAttackPower;
@@ -50,7 +53,7 @@ namespace Bird.Idle.Core
             currentExp += expAmount;
             Debug.Log($"[CharacterManager] 경험치 획득: +{expAmount}. 현재: {currentExp}");
             
-            OnExpChanged?.Invoke(currentExp, requiredExpToNextLevel);
+            OnExpChanged?.Invoke(currentExp, GetRequiredExpToNextLevel());
 
             CheckForLevelUp();
         }
@@ -60,25 +63,38 @@ namespace Bird.Idle.Core
         /// </summary>
         private void CheckForLevelUp()
         {
-            while (currentExp >= requiredExpToNextLevel)
+            LevelData.LevelEntry nextLevelEntry = levelData.GetLevelEntry(characterLevel + 1);
+            
+            // 데이터 없으면 최대 레벨
+            if (nextLevelEntry.Level == 0) return;
+            
+            long requiredExp = nextLevelEntry.RequiredExp;
+            
+            while (currentExp >= requiredExp)
             {
                 characterLevel++;
-                
-                currentExp -= requiredExpToNextLevel;
+                currentExp -= requiredExp;
 
-                // 다음 레벨 요구 경험치 (임시 : 10%씩 증가)
-                requiredExpToNextLevel = (long)(requiredExpToNextLevel * 1.1f);
+                // 다음 레벨 요구 경험치
+                LevelData.LevelEntry newEntry = levelData.GetLevelEntry(characterLevel);
+                LevelData.LevelEntry newNextLevelEntry = levelData.GetLevelEntry(characterLevel + 1);
                 
                 // 스탯 증가
-                baseAttackPower += 2f;
-                baseMaxHealth += 20f;
+                baseAttackPower += newEntry.AttackIncrease;
+                baseMaxHealth += newEntry.HealthIncrease;
 
                 OnLevelUp?.Invoke(characterLevel);
                 
-                OnExpChanged?.Invoke(currentExp, requiredExpToNextLevel);
+                OnExpChanged?.Invoke(currentExp, newNextLevelEntry.RequiredExp);
 
-                Debug.Log($"[CharacterManager] 레벨 업! Lv.{characterLevel}. 다음 EXP: {requiredExpToNextLevel}");
+                Debug.Log($"[CharacterManager] 레벨 업! Lv.{characterLevel}. 다음 EXP: {newNextLevelEntry.RequiredExp}");
             }
+        }
+        
+        // TODO: 현재 레벨까지의 총 경험치 계산 메서드
+        private long GetTotalExpForLevel(int level)
+        {
+            return levelData.GetLevelEntry(level).RequiredExp;
         }
         
         /// <summary>
@@ -89,6 +105,10 @@ namespace Bird.Idle.Core
         /// <summary>
         /// 다음 레벨까지 필요한 경험치량을 반환
         /// </summary>
-        public long GetRequiredExpToNextLevel() => requiredExpToNextLevel;
+        public long GetRequiredExpToNextLevel()
+        {
+            long totalExpNext = GetTotalExpForLevel(characterLevel + 1);
+            return totalExpNext;
+        }
     }
 }

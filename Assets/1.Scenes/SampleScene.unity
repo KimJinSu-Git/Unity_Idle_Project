@@ -273,9 +273,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67aa190db5beb1541906aa0aed30d6c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stageMonsterList:
+  - {fileID: 11400000, guid: 5800a216d19a0d6468eb473f450444ae, type: 2}
   spawnInterval: 1
-  goldPerKill: 100
-  expPerKill: 50
   maxMonsterCount: 5
 --- !u!4 &144986502
 Transform:
@@ -762,9 +762,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterLevel: 1
   currentExp: 0
-  requiredExpToNextLevel: 100
   baseAttackPower: 10
   baseMaxHealth: 100
+  levelData: {fileID: 11400000, guid: 9aa3fbfb9526d4d40bb48834f9ba5d79, type: 2}
 --- !u!1 &498153542
 GameObject:
   m_ObjectHideFlags: 0
