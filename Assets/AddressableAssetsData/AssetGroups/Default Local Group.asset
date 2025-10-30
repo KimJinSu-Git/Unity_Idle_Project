@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_GUID: 876d73a1f56770d47afe4359d0d038ab
+  m_SerializeEntries:
+  - m_GUID: 5800a216d19a0d6468eb473f450444ae
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Enemy/MonsterData.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Monster
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9aa3fbfb9526d4d40bb48834f9ba5d79
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Player/LevelData.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 009803a58dabf5c4baba03c3d54c1cc9, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 014e7af0000be0449b5e7a81862b310a, type: 2}
+    - {fileID: 11400000, guid: 4ababa418aed3db4a9fa532017d562ef, type: 2}

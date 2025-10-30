@@ -1,5 +1,7 @@
 using UnityEngine;
 using System;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using Bird.Idle.Data; // TODO :: 성장 데이터 연동
 
 namespace Bird.Idle.Core
@@ -21,7 +23,10 @@ namespace Bird.Idle.Core
         [SerializeField] private float baseMaxHealth = 100f; // 최대 체력
         
         [Header("Data References")]
-        [SerializeField] private LevelData levelData;
+        // [SerializeField] private LevelData levelData; 어드레서블로 변경 후 제거 예정(우선 혹시 모를 사태를 대비해 남겨놨음. 추후 제거 예정)
+        [SerializeField] private AssetReferenceT<LevelData> levelDataReference;
+        
+        private LevelData loadedLevelData;
 
         public int CharacterLevel => characterLevel;
         public float AttackPower => baseAttackPower;
@@ -40,6 +45,34 @@ namespace Bird.Idle.Core
             }
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            
+            LoadLevelDataAsync();
+        }
+        
+        /// <summary>
+        /// Addressables를 사용하여 LevelData를 로드
+        /// </summary>
+        private async void LoadLevelDataAsync()
+        {
+            AsyncOperationHandle<LevelData> handle = levelDataReference.LoadAssetAsync<LevelData>();
+
+            await handle.Task; 
+        
+            // 로드 성공 시 데이터 캐시
+            if (handle.Status == AsyncOperationStatus.Succeeded)
+            {
+                loadedLevelData = handle.Result;
+                Debug.Log("[CharacterManager] LevelData Addressables 로드 완료!");
+            
+                OnLevelUp?.Invoke(characterLevel);
+                OnExpChanged?.Invoke(currentExp, GetRequiredExpToNextLevel());
+            }
+            else
+            {
+                Debug.LogError($"[CharacterManager] LevelData Addressables 로드 실패: {handle.OperationException}");
+            }
+        
+            // TODO: 사용이 끝난 시점에 handle.Release()를 호출하여 메모리를 해제 추가
         }
 
         /// <summary>
@@ -63,7 +96,14 @@ namespace Bird.Idle.Core
         /// </summary>
         private void CheckForLevelUp()
         {
-            LevelData.LevelEntry nextLevelEntry = levelData.GetLevelEntry(characterLevel + 1);
+            if (loadedLevelData == null) 
+            {
+                // 데이터 로드가 완료되지 않았다면 반환
+                Debug.LogWarning("[CharacterManager] LevelData 로드 대기 중...");
+                return;
+            }
+            
+            LevelData.LevelEntry nextLevelEntry = loadedLevelData.GetLevelEntry(characterLevel + 1);
             
             // 데이터 없으면 최대 레벨
             if (nextLevelEntry.Level == 0) return;
@@ -76,8 +116,8 @@ namespace Bird.Idle.Core
                 currentExp -= requiredExp;
 
                 // 다음 레벨 요구 경험치
-                LevelData.LevelEntry newEntry = levelData.GetLevelEntry(characterLevel);
-                LevelData.LevelEntry newNextLevelEntry = levelData.GetLevelEntry(characterLevel + 1);
+                LevelData.LevelEntry newEntry = loadedLevelData.GetLevelEntry(characterLevel);
+                LevelData.LevelEntry newNextLevelEntry = loadedLevelData.GetLevelEntry(characterLevel + 1);
                 
                 // 스탯 증가
                 baseAttackPower += newEntry.AttackIncrease;
@@ -91,10 +131,10 @@ namespace Bird.Idle.Core
             }
         }
         
-        // TODO: 현재 레벨까지의 총 경험치 계산 메서드
         private long GetTotalExpForLevel(int level)
         {
-            return levelData.GetLevelEntry(level).RequiredExp;
+            if (loadedLevelData == null) return 0;
+            return loadedLevelData.GetLevelEntry(level).RequiredExp;
         }
         
         /// <summary>
