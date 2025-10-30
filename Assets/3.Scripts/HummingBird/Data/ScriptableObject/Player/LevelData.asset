@@ -15,33 +15,25 @@ MonoBehaviour:
   LevelTable:
   - Level: 1
     RequiredExp: 0
-    AttackIncrease: 10
-    HealthIncrease: 10
+    AttackIncrease: 0
+    HealthIncrease: 0
   - Level: 2
     RequiredExp: 1000
-    AttackIncrease: 20
-    HealthIncrease: 20
+    AttackIncrease: 5.5
+    HealthIncrease: 50
   - Level: 3
     RequiredExp: 3000
-    AttackIncrease: 30
-    HealthIncrease: 30
+    AttackIncrease: 7
+    HealthIncrease: 75
   - Level: 4
-    RequiredExp: 5000
-    AttackIncrease: 40
-    HealthIncrease: 40
+    RequiredExp: 6000
+    AttackIncrease: 9
+    HealthIncrease: 100
   - Level: 5
-    RequiredExp: 7000
-    AttackIncrease: 50
-    HealthIncrease: 50
+    RequiredExp: 10000
+    AttackIncrease: 12
+    HealthIncrease: 120
   - Level: 6
-    RequiredExp: 30000
-    AttackIncrease: 60
-    HealthIncrease: 60
-  - Level: 7
     RequiredExp: 50000
-    AttackIncrease: 70
-    HealthIncrease: 70
-  - Level: 8
-    RequiredExp: 70000
-    AttackIncrease: 80
-    HealthIncrease: 80
+    AttackIncrease: 20
+    HealthIncrease: 300
