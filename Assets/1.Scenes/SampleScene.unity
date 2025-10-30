@@ -275,6 +275,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsterDataLabel:
     m_LabelString: Monster
+  dropChance: 1
+  droppableEquipment:
+  - {fileID: 11400000, guid: 110d0d0abb02d2242b197221103c1a24, type: 2}
+  - {fileID: 11400000, guid: ff29673586b5e0f41a4c5a340e3575f5, type: 2}
   spawnInterval: 1
   maxMonsterCount: 5
 --- !u!4 &144986502
@@ -2340,6 +2344,7 @@ GameObject:
   - component: {fileID: 1633579763}
   - component: {fileID: 1633579765}
   - component: {fileID: 1633579766}
+  - component: {fileID: 1633579767}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -2409,6 +2414,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bd2690f6396a1a641aa5762c71d975ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1633579767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1633579761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb6693502894c82408acdeda908e4356, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1872729965

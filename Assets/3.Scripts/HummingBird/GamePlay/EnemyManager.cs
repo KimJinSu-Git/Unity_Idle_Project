@@ -19,6 +19,10 @@ namespace Bird.Idle.Gameplay
         [SerializeField] private AssetLabelReference monsterDataLabel; // 라벨 기반 컬렉션 로드용 AssetLabelRefrence라 함.
         // [SerializeField] private List<MonsterData> stageMonsterList;
         
+        [Header("Loot Drop Settings")]
+        [SerializeField] private float dropChance = 0.1f;
+        [SerializeField] private List<EquipmentData> droppableEquipment;
+        
         [SerializeField] private float spawnInterval = 1.0f; // 몬스터 스폰 주기
         // [SerializeField] private long goldPerKill = 100; // 몬스터 처치당 골드
         // [SerializeField] private long expPerKill = 50;  // 몬스터 처치당 경험치
@@ -110,7 +114,26 @@ namespace Bird.Idle.Gameplay
                 CharacterManager.Instance.GainExperience(currentMonster.expReward);
             }
             
+            if (UnityEngine.Random.value < dropChance)
+            {
+                DropEquipment();
+            }
+            
             Debug.Log($"[EnemyManager] 몬스터 처치! 골드 {currentMonster.goldReward}, EXP {currentMonster.expReward} 획득.");
+        }
+        
+        private void DropEquipment()
+        {
+            if (droppableEquipment == null || droppableEquipment.Count == 0) return;
+    
+            // 드롭할 장비 무작위 선택
+            int randomIndex = UnityEngine.Random.Range(0, droppableEquipment.Count);
+            EquipmentData droppedItem = droppableEquipment[randomIndex];
+
+            if (InventoryManager.Instance != null)
+            {
+                InventoryManager.Instance.AddItem(droppedItem);
+            }
         }
 
         [ContextMenu("몬스터 즉시 처치")]

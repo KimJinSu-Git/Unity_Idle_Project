@@ -15,6 +15,12 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: 876d73a1f56770d47afe4359d0d038ab
   m_SerializeEntries:
+  - m_GUID: 110d0d0abb02d2242b197221103c1a24
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Equipment/Weapon/Sword_Epic.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Equipment
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5800a216d19a0d6468eb473f450444ae
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Enemy/MonsterData.asset
     m_ReadOnly: 0
@@ -25,6 +31,12 @@ MonoBehaviour:
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Player/LevelData.asset
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ff29673586b5e0f41a4c5a340e3575f5
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Equipment/Armor/EquipData.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Equipment
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 009803a58dabf5c4baba03c3d54c1cc9, type: 2}

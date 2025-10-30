@@ -12,7 +12,7 @@ namespace Bird.Editor
     public static class LevelDataGenerator
     {
         // 파일 경로
-        private const string CSV_PATH = "Assets/3.Scripts/HummingBird/Data/ScriptableObject/Player/LevelData.csv";
+        private const string CSV_PATH = "Assets/3.Scripts/HummingBird/Data/CSV/Player/LevelData.csv";
         private const string SO_PATH = "Assets/3.Scripts/HummingBird/Data/ScriptableObject/Player/LevelData.asset";
 
         [MenuItem("Tools/Bird/Generate Level Data (CSV)")]

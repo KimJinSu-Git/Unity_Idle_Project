@@ -2,7 +2,8 @@ using UnityEngine;
 using System;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using Bird.Idle.Data; // TODO :: 성장 데이터 연동
+using Bird.Idle.Data;
+using Bird.Idle.Gameplay;
 
 namespace Bird.Idle.Core
 {
@@ -29,12 +30,35 @@ namespace Bird.Idle.Core
         private LevelData loadedLevelData;
 
         public int CharacterLevel => characterLevel;
-        public float AttackPower => baseAttackPower;
-        public float MaxHealth => baseMaxHealth;
+        public float AttackPower 
+        {
+            get 
+            {
+                float bonus = 0;
+                // 장비 보너스 추가
+                if (InventoryManager.Instance != null)
+                {
+                    bonus = InventoryManager.Instance.GetTotalEquipmentBonus().totalAttack;
+                }
+                return baseAttackPower + bonus;
+            }
+        }
+        public float MaxHealth 
+        {
+            get 
+            {
+                float bonus = 0;
+                if (InventoryManager.Instance != null)
+                {
+                    bonus = InventoryManager.Instance.GetTotalEquipmentBonus().totalHealth;
+                }
+                return baseMaxHealth + bonus;
+            }
+        }
 
-        // 레벨 업 이벤트 TODO :: UI 업데이트
-        public Action<int> OnLevelUp;
-        public Action<long, long> OnExpChanged;
+        public Action<int> OnLevelUp; // 레벨 업 이벤트 (레벨업 시 스탯 변경 이벤트)
+        public Action<long, long> OnExpChanged; // 경험치 변화 이벤트(몬스터를 잡아 경험치를 획득할 때 마다 호출되는 용도)
+        public Action OnStatsRecalculated; // 스탯 변경 이벤트(장비 장착/해제 시 UI 업데이트 용도)
 
         private void Awake()
         {
@@ -73,6 +97,17 @@ namespace Bird.Idle.Core
             }
         
             // TODO: 사용이 끝난 시점에 handle.Release()를 호출하여 메모리를 해제 추가
+        }
+        
+        /// <summary>
+        /// 장비 변경이나 강화 시 스탯을 재계산하고 UI 업데이트를 요청
+        /// </summary>
+        public void ApplyEquipmentStats()
+        {
+            OnStatsRecalculated?.Invoke(); 
+    
+            // TODO :: UI 로직: StatsDisplay에서 이 이벤트를 구독하여 AttackText, HealthText를 갱신
+            Debug.Log($"[CharacterManager] 장비 스탯 재계산 완료. 최종 ATK: {AttackPower}");
         }
 
         /// <summary>
