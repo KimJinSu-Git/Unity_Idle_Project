@@ -12,6 +12,9 @@ namespace Bird.Idle.Gameplay
     public class InventoryManager : MonoBehaviour
     {
         public static InventoryManager Instance { get; private set; }
+        
+        [Header("Auto Sell Settings")]
+        [SerializeField] private EquipmentGrade autoSellGradeThreshold = EquipmentGrade.Rare; // Rare 등급 이하 자동 판매
 
         // 장착된 장비 딕셔너리 (Type별 1개)
         private Dictionary<EquipmentType, EquipmentData> equippedItems = new Dictionary<EquipmentType, EquipmentData>();
@@ -21,6 +24,8 @@ namespace Bird.Idle.Gameplay
         
         public Action OnInventoryChanged;
         public Action OnEquipmentChanged;
+        
+        public List<EquipmentData> GetInventoryItems() => inventory;
         
         private void Awake()
         {
@@ -38,9 +43,29 @@ namespace Bird.Idle.Gameplay
         /// </summary>
         public void AddItem(EquipmentData item)
         {
-            inventory.Add(item);
-            OnInventoryChanged?.Invoke(); // 인벤토리 UI 갱신
-            Debug.Log($"[Inventory] {item.equipName} 획득! (현재 {inventory.Count}개)");
+            if (item.grade <= autoSellGradeThreshold)
+            {
+                SellItem(item);
+                Debug.Log($"[Inventory] {item.equipName} (Grade:{item.grade}) 자동 판매됨.");
+            }
+            else
+            {
+                inventory.Add(item);
+                OnInventoryChanged?.Invoke(); // 인벤토리 UI 갱신
+                Debug.Log($"[Inventory] {item.equipName} 획득! (현재 {inventory.Count}개)");
+            }
+        }
+        
+        /// <summary>
+        /// 장비를 판매하고 CurrencyManager에 골드를 지급
+        /// </summary>
+        private void SellItem(EquipmentData item)
+        {
+            if (CurrencyManager.Instance != null)
+            {
+                CurrencyManager.Instance.ChangeCurrency(CurrencyType.Gold, item.sellPrice);
+            }
+            OnInventoryChanged?.Invoke();
         }
 
         /// <summary>
@@ -87,6 +112,12 @@ namespace Bird.Idle.Gameplay
 
                 OnEquipmentChanged?.Invoke();
             }
+        }
+        
+        public EquipmentData GetEquippedItem(EquipmentType type)
+        {
+            equippedItems.TryGetValue(type, out EquipmentData item);
+            return item;
         }
         
         /// <summary>

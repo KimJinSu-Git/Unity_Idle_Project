@@ -15,7 +15,7 @@ MonoBehaviour:
   equipID: 0
   equipName: Armor_Rare
   type: 1
-  grade: 2
+  grade: 1
   attackBonus: 5
   healthBonus: 300
   sellPrice: 1500
