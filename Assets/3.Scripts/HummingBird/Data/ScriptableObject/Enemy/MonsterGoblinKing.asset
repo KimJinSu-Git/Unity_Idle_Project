@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 082a889d283cf514fa6cce7ce171a051, type: 3}
-  m_Name: MonsterData
+  m_Name: MonsterGoblinKing
   m_EditorClassIdentifier: 
-  monsterID: 1
-  monsterName: Goblin
+  monsterID: 8001
+  monsterName: GoblinKing
   baseHealth: 100
   baseDamage: 50
   goldReward: 250

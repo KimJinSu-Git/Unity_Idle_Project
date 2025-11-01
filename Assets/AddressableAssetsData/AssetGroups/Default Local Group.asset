@@ -21,8 +21,50 @@ MonoBehaviour:
     m_SerializedLabels:
     - Equipment
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 199271f155822d146863a67a4c4cae0d
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Stage/StageID3.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Stage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 41feda5bf5f48744c8f4a7d22e10bfb2
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Stage/StageID2.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Stage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 476f86218ca402547a070d1393b4ac5d
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Stage/StageID4.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Stage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4e126f78aab371e439c4ff3ceac18d34
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Enemy/MonsterGoblin2.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Monster
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5800a216d19a0d6468eb473f450444ae
-    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Enemy/MonsterData.asset
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Enemy/MonsterGoblin1.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Monster
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5c464091cec658e409dabca016466968
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Stage/StageID1.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Stage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 96d0b6c1a7ee7324080c307acef0b69c
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Enemy/MonsterGoblinKing.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Monster
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9799680b084f67546ac2b2b21dcfb301
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Enemy/MonsterGoblin4.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - Monster
@@ -31,6 +73,12 @@ MonoBehaviour:
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Player/LevelData.asset
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fb61eeb40c4bfb24285b83d8116d2886
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Enemy/MonsterGoblin3.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Monster
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ff29673586b5e0f41a4c5a340e3575f5
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Equipment/Armor/EquipData.asset

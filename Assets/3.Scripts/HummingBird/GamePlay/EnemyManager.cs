@@ -17,23 +17,21 @@ namespace Bird.Idle.Gameplay
         
         [Header("Data References")]
         [SerializeField] private AssetLabelReference monsterDataLabel; // 라벨 기반 컬렉션 로드용 AssetLabelRefrence라 함.
-        // [SerializeField] private List<MonsterData> stageMonsterList;
         
         [Header("Loot Drop Settings")]
         [SerializeField] private float dropChance = 0.1f;
         [SerializeField] private List<EquipmentData> droppableEquipment;
         
         [SerializeField] private float spawnInterval = 1.0f; // 몬스터 스폰 주기
-        // [SerializeField] private long goldPerKill = 100; // 몬스터 처치당 골드
-        // [SerializeField] private long expPerKill = 50;  // 몬스터 처치당 경험치
         [SerializeField] private int maxMonsterCount = 5; // 최대 몬스터 수
 
         private float currentSpawnTime;
         private int currentMonsterCount = 0;
         
         private Dictionary<int, MonsterData> loadedMonsterDictionary = new Dictionary<int, MonsterData>();
-
-        // public long GoldPerKill => goldPerKill;
+        
+        private StageData currentStageData;
+        private List<int> currentStageMonsterIDs;
 
         private void Awake()
         {
@@ -81,45 +79,71 @@ namespace Bird.Idle.Gameplay
                 currentSpawnTime = 0f;
             }
         }
+        
+        /// <summary>
+        /// StageManager로부터 현재 스테이지 정보를 업데이트
+        /// </summary>
+        public void UpdateStageData(StageData data)
+        {
+            currentStageData = data;
+            currentStageMonsterIDs = data.MonsterIDs;
+        }
 
         private void SpawnMonster()
         {
+            if (loadedMonsterDictionary.Count == 0 || currentStageMonsterIDs == null || currentStageMonsterIDs.Count == 0)
+            {
+                Debug.LogWarning("[EnemyManager] 몬스터 데이터 또는 스테이지 목록이 없습니다.");
+                return;
+            }
             currentMonsterCount++;
-            // TODO: 몬스터 프리팹 인스턴스화 로직
-            Debug.Log($"[EnemyManager] 몬스터 스폰! 현재 수: {currentMonsterCount}");
+            
+            int randomIndex = UnityEngine.Random.Range(0, currentStageMonsterIDs.Count);
+            int monsterIdToSpawn = currentStageMonsterIDs[randomIndex];
+            
+            if (loadedMonsterDictionary.TryGetValue(monsterIdToSpawn, out MonsterData monsterData))
+            {
+                // TODO: monsterData.prefabAddress를 사용해 Addressables 비동기 로드 후 인스턴스화
+        
+                Debug.Log($"[EnemyManager] {monsterData.monsterName} (ID: {monsterIdToSpawn}) 스폰! 현재 수: {currentMonsterCount}");
+            }
+            else
+            {
+                Debug.LogError($"[EnemyManager] ID {monsterIdToSpawn} 몬스터 데이터가 없습니다!");
+            }
         }
 
         /// <summary>
-        /// 몬스터 처치 시 호출되어 보상을 지급
+        /// 몬스터 처치 시 호출되어 보상을 지급하고 StageManager에 알림.
         /// </summary>
         public void KillMonster()
         {
             if (currentMonsterCount <= 0 || loadedMonsterDictionary.Count == 0) return;
             
-            if (!loadedMonsterDictionary.TryGetValue(1, out MonsterData currentMonster))
+            StageManager.Instance.OnMonsterKilled();
+            
+            int rewardMonsterId = currentStageMonsterIDs[0];
+            
+            if (!loadedMonsterDictionary.TryGetValue(rewardMonsterId, out MonsterData baseMonster))
             {
-                Debug.LogError("[EnemyManager] ID 1인 몬스터 데이터가 없습니다.");
+                Debug.LogError($"[EnemyManager] ID {rewardMonsterId} 몬스터 보상 데이터 로드 실패. (Dict에 없음)");
                 return;
             }
 
+            long goldReward = (long)(baseMonster.goldReward * currentStageData.GoldRewardMultiplier);
+            long expReward = (long)(baseMonster.expReward * currentStageData.ExpRewardMultiplier);
+            
             currentMonsterCount--;
 
-            if (CurrencyManager.Instance != null)
-            {
-                CurrencyManager.Instance.ChangeCurrency(CurrencyType.Gold, currentMonster.goldReward);
-            }
-            
-            if (CharacterManager.Instance != null)
-            {
-                CharacterManager.Instance.GainExperience(currentMonster.expReward);
-            }
+            CurrencyManager.Instance.ChangeCurrency(CurrencyType.Gold, goldReward);
+            CharacterManager.Instance.GainExperience(expReward);
             
             if (UnityEngine.Random.value < dropChance)
             {
                 DropEquipment();
             }
             
-            Debug.Log($"[EnemyManager] 몬스터 처치! 골드 {currentMonster.goldReward}, EXP {currentMonster.expReward} 획득.");
+            Debug.Log($"[EnemyManager] 몬스터 처치! 골드 {goldReward} (x{currentStageData.GoldRewardMultiplier}), EXP {expReward} 획득.");
         }
         
         private void DropEquipment()
