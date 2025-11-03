@@ -36,7 +36,7 @@ namespace Bird.Idle.UI
             if (characterManager != null)
             {
                 characterManager.OnLevelUp += UpdateAllStatsUI;
-                
+                characterManager.OnStatsRecalculated += UpdateStatsTextOnly;
                 characterManager.OnExpChanged += UpdateExpBarFromEvent;
                 
                 UpdateAllStatsUI(characterManager.CharacterLevel);
@@ -49,7 +49,7 @@ namespace Bird.Idle.UI
             {
                 // 오브젝트 비활성화 시 구독 해제
                 characterManager.OnLevelUp -= UpdateAllStatsUI;
-                
+                characterManager.OnStatsRecalculated -= UpdateStatsTextOnly;
                 characterManager.OnExpChanged -= UpdateExpBarFromEvent;
             }
         }
@@ -77,6 +77,14 @@ namespace Bird.Idle.UI
             healthText.text = $"Health: {characterManager.MaxHealth.ToString("F1")}";
             
             Debug.Log($"[StatsDisplay] UI 업데이트 완료: Lv.{level}, ATK:{characterManager.AttackPower}");
+        }
+        
+        private void UpdateStatsTextOnly()
+        {
+            attackText.text = $"공격력: {characterManager.AttackPower.ToString("F1")}";
+            healthText.text = $"체력: {characterManager.MaxHealth.ToString("F1")}";
+    
+            Debug.Log("[StatsDisplay] 장비 변경으로 스탯 텍스트 UI 갱신 완료.");
         }
     }
 }

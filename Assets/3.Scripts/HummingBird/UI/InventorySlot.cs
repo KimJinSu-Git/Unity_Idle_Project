@@ -95,17 +95,6 @@ namespace Bird.Idle.UI
             if (itemSO == null) return;
             
             EquipmentCollectionManager.Instance.ShowUpgradePopup(itemSO.equipID);
-            
-            // if (manager.IsItemEquipped(itemSO.type, itemSO.equipID))
-            // {
-            //     manager.UnequipItem(itemSO.type);
-            //     Debug.Log($"[InventorySlot] {itemSO.equipName} 장착 해제 요청.");
-            // }
-            // else
-            // {
-            //     manager.EquipItem(itemSO);
-            //     Debug.Log($"[InventorySlot] {itemSO.equipName} 장착 요청.");
-            // }
         }
         
         private string GetGradeString(EquipmentGrade grade)

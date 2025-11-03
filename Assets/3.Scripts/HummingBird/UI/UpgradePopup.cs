@@ -16,6 +16,7 @@ namespace Bird.Idle.UI
         [SerializeField] private TextMeshProUGUI costText;
         [SerializeField] private Button upgradeButton;
         [SerializeField] private Button closeButton;
+        [SerializeField] private Button equipButton;
 
         private CollectionEntry currentEntry;
         private EquipmentData baseItemSO;
@@ -26,6 +27,7 @@ namespace Bird.Idle.UI
         private void Awake()
         {
             upgradeButton.onClick.AddListener(OnUpgradeButtonClicked);
+            equipButton.onClick.AddListener(OnEquipButtonClicked);
             closeButton.onClick.AddListener(() => gameObject.SetActive(false));
         }
 
@@ -52,6 +54,33 @@ namespace Bird.Idle.UI
                 
                 gameObject.SetActive(true);
             }
+            
+            InventoryManager manager = InventoryManager.Instance;
+            bool isEquipped = manager.IsItemEquipped(baseItemSO.type, baseItemSO.equipID);
+            
+            equipButton.GetComponentInChildren<TextMeshProUGUI>().text = isEquipped ? "UnEquiped" : "Equiped";
+            
+            equipButton.interactable = entry.count > 0;
+        }
+        
+        /// <summary>
+        /// 장착/해제 버튼 클릭 시 InventoryManager 호출
+        /// </summary>
+        private void OnEquipButtonClicked()
+        {
+            InventoryManager manager = InventoryManager.Instance;
+    
+            if (manager.IsItemEquipped(baseItemSO.type, baseItemSO.equipID))
+            {
+                manager.UnequipItem(baseItemSO.type);
+            }
+            else
+            {
+                manager.EquipItem(baseItemSO);
+            }
+
+            Show(currentEntry);
+            gameObject.SetActive(false);
         }
 
         private void OnUpgradeButtonClicked()
@@ -62,14 +91,13 @@ namespace Bird.Idle.UI
 
             bool success = EquipmentCollectionManager.Instance.TryUpgradeCollection(
                 currentEntry.equipID, 
-                totalGoldCost); // TODO: CollectionManager에 TryUpgradeCollection 메서드 추가
+                totalGoldCost);
 
             if (success)
             {
                 gameObject.SetActive(false);
                 // 성공 효과 및 로그
             }
-            // 실패는 버튼 비활성화로 UI에서 막힘.
         }
     }
 }
