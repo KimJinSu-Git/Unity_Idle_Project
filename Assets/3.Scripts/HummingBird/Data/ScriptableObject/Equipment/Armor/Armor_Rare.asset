@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d8766a8d767a8d418f38ffb6d69ff6b, type: 3}
   m_Name: Armor_Rare
   m_EditorClassIdentifier: 
-  equipID: 0
+  equipID: 201
   equipName: Armor_Rare
   type: 1
   grade: 1

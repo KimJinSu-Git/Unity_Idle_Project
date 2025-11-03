@@ -154,9 +154,9 @@ namespace Bird.Idle.Gameplay
             int randomIndex = UnityEngine.Random.Range(0, droppableEquipment.Count);
             EquipmentData droppedItem = droppableEquipment[randomIndex];
 
-            if (InventoryManager.Instance != null)
+            if (EquipmentCollectionManager.Instance != null)
             {
-                InventoryManager.Instance.AddItem(droppedItem);
+                EquipmentCollectionManager.Instance.AddItem(droppedItem);
             }
         }
 

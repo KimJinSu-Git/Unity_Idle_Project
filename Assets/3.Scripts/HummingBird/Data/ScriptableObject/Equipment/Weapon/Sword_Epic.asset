@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d8766a8d767a8d418f38ffb6d69ff6b, type: 3}
   m_Name: Sword_Epic
   m_EditorClassIdentifier: 
-  equipID: 0
+  equipID: 101
   equipName: Sword_Epic
   type: 0
   grade: 2

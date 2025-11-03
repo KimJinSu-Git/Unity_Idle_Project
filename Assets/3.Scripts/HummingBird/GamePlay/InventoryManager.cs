@@ -12,20 +12,11 @@ namespace Bird.Idle.Gameplay
     public class InventoryManager : MonoBehaviour
     {
         public static InventoryManager Instance { get; private set; }
-        
-        [Header("Auto Sell Settings")]
-        [SerializeField] private EquipmentGrade autoSellGradeThreshold = EquipmentGrade.Rare; // Rare 등급 이하 자동 판매
 
         // 장착된 장비 딕셔너리 (Type별 1개)
         private Dictionary<EquipmentType, EquipmentData> equippedItems = new Dictionary<EquipmentType, EquipmentData>();
         
-        // 보유 중인 장비 목록
-        private List<EquipmentData> inventory = new List<EquipmentData>();
-        
-        public Action OnInventoryChanged;
         public Action OnEquipmentChanged;
-        
-        public List<EquipmentData> GetInventoryItems() => inventory;
         
         private void Awake()
         {
@@ -36,36 +27,6 @@ namespace Bird.Idle.Gameplay
             }
             Instance = this;
             DontDestroyOnLoad(gameObject);
-        }
-
-        /// <summary>
-        /// 몬스터 처치 등으로 장비를 획득
-        /// </summary>
-        public void AddItem(EquipmentData item)
-        {
-            if (item.grade <= autoSellGradeThreshold)
-            {
-                SellItem(item);
-                Debug.Log($"[Inventory] {item.equipName} (Grade:{item.grade}) 자동 판매됨.");
-            }
-            else
-            {
-                inventory.Add(item);
-                OnInventoryChanged?.Invoke(); // 인벤토리 UI 갱신
-                Debug.Log($"[Inventory] {item.equipName} 획득! (현재 {inventory.Count}개)");
-            }
-        }
-        
-        /// <summary>
-        /// 장비를 판매하고 CurrencyManager에 골드를 지급
-        /// </summary>
-        private void SellItem(EquipmentData item)
-        {
-            if (CurrencyManager.Instance != null)
-            {
-                CurrencyManager.Instance.ChangeCurrency(CurrencyType.Gold, item.sellPrice);
-            }
-            OnInventoryChanged?.Invoke();
         }
 
         /// <summary>
@@ -82,7 +43,6 @@ namespace Bird.Idle.Gameplay
 
             // 장비 장착 및 인벤토리에서 제거
             equippedItems[item.type] = item;
-            inventory.Remove(item);
 
             // 스탯 반영
             if (CharacterManager.Instance != null)
@@ -102,7 +62,6 @@ namespace Bird.Idle.Gameplay
             if (equippedItems.TryGetValue(type, out EquipmentData unequippedItem))
             {
                 equippedItems.Remove(type);
-                inventory.Add(unequippedItem);
                 
                 // 스탯 업데이트 요청
                 if (CharacterManager.Instance != null)
@@ -138,23 +97,6 @@ namespace Bird.Idle.Gameplay
                 totalHealth += item.healthBonus;
             }
             return (totalAttack, totalHealth); // 반환 형식에서 이름을 지정했기 때문에, 컴파일러는 이 값들이 그 이름에 해당한다고 유추.
-        }
-        
-        // 임시 테스트용
-        [ContextMenu("테스트 - 에픽 검 장착")]
-        public void TestEquipEpicSword()
-        {
-            EquipmentData sword = inventory.Find(item => item.equipName == "Sword_Epic");
-
-            if (sword != null)
-            {
-                EquipItem(sword);
-                Debug.Log("[Test] Sword_Epic 장착 시도!");
-            }
-            else
-            {
-                Debug.LogWarning("[Test] Sword_Epic이 인벤토리에 없습니다. 파밍을 먼저 진행하세요.");
-            }
         }
     }
 }

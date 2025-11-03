@@ -3105,6 +3105,7 @@ GameObject:
   - component: {fileID: 1633579766}
   - component: {fileID: 1633579767}
   - component: {fileID: 1633579768}
+  - component: {fileID: 1633579769}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -3188,7 +3189,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb6693502894c82408acdeda908e4356, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoSellGradeThreshold: 1
 --- !u!114 &1633579768
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3205,6 +3205,22 @@ MonoBehaviour:
     m_LabelString: Stage
   currentStageID: 1
   currentKillCount: 0
+--- !u!114 &1633579769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1633579761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc30af99511c189489885187ab6b70b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allEquipmentLabel:
+    m_LabelString: Equipment
+  upgradeCostCount: 5
+  autoSellGradeThreshold: 1
 --- !u!1 &1643106474
 GameObject:
   m_ObjectHideFlags: 0

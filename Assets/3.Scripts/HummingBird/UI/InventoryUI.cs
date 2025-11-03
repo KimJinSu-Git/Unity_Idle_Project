@@ -18,15 +18,18 @@ namespace Bird.Idle.UI
         [SerializeField] private InventorySlot weaponSlot;
         [SerializeField] private InventorySlot armorSlot;
 
-        private InventoryManager inventoryManager;
+        private InventoryManager inventoryManager; // 장착 관리
+        private EquipmentCollectionManager collectionManager; // 컬렉션 수량 관리
         private List<InventorySlot> createdSlots = new List<InventorySlot>();
 
         private void Awake()
         {
             inventoryManager = InventoryManager.Instance;
-            if (inventoryManager != null)
+            collectionManager = EquipmentCollectionManager.Instance;
+            
+            if (inventoryManager != null && collectionManager != null)
             {
-                inventoryManager.OnInventoryChanged += RefreshInventoryUI;
+                collectionManager.OnCollectionChanged += RefreshInventoryUI;
                 inventoryManager.OnEquipmentChanged += RefreshEquippedUI;
         
                 RefreshInventoryUI();
@@ -38,8 +41,14 @@ namespace Bird.Idle.UI
         {
             if (inventoryManager != null)
             {
-                inventoryManager.OnInventoryChanged -= RefreshInventoryUI;
-                inventoryManager.OnEquipmentChanged -= RefreshEquippedUI;
+                if (inventoryManager != null)
+                {
+                    inventoryManager.OnEquipmentChanged -= RefreshEquippedUI;
+                }
+                if (collectionManager != null)
+                {
+                    collectionManager.OnCollectionChanged -= RefreshInventoryUI;
+                }
             }
         }
 
@@ -51,11 +60,12 @@ namespace Bird.Idle.UI
             }
             createdSlots.Clear();
 
-            foreach (var item in inventoryManager.GetInventoryItems())
+            foreach (var entry in collectionManager.GetAllCollectionEntries().Values)
             {
-                InventorySlot newSlot = Instantiate(slotPrefab, inventorySlotParent);
-                newSlot.SetItemData(item);
-                createdSlots.Add(newSlot);
+                if (entry.count > 0)
+                {
+                    Debug.LogWarning($"[InventoryUI] ID {entry.equipID} (수량: {entry.count}) 컬렉션 슬롯을 생성해야 합니다.");
+                }
             }
         }
 

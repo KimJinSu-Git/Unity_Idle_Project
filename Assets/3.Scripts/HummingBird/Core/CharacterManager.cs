@@ -28,6 +28,9 @@ namespace Bird.Idle.Core
         [SerializeField] private AssetReferenceT<LevelData> levelDataReference;
         
         private LevelData loadedLevelData;
+        
+        private float permanentAttackBonus = 0f;
+        private float permanentHealthBonus = 0f;
 
         public int CharacterLevel => characterLevel;
         public float AttackPower 
@@ -40,7 +43,7 @@ namespace Bird.Idle.Core
                 {
                     bonus = InventoryManager.Instance.GetTotalEquipmentBonus().totalAttack;
                 }
-                return baseAttackPower + bonus;
+                return baseAttackPower + permanentAttackBonus + bonus;
             }
         }
         public float MaxHealth 
@@ -52,7 +55,7 @@ namespace Bird.Idle.Core
                 {
                     bonus = InventoryManager.Instance.GetTotalEquipmentBonus().totalHealth;
                 }
-                return baseMaxHealth + bonus;
+                return baseAttackPower + permanentHealthBonus + bonus;
             }
         }
 
@@ -108,6 +111,16 @@ namespace Bird.Idle.Core
     
             // TODO :: UI 로직: StatsDisplay에서 이 이벤트를 구독하여 AttackText, HealthText를 갱신
             Debug.Log($"[CharacterManager] 장비 스탯 재계산 완료. 최종 ATK: {AttackPower}");
+        }
+        
+        public void ApplyBaseStatUpgrade(float attackIncrease, float healthIncrease)
+        {
+            permanentAttackBonus += attackIncrease;
+            permanentHealthBonus += healthIncrease;
+    
+            OnStatsRecalculated?.Invoke(); 
+    
+            Debug.Log($"[CharacterManager] 기본 스탯 영구 증가! ATK: {permanentAttackBonus:F2}");
         }
 
         /// <summary>
