@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6d8766a8d767a8d418f38ffb6d69ff6b, type: 3}
-  m_Name: Sword_Epic
+  m_Name: Accessory_Rare1
   m_EditorClassIdentifier: 
-  equipID: 101
-  equipName: Sword_Epic
-  type: 0
-  grade: 2
-  attackBonus: 50
-  healthBonus: 100
-  sellPrice: 5000
+  equipID: 311
+  equipName: Accessory_Rare1
+  type: 2
+  grade: 1
+  attackBonus: 30
+  healthBonus: 300
+  sellPrice: 500
   iconAddress: 

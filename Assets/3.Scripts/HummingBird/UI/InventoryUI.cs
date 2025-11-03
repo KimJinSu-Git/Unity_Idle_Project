@@ -2,6 +2,8 @@ using UnityEngine;
 using Bird.Idle.Gameplay;
 using Bird.Idle.Data;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine.UI;
 
 namespace Bird.Idle.UI
 {
@@ -10,17 +12,25 @@ namespace Bird.Idle.UI
     /// </summary>
     public class InventoryUI : MonoBehaviour
     {
+        [Header("Tab Management")]
+        [SerializeField] private Button weaponTabButton;
+        [SerializeField] private Button armorTabButton;
+        [SerializeField] private Button accessoryTabButton;
+        [SerializeField] private GameObject weaponContent; 
+        [SerializeField] private GameObject armorContent;
+        [SerializeField] private GameObject accessoryContent;
+        
         [Header("Inventory Settings")]
         [SerializeField] private Transform inventorySlotParent;
         [SerializeField] private InventorySlot slotPrefab;
         
-        [Header("Equipped Slots")]
-        [SerializeField] private InventorySlot weaponSlot;
-        [SerializeField] private InventorySlot armorSlot;
+        [Header("Static Collection Slots")]
+        [SerializeField] private List<InventorySlot> allWeaponSlots; // 20개 연결
+        [SerializeField] private List<InventorySlot> allArmorSlots;  // 20개 연결
+        [SerializeField] private List<InventorySlot> allAccessorySlots; // 20개 연결
 
         private InventoryManager inventoryManager; // 장착 관리
         private EquipmentCollectionManager collectionManager; // 컬렉션 수량 관리
-        private List<InventorySlot> createdSlots = new List<InventorySlot>();
 
         private void Awake()
         {
@@ -34,6 +44,35 @@ namespace Bird.Idle.UI
         
                 RefreshInventoryUI();
                 RefreshEquippedUI();
+            }
+            
+            weaponTabButton.onClick.AddListener(() => SetActiveTab(EquipmentType.Weapon));
+            armorTabButton.onClick.AddListener(() => SetActiveTab(EquipmentType.Armor));
+            accessoryTabButton.onClick.AddListener(() => SetActiveTab(EquipmentType.Accessory));
+            
+            SetActiveTab(EquipmentType.Weapon);
+        }
+        
+        /// <summary>
+        /// 선택된 장비 타입에 따라 해당하는 콘텐츠 영역만 활성화
+        /// </summary>
+        private void SetActiveTab(EquipmentType type)
+        {
+            weaponContent.SetActive(false);
+            armorContent.SetActive(false);
+            accessoryContent.SetActive(false);
+    
+            switch (type)
+            {
+                case EquipmentType.Weapon:
+                    weaponContent.SetActive(true);
+                    break;
+                case EquipmentType.Armor:
+                    armorContent.SetActive(true);
+                    break;
+                case EquipmentType.Accessory:
+                    accessoryContent.SetActive(true);
+                    break;
             }
         }
         
@@ -54,25 +93,50 @@ namespace Bird.Idle.UI
 
         private void RefreshInventoryUI()
         {
-            foreach (var slot in createdSlots)
-            {
-                Destroy(slot.gameObject);
-            }
-            createdSlots.Clear();
+            var allEquipmentSO = EquipmentCollectionManager.Instance.AllEquipmentSO;
+            
+            RefreshCollectionSlots(allWeaponSlots, allEquipmentSO, EquipmentType.Weapon);
+            RefreshCollectionSlots(allArmorSlots, allEquipmentSO, EquipmentType.Armor);
+            RefreshCollectionSlots(allAccessorySlots, allEquipmentSO, EquipmentType.Accessory);
+        
+            Debug.Log("[InventoryUI] 정적 컬렉션 슬롯 UI 갱신 완료.");
+        }
+        
+        /// <summary>
+        /// 지정된 타입의 슬롯 리스트를 컬렉션 데이터로 갱신
+        /// </summary>
+        private void RefreshCollectionSlots(List<InventorySlot> slots, Dictionary<int, EquipmentData> soDataMap, EquipmentType targetType)
+        {
+            var sortedEquipment = soDataMap.Values
+                .Where(data => data.type == targetType)
+                .OrderBy(data => (int)data.grade) 
+                .ThenBy(data => data.equipID)     
+                .ToList();
 
-            foreach (var entry in collectionManager.GetAllCollectionEntries().Values)
+            for (int i = 0; i < slots.Count; i++)
             {
-                if (entry.count > 0)
+                if (i < sortedEquipment.Count)
                 {
-                    Debug.LogWarning($"[InventoryUI] ID {entry.equipID} (수량: {entry.count}) 컬렉션 슬롯을 생성해야 합니다.");
+                    EquipmentData itemSO = sortedEquipment[i];
+            
+                    int count = collectionManager.GetItemCount(itemSO.equipID);
+                    int level = collectionManager.GetCollectionLevel(itemSO.equipID);
+            
+                    slots[i].SetCollectionData(itemSO, count, level); 
+                }
+                else
+                {
+                    slots[i].SetEmpty();
                 }
             }
         }
 
         private void RefreshEquippedUI()
         {
-            weaponSlot.SetItemData(inventoryManager.GetEquippedItem(EquipmentType.Weapon));
-            armorSlot.SetItemData(inventoryManager.GetEquippedItem(EquipmentType.Armor));
+            RefreshInventoryUI();
+            Debug.Log("[InventoryUI] 장착 상태 변경으로 인해 전체 인벤토리 UI 갱신.");
+            
+            // TODO :: 나중에, 필요한 슬롯(무기/장비/악세사리)만 순회하도록 변경하여, 비용을 줄일 수 있음.
         }
     }
 }

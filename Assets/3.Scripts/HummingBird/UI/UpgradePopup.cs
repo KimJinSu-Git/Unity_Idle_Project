@@ -1,0 +1,75 @@
+using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
+using Bird.Idle.Data;
+using Bird.Idle.Gameplay;
+using Bird.Idle.Core;
+
+namespace Bird.Idle.UI
+{
+    public class UpgradePopup : MonoBehaviour
+    {
+        [Header("UI References")]
+        [SerializeField] private TextMeshProUGUI itemNameText;
+        [SerializeField] private TextMeshProUGUI levelText;
+        [SerializeField] private TextMeshProUGUI statBonusText;
+        [SerializeField] private TextMeshProUGUI costText;
+        [SerializeField] private Button upgradeButton;
+        [SerializeField] private Button closeButton;
+
+        private CollectionEntry currentEntry;
+        private EquipmentData baseItemSO;
+        
+        // 업그레이드에 필요한 골드
+        private const long GOLD_COST_PER_LEVEL = 5000; 
+
+        private void Awake()
+        {
+            upgradeButton.onClick.AddListener(OnUpgradeButtonClicked);
+            closeButton.onClick.AddListener(() => gameObject.SetActive(false));
+        }
+
+        public void Show(CollectionEntry entry)
+        {
+            currentEntry = entry;
+            
+            if (EquipmentCollectionManager.Instance.AllEquipmentSO.TryGetValue(entry.equipID, out baseItemSO))
+            {
+                itemNameText.text = $"{baseItemSO.equipName}";
+                
+                levelText.text = $"Lv. {entry.collectionLevel} -> Lv. {entry.collectionLevel + 1}";
+                
+                float nextAtk = baseItemSO.attackBonus * 0.05f * (entry.collectionLevel + 1);
+                float nextHp = baseItemSO.healthBonus * 0.05f * (entry.collectionLevel + 1);
+                statBonusText.text = $"ATK: +{nextAtk:F1}\nHP: +{nextHp:F1}";
+
+                long totalGoldCost = GOLD_COST_PER_LEVEL * (entry.collectionLevel + 1); // 레벨에 따라 비용 증가 가정
+                costText.text = $"비용: {EquipmentCollectionManager.Instance.UpgradeCostCount}개 / {totalGoldCost:N0} 골드";
+                
+                long currentGold = CurrencyManager.Instance.GetAmount(CurrencyType.Gold);
+                bool canAfford = (entry.count >= EquipmentCollectionManager.Instance.UpgradeCostCount) && (currentGold >= totalGoldCost);
+                upgradeButton.interactable = canAfford;
+                
+                gameObject.SetActive(true);
+            }
+        }
+
+        private void OnUpgradeButtonClicked()
+        {
+            if (currentEntry == null || baseItemSO == null) return;
+            
+            long totalGoldCost = GOLD_COST_PER_LEVEL * (currentEntry.collectionLevel + 1);
+
+            bool success = EquipmentCollectionManager.Instance.TryUpgradeCollection(
+                currentEntry.equipID, 
+                totalGoldCost); // TODO: CollectionManager에 TryUpgradeCollection 메서드 추가
+
+            if (success)
+            {
+                gameObject.SetActive(false);
+                // 성공 효과 및 로그
+            }
+            // 실패는 버튼 비활성화로 UI에서 막힘.
+        }
+    }
+}

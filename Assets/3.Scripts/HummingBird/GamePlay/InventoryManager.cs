@@ -73,6 +73,19 @@ namespace Bird.Idle.Gameplay
             }
         }
         
+        /// <summary>
+        /// 특정 장비 타입에 해당 ID의 아이템이 현재 장착 중인지 확인
+        /// </summary>
+        public bool IsItemEquipped(EquipmentType type, int equipID)
+        {
+            if (equippedItems.TryGetValue(type, out EquipmentData equippedItem))
+            {
+                // 장착된 아이템의 ID와 현재 슬롯의 ID가 일치하는지 확인
+                return equippedItem.equipID == equipID; 
+            }
+            return false;
+        }
+        
         public EquipmentData GetEquippedItem(EquipmentType type)
         {
             equippedItems.TryGetValue(type, out EquipmentData item);

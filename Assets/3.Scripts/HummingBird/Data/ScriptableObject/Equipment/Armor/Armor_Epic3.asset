@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6d8766a8d767a8d418f38ffb6d69ff6b, type: 3}
-  m_Name: Armor_Rare
+  m_Name: Armor_Epic3
   m_EditorClassIdentifier: 
-  equipID: 201
-  equipName: Armor_Rare
+  equipID: 223
+  equipName: Armor_Epic3
   type: 1
-  grade: 1
-  attackBonus: 5
-  healthBonus: 300
-  sellPrice: 1500
+  grade: 2
+  attackBonus: 40
+  healthBonus: 3000
+  sellPrice: 3000
   iconAddress: 

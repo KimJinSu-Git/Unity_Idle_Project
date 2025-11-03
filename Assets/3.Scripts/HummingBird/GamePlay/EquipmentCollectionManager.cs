@@ -4,6 +4,7 @@ using System.Linq;
 using System;
 using Bird.Idle.Data;
 using Bird.Idle.Core;
+using Bird.Idle.UI;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
@@ -22,11 +23,19 @@ namespace Bird.Idle.Gameplay
         [Header("Collection Settings")]
         [SerializeField] private int upgradeCostCount = 5;
         [SerializeField] private EquipmentGrade autoSellGradeThreshold = EquipmentGrade.Rare;
+        
+        [Header("UI References")]
+        [SerializeField] private UpgradePopup upgradePopupPrefab;
+        
+        private UpgradePopup activePopupInstance;
 
         private Dictionary<int, CollectionEntry> collectionMap = new Dictionary<int, CollectionEntry>();
         private Dictionary<int, EquipmentData> allEquipmentSO = new Dictionary<int, EquipmentData>();
         
         public Action OnCollectionChanged;
+        
+        public Dictionary<int, EquipmentData> AllEquipmentSO { get; private set; } = new Dictionary<int, EquipmentData>();
+        public int UpgradeCostCount => upgradeCostCount;
 
         private void Awake()
         {
@@ -45,15 +54,19 @@ namespace Bird.Idle.Gameplay
         
             if (handle.Status == AsyncOperationStatus.Succeeded)
             {
+                Dictionary<int, EquipmentData> loadedMap = new Dictionary<int, EquipmentData>();
+                
                 foreach (var soData in handle.Result)
                 {
-                    allEquipmentSO.Add(soData.equipID, soData);
+                    loadedMap.Add(soData.equipID, soData);
                 
                     if (!collectionMap.ContainsKey(soData.equipID))
                     {
                         collectionMap.Add(soData.equipID, new CollectionEntry(soData.equipID));
                     }
                 }
+                
+                AllEquipmentSO = loadedMap;
                 Debug.Log($"[CollectionManager] 모든 장비 데이터 로드 및 컬렉션 맵 초기화 완료. (총 {allEquipmentSO.Count}종)");
             }
             else
@@ -85,7 +98,6 @@ namespace Bird.Idle.Gameplay
                 entry.count++;
                 Debug.Log($"[Collection] ID {item.equipID} 수량 증가 ({entry.count}개).");
                 OnCollectionChanged?.Invoke(); 
-                CheckForUpgrade(entry, item);
             }
             else
             {
@@ -120,6 +132,73 @@ namespace Bird.Idle.Gameplay
                 Debug.Log($"[Collection] {item.equipName} 컬렉션 레벨 업! Lv.{entry.collectionLevel}");
                 OnCollectionChanged?.Invoke(); 
             }
+        }
+        
+        public void ShowUpgradePopup(int equipID)
+        {
+            if (!collectionMap.TryGetValue(equipID, out CollectionEntry entry)) return;
+
+            if (activePopupInstance == null)
+            {
+                activePopupInstance = Instantiate(upgradePopupPrefab);
+                activePopupInstance.transform.SetParent(GameObject.FindObjectOfType<Canvas>().transform, false); 
+            }
+
+            activePopupInstance.Show(entry); 
+        }
+        
+        /// <summary>
+        /// 컬렉션 업그레이드를 시도하고 성공 여부를 반환
+        /// </summary>
+        /// <param name="equipID">업그레이드할 장비의 ID</param>
+        /// <param name="goldCost">업그레이드에 필요한 골드 비용</param>
+        /// <returns>업그레이드 성공 여부</returns>
+        public bool TryUpgradeCollection(int equipID, long goldCost)
+        {
+            if (!collectionMap.TryGetValue(equipID, out CollectionEntry entry))
+            {
+                Debug.LogError($"[CollectionManager] ID {equipID} 컬렉션 항목이 맵에 없습니다.");
+                return false;
+            }
+    
+            if (!CanUpgrade(entry, goldCost))
+            {
+                Debug.LogWarning("[CollectionManager] 업그레이드 재료(수량 또는 골드)가 부족합니다.");
+                return false;
+            }
+
+            entry.count -= upgradeCostCount; 
+    
+            if (!CurrencyManager.Instance.ChangeCurrency(CurrencyType.Gold, -goldCost))
+            {
+                Debug.LogError("[CollectionManager] 골드 소모 실패. 비상 상황!");
+                return false; 
+            }
+
+            entry.collectionLevel++;
+    
+            if (AllEquipmentSO.TryGetValue(equipID, out EquipmentData item))
+            {
+                float upgradeAtk = item.attackBonus * 0.05f; 
+                float upgradeHp = item.healthBonus * 0.05f;
+                CharacterManager.Instance.ApplyBaseStatUpgrade(upgradeAtk, upgradeHp);
+            }
+    
+            Debug.Log($"[Collection] ID {equipID} 컬렉션 업그레이드 성공! Lv.{entry.collectionLevel}");
+    
+            OnCollectionChanged?.Invoke(); 
+    
+            return true;
+        }
+        
+        /// <summary>
+        /// 업그레이드 가능 여부를 검사
+        /// </summary>
+        public bool CanUpgrade(CollectionEntry entry, long goldCost)
+        {
+            long currentGold = CurrencyManager.Instance.GetAmount(CurrencyType.Gold);
+    
+            return (entry.count >= upgradeCostCount) && (currentGold >= goldCost);
         }
         
         // UI가 모든 컬렉션 항목을 가져갈 수 있도록 메서드 제공
