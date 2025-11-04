@@ -136,7 +136,6 @@ namespace Bird.Idle.Gameplay
             currentMonsterCount--;
 
             CurrencyManager.Instance.ChangeCurrency(CurrencyType.Gold, goldReward);
-            CharacterManager.Instance.GainExperience(expReward);
             
             if (UnityEngine.Random.value < dropChance)
             {

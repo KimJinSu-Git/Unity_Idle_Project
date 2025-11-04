@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using Bird.Idle.Core;
+using Bird.Idle.Gameplay;
 
 namespace Bird.Idle.UI
 {
@@ -15,19 +16,21 @@ namespace Bird.Idle.UI
         [SerializeField] private TextMeshProUGUI attackText;
         [SerializeField] private TextMeshProUGUI healthText;
         
-        [Header("EXP Bar")]
-        [SerializeField] private Slider expBarSlider;
-        [SerializeField] private TextMeshProUGUI expText;
+        [Header("Stage Progress Slider")]
+        [SerializeField] private Slider stageProgressSlider;
+        [SerializeField] private TextMeshProUGUI stageProgressText;
 
         private CharacterManager characterManager;
+        private StageManager stageManager;
 
         private void Awake()
         {
             characterManager = CharacterManager.Instance;
+            stageManager = StageManager.Instance;
             
-            if (characterManager == null)
+            if (characterManager == null || stageManager == null)
             {
-                Debug.LogError("[StatsDisplay] CharacterManager 참조 실패.");
+                Debug.LogError("[StatsDisplay] Manager 참조 실패.");
             }
         }
 
@@ -37,33 +40,36 @@ namespace Bird.Idle.UI
             {
                 characterManager.OnLevelUp += UpdateAllStatsUI;
                 characterManager.OnStatsRecalculated += UpdateStatsTextOnly;
-                characterManager.OnExpChanged += UpdateExpBarFromEvent;
-                
-                UpdateAllStatsUI(characterManager.CharacterLevel);
             }
+            
+            if (stageManager != null)
+            {
+                stageManager.OnStageProgressChanged += UpdateStageProgress;
+            }
+            
+            UpdateAllStatsUI(characterManager.CharacterLevel);
         }
 
         private void OnDisable()
         {
             if (characterManager != null)
             {
-                // 오브젝트 비활성화 시 구독 해제
                 characterManager.OnLevelUp -= UpdateAllStatsUI;
                 characterManager.OnStatsRecalculated -= UpdateStatsTextOnly;
-                characterManager.OnExpChanged -= UpdateExpBarFromEvent;
+            }
+            if (stageManager != null)
+            {
+                stageManager.OnStageProgressChanged -= UpdateStageProgress;
             }
         }
-
-        /// <summary>
-        /// CharacterManager의 OnExpChanged 이벤트에 의해 호출
-        /// </summary>
-        private void UpdateExpBarFromEvent(long currentExp, long requiredExp)
+        
+        public void UpdateStageProgress(int currentKills, int requiredKills, int stageID)
         {
-            expBarSlider.minValue = 0f;
-            expBarSlider.maxValue = (float)requiredExp; 
-            expBarSlider.value = (float)currentExp;
+            stageProgressSlider.minValue = 0f;
+            stageProgressSlider.maxValue = (float)requiredKills; 
+            stageProgressSlider.value = (float)currentKills;
 
-            expText.text = $"{currentExp:N0} / {requiredExp:N0} EXP";
+            stageProgressText.text = $"{stageID}: {currentKills} / {requiredKills}";
         }
         
         /// <summary>

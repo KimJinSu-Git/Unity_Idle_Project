@@ -12823,7 +12823,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterLevel: 1
-  currentExp: 0
   baseAttackPower: 10
   baseMaxHealth: 100
   levelDataReference:
@@ -34185,7 +34184,7 @@ GameObject:
   - component: {fileID: 1148689035}
   - component: {fileID: 1148689034}
   m_Layer: 5
-  m_Name: ExpText
+  m_Name: KillText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34230,7 +34229,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'EXP : 150 / 200'
+  m_text: '1Stage : 150 / 200'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -48251,8 +48250,8 @@ MonoBehaviour:
   levelText: {fileID: 220490109}
   attackText: {fileID: 1210177419}
   healthText: {fileID: 831936116}
-  expBarSlider: {fileID: 804217322}
-  expText: {fileID: 1148689034}
+  stageProgressSlider: {fileID: 804217322}
+  stageProgressText: {fileID: 1148689034}
 --- !u!4 &1608816230
 Transform:
   m_ObjectHideFlags: 0

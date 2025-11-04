@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.AddressableAssets;
@@ -23,6 +24,8 @@ namespace Bird.Idle.Gameplay
 
         private Dictionary<int, StageData> stageDataDictionary = new Dictionary<int, StageData>();
         private StageData currentStageData;
+        
+        public Action<int, int, int> OnStageProgressChanged;
         
         public int CurrentStageID => currentStageID;
 
@@ -71,6 +74,8 @@ namespace Bird.Idle.Gameplay
                 currentStageID = stageID;
                 currentStageData = newStageData;
                 currentKillCount = 0;
+                
+                OnStageProgressChanged?.Invoke(currentKillCount, newStageData.MonsterKillCountRequired, stageID);
 
                 Debug.Log($"[StageManager] 현재 스테이지: {newStageData.StageName} (ID: {stageID})");
 
@@ -91,12 +96,12 @@ namespace Bird.Idle.Gameplay
 
             currentKillCount++;
 
+            OnStageProgressChanged?.Invoke(currentKillCount, currentStageData.MonsterKillCountRequired, currentStageID);
+            
             if (currentKillCount >= currentStageData.MonsterKillCountRequired)
             {
                 AdvanceToNextStage();
             }
-            
-            // TODO: UI 업데이트 (현재 킬 카운트 / 필요 킬 카운트)
         }
 
         /// <summary>
