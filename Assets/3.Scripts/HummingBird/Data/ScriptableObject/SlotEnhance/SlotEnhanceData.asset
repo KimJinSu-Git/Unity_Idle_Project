@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 240e06cb3de83a045aaa6bb2c517fb4a, type: 3}
+  m_Name: SlotEnhanceData
+  m_EditorClassIdentifier: 
+  TypeTables:
+  - Type: 0
+    Entries:
+    - EnhanceLevel: 1
+      GoldCost: 5000
+      AttackIncrease: 5
+      HealthIncrease: 0
+      SuccessRate: 1
+    - EnhanceLevel: 2
+      GoldCost: 15000
+      AttackIncrease: 7.5
+      HealthIncrease: 0
+      SuccessRate: 0.9
+    - EnhanceLevel: 3
+      GoldCost: 30000
+      AttackIncrease: 10
+      HealthIncrease: 0
+      SuccessRate: 0.8
+  - Type: 1
+    Entries:
+    - EnhanceLevel: 1
+      GoldCost: 5000
+      AttackIncrease: 0
+      HealthIncrease: 50
+      SuccessRate: 1
+    - EnhanceLevel: 2
+      GoldCost: 15000
+      AttackIncrease: 0
+      HealthIncrease: 75
+      SuccessRate: 0.9
+    - EnhanceLevel: 3
+      GoldCost: 30000
+      AttackIncrease: 0
+      HealthIncrease: 100
+      SuccessRate: 0.8
+  - Type: 2
+    Entries:
+    - EnhanceLevel: 1
+      GoldCost: 5000
+      AttackIncrease: 2.5
+      HealthIncrease: 25
+      SuccessRate: 1
+    - EnhanceLevel: 2
+      GoldCost: 15000
+      AttackIncrease: 5
+      HealthIncrease: 50
+      SuccessRate: 0.9
+    - EnhanceLevel: 3
+      GoldCost: 30000
+      AttackIncrease: 7.5
+      HealthIncrease: 75
+      SuccessRate: 0.8

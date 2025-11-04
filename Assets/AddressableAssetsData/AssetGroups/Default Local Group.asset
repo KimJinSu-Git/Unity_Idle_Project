@@ -129,6 +129,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Stage
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 49ce8c2144be39542857347ff2548d99
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/SlotEnhance/SlotEnhanceData.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4a424c992d58e8a44a5ff62f6537d523
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Equipment/Armor/Armor_Common1.asset
     m_ReadOnly: 0
