@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine.UI;
 using Bird.Idle.Core;
 using Bird.Idle.Data;
+using Bird.Idle.Gameplay;
 
 namespace Bird.Idle.UI
 {
@@ -15,14 +16,25 @@ namespace Bird.Idle.UI
         [SerializeField] private Button levelUpButton;
         [SerializeField] private TextMeshProUGUI levelUpCostText;
         [SerializeField] private TextMeshProUGUI currentLevelText;
-
-        // TODO: 장비 칸 강화 UI 요소 (WeaponSlot, ArmorSlot 등) 필드 추가 예정
+        
+        [Header("Slot Enhance Displays")]
+        [SerializeField] private SlotEnhanceDisplay weaponSlotDisplay;
+        [SerializeField] private SlotEnhanceDisplay armorSlotDisplay;
+        [SerializeField] private SlotEnhanceDisplay accessorySlotDisplay;
 
         private CharacterManager characterManager;
+        private SlotManager slotManager;
 
         private void Awake()
         {
             characterManager = CharacterManager.Instance;
+            slotManager = SlotManager.Instance;
+            
+            if (slotManager != null)
+            {
+                slotManager.OnSlotEnhanceChanged += InitializeSlotDisplays;
+            }
+            
             levelUpButton.onClick.AddListener(OnLevelUpButtonClicked);
             
             if (characterManager != null)
@@ -31,6 +43,19 @@ namespace Bird.Idle.UI
             }
             
             RefreshLevelUI(characterManager.CharacterLevel);
+        }
+        
+        // 데이터 로드 완료 후 모든 슬롯 UI를 초기화하는 메서드
+        private void InitializeSlotDisplays()
+        {
+            if (slotManager.GetSlotEnhanceData() == null) return;
+
+            SlotEnhanceData data = slotManager.GetSlotEnhanceData();
+            weaponSlotDisplay.Initialize(data);
+            armorSlotDisplay.Initialize(data);
+            accessorySlotDisplay.Initialize(data);
+    
+            slotManager.OnSlotEnhanceChanged -= InitializeSlotDisplays; 
         }
 
         private void OnLevelUpButtonClicked()
@@ -47,19 +72,19 @@ namespace Bird.Idle.UI
         {
             currentLevelText.text = $"Lv. {currentLevel:N0}";
 
-            long goldCost = GetLevelUpCost(currentLevel); 
+            long goldCost = characterManager.GetLevelUpCost(currentLevel);
+            
+            if (goldCost == -1)
+            {
+                levelUpCostText.text = "MAX";
+                levelUpButton.interactable = false;
+                return;
+            }
             
             levelUpCostText.text = $"{goldCost:N0} Gold";
             
             bool canAfford = CurrencyManager.Instance.CanAfford(CurrencyType.Gold, goldCost);
             levelUpButton.interactable = canAfford;
-        }
-        
-        private long GetLevelUpCost(int currentLevel)
-        {
-            const long BASE_LEVELUP_COST = 1000;
-            const long COST_MULTIPLIER = 120;
-            return BASE_LEVELUP_COST + (long)currentLevel * currentLevel * COST_MULTIPLIER;
         }
     }
 }

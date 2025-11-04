@@ -4,11 +4,11 @@ using System.Collections.Generic;
 namespace Bird.Idle.Data
 {
     /// <summary>
-    /// 캐릭터의 레벨별 스탯 성장 정보를 정의하는 Scriptable Object.
+    /// 캐릭터의 레벨별 요구 골드 비용 및 스탯 증가량을 정의하는 Scriptable Object.
     /// 에셋 생성 메뉴 경로: Assets/Create/Bird/Level Data
     /// </summary>
-    [CreateAssetMenu(fileName = "LevelData", menuName = "Bird/Level Data")]
-    public class LevelData : ScriptableObject
+    [CreateAssetMenu(fileName = "LevelUpCostData", menuName = "Bird/Level Up Cost Data")]
+    public class LevelUpCostData : ScriptableObject
     {
         public List<LevelEntry> LevelTable = new List<LevelEntry>();
 
@@ -17,7 +17,7 @@ namespace Bird.Idle.Data
         public struct LevelEntry
         {
             public int Level;
-            public long RequiredExp; // 해당 레벨이 되기 위해 필요한 총 경험치
+            public long RequiredGold; // 요구 골드 비용
             public float AttackIncrease; // 해당 레벨에서 증가하는 기본 공격력
             public float HealthIncrease; // 해당 레벨에서 증가하는 최대 체력
         }

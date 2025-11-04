@@ -4,6 +4,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Bird.Idle.Data;
 using Bird.Idle.Gameplay;
+using UnityEngine.Serialization;
 
 namespace Bird.Idle.Core
 {
@@ -22,13 +23,9 @@ namespace Bird.Idle.Core
         [SerializeField] private float baseMaxHealth = 100f; // 최대 체력
         
         [Header("Data References")]
-        [SerializeField] private AssetReferenceT<LevelData> levelDataReference;
+        [SerializeField] private AssetReferenceT<LevelUpCostData> levelUpCostDataReference;
         
-        [Header("Level Up Data")]
-        private const long BASE_LEVELUP_COST = 1000;
-        private const long COST_MULTIPLIER = 120;
-        
-        private LevelData loadedLevelData;
+        private LevelUpCostData loadedLevelUpCostData;
         
         private float permanentAttackBonus = 0f;
         private float permanentHealthBonus = 0f;
@@ -73,29 +70,29 @@ namespace Bird.Idle.Core
             Instance = this;
             DontDestroyOnLoad(gameObject);
             
-            LoadLevelDataAsync();
+            LoadLevelUpCostDataAsync();
         }
         
         /// <summary>
         /// Addressables를 사용하여 LevelData를 로드
         /// </summary>
-        private async void LoadLevelDataAsync()
+        private async void LoadLevelUpCostDataAsync()
         {
-            AsyncOperationHandle<LevelData> handle = levelDataReference.LoadAssetAsync<LevelData>();
+            AsyncOperationHandle<LevelUpCostData> handle = levelUpCostDataReference.LoadAssetAsync<LevelUpCostData>();
 
             await handle.Task; 
         
             // 로드 성공 시 데이터 캐시
             if (handle.Status == AsyncOperationStatus.Succeeded)
             {
-                loadedLevelData = handle.Result;
-                Debug.Log("[CharacterManager] LevelData Addressables 로드 완료!");
+                loadedLevelUpCostData = handle.Result;
+                Debug.Log("[CharacterManager] LevelUpCostData Addressables 로드 완료!");
             
                 OnLevelUp?.Invoke(characterLevel);
             }
             else
             {
-                Debug.LogError($"[CharacterManager] LevelData Addressables 로드 실패: {handle.OperationException}");
+                Debug.LogError($"[CharacterManager] LevelUpCostData Addressables 로드 실패: {handle.OperationException}");
             }
         
             // TODO: 사용이 끝난 시점에 handle.Release()를 호출하여 메모리를 해제 추가
@@ -127,7 +124,9 @@ namespace Bird.Idle.Core
         /// </summary>
         public bool TryLevelUp()
         {
-            LevelData.LevelEntry nextLevelEntry = loadedLevelData.GetLevelEntry(characterLevel + 1);
+            if (loadedLevelUpCostData == null) return false;
+            
+            LevelUpCostData.LevelEntry nextLevelEntry = loadedLevelUpCostData.GetLevelEntry(characterLevel + 1);
 
             if (nextLevelEntry.Level == 0)
             {
@@ -135,7 +134,7 @@ namespace Bird.Idle.Core
                 return false;
             }
 
-            long goldCost = BASE_LEVELUP_COST + (long)characterLevel * characterLevel * COST_MULTIPLIER;
+            long goldCost = nextLevelEntry.RequiredGold;
         
             if (CurrencyManager.Instance == null || !CurrencyManager.Instance.CanAfford(CurrencyType.Gold, goldCost))
             {
@@ -153,6 +152,17 @@ namespace Bird.Idle.Core
         
             Debug.Log($"[CharacterManager] 레벨 업! Lv.{characterLevel}.");
             return true;
+        }
+        
+        public long GetLevelUpCost(int currentLevel)
+        {
+            if (loadedLevelUpCostData == null) return 0;
+    
+            LevelUpCostData.LevelEntry nextEntry = loadedLevelUpCostData.GetLevelEntry(currentLevel + 1);
+            
+            if (nextEntry.Level == 0) return -1;
+            
+            return nextEntry.RequiredGold;
         }
     }
 }

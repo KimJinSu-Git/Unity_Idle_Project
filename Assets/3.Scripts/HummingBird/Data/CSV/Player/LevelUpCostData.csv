@@ -1,4 +1,4 @@
-﻿Level,RequiredExp,AttackIncrease,HealthIncrease
+﻿Level,RequiredGold,AttackIncrease,HealthIncrease
 1,0,0,0
 2,1000,5.5,50
 3,3000,7,75

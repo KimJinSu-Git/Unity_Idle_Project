@@ -7,13 +7,13 @@ using System.Collections.Generic;
 namespace Bird.Editor
 {
     /// <summary>
-    /// CSV 파일을 읽어 LevelData Scriptable Object를 생성하거나 업데이트하는 에디터 툴
+    /// CSV 파일을 읽어 LevelUpCostData Scriptable Object를 생성하거나 업데이트하는 에디터 툴
     /// </summary>
     public static class LevelDataGenerator
     {
         // 파일 경로
-        private const string CSV_PATH = "Assets/3.Scripts/HummingBird/Data/CSV/Player/LevelData.csv";
-        private const string SO_PATH = "Assets/3.Scripts/HummingBird/Data/ScriptableObject/Player/LevelData.asset";
+        private const string CSV_PATH = "Assets/3.Scripts/HummingBird/Data/CSV/Player/LevelUpCostData.csv";
+        private const string SO_PATH = "Assets/3.Scripts/HummingBird/Data/ScriptableObject/Player/LevelUpCostData.asset";
 
         [MenuItem("Tools/Bird/Generate Level Data (CSV)")]
         public static void GenerateLevelData()
@@ -25,10 +25,10 @@ namespace Bird.Editor
             }
 
             // LevelData SO 에셋을 로드하거나 새로 생성
-            LevelData dataAsset = AssetDatabase.LoadAssetAtPath<LevelData>(SO_PATH);
+            LevelUpCostData dataAsset = AssetDatabase.LoadAssetAtPath<LevelUpCostData>(SO_PATH);
             if (dataAsset == null)
             {
-                dataAsset = ScriptableObject.CreateInstance<LevelData>();
+                dataAsset = ScriptableObject.CreateInstance<LevelUpCostData>();
                 AssetDatabase.CreateAsset(dataAsset, SO_PATH);
                 Debug.LogWarning("[DataGenerator] LevelData.asset 파일이 없어 새로 생성했습니다.");
             }
@@ -44,14 +44,14 @@ namespace Bird.Editor
                 if (values.Length < 4) continue;
 
                 // 파싱 및 데이터 유효성 검사
-                if (int.TryParse(values[0], out int level) && long.TryParse(values[1], out long requiredExp) &&
+                if (int.TryParse(values[0], out int level) && long.TryParse(values[1], out long requiredGold) &&
                     float.TryParse(values[2], out float attackIncrease) && float.TryParse(values[3], out float healthIncrease))
                 {
                     // SO 데이터에 추가
-                    dataAsset.LevelTable.Add(new LevelData.LevelEntry
+                    dataAsset.LevelTable.Add(new LevelUpCostData.LevelEntry
                     {
                         Level = level,
-                        RequiredExp = requiredExp,
+                        RequiredGold = requiredGold,
                         AttackIncrease = attackIncrease,
                         HealthIncrease = healthIncrease
                     });
@@ -63,7 +63,7 @@ namespace Bird.Editor
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
-            Debug.Log($"[DataGenerator] LevelData.asset 업데이트 완료. 총 {dataAsset.LevelTable.Count}개 항목.");
+            Debug.Log($"[DataGenerator] LevelUpCostData.asset 업데이트 완료. 총 {dataAsset.LevelTable.Count}개 항목.");
         }
     }
 }

@@ -10,30 +10,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 06cd1fd4380bebf4e8bf65f9f7700edc, type: 3}
-  m_Name: LevelData
+  m_Name: LevelUpCostData
   m_EditorClassIdentifier: 
   LevelTable:
   - Level: 1
-    RequiredExp: 0
+    RequiredGold: 0
     AttackIncrease: 0
     HealthIncrease: 0
   - Level: 2
-    RequiredExp: 1000
+    RequiredGold: 1000
     AttackIncrease: 5.5
     HealthIncrease: 50
   - Level: 3
-    RequiredExp: 3000
+    RequiredGold: 3000
     AttackIncrease: 7
     HealthIncrease: 75
   - Level: 4
-    RequiredExp: 6000
+    RequiredGold: 6000
     AttackIncrease: 9
     HealthIncrease: 100
   - Level: 5
-    RequiredExp: 10000
+    RequiredGold: 10000
     AttackIncrease: 12
     HealthIncrease: 120
   - Level: 6
-    RequiredExp: 50000
+    RequiredGold: 50000
     AttackIncrease: 20
     HealthIncrease: 300

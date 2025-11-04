@@ -27,7 +27,28 @@ namespace Bird.Idle.Data
             public float AttackIncrease;     // 증가하는 기본 공격력
             public float HealthIncrease;     // 증가하는 최대 체력
             public float SuccessRate;        // 성공 확률
+            
+            // public float SpecialEffectValue;
         }
         
+        /// <summary>
+        /// 특정 장비 타입과 현재 레벨을 기준으로 다음 강화 레벨의 데이터 가져오기
+        /// </summary>
+        public SlotEnhanceEntry GetEnhanceEntry(EquipmentType type, int currentLevel)
+        {
+            SlotEnhanceTable table = TypeTables.Find(t => t.Type == type);
+    
+            if (table != null)
+            {
+                SlotEnhanceEntry nextEntry = table.Entries.Find(e => e.EnhanceLevel == currentLevel + 1);
+        
+                if (nextEntry.EnhanceLevel == currentLevel + 1)
+                {
+                    return nextEntry;
+                }
+            }
+    
+            return new SlotEnhanceEntry { EnhanceLevel = -1 }; 
+        }
     }
 }
