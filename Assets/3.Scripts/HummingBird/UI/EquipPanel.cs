@@ -117,24 +117,32 @@ namespace Bird.Idle.UI
         /// </summary>
         private void RefreshEquippedItemImage()
         {
-            EquipmentData equippedWeapon = InventoryManager.Instance.GetEquippedItem(EquipmentType.Weapon);
-            EquipmentData equippedArmor = InventoryManager.Instance.GetEquippedItem(EquipmentType.Armor);
-            EquipmentData equippedAccessory = InventoryManager.Instance.GetEquippedItem(EquipmentType.Accessory);
+            RefreshSingleEquipSlot(EquipmentType.Weapon, equippedWeaponImageLoader);
     
-            if (equippedWeaponImageLoader != null)
+            RefreshSingleEquipSlot(EquipmentType.Armor, equippedArmorImageLoader);
+    
+            RefreshSingleEquipSlot(EquipmentType.Accessory, equippedAccessoryImageLoader);
+        }
+        
+        /// <summary>
+        /// 단일 장착 슬롯 이미지를 갱신
+        /// </summary>
+        private void RefreshSingleEquipSlot(EquipmentType type, ImageLoader loader)
+        {
+            if (loader == null)
             {
-                if (equippedWeapon != null)
-                {
-                    equippedWeaponImageLoader.LoadSprite(equippedWeapon.iconAddress);
-                    equippedArmorImageLoader.LoadSprite(equippedArmor.iconAddress);
-                    equippedAccessoryImageLoader.LoadSprite(equippedAccessory.iconAddress);
-                }
-                else
-                {
-                    equippedWeaponImageLoader.ClearSprite();
-                    equippedArmorImageLoader.ClearSprite();
-                    equippedAccessoryImageLoader.ClearSprite();
-                }
+                return;
+            }
+    
+            EquipmentData equippedItem = InventoryManager.Instance.GetEquippedItem(type);
+    
+            if (equippedItem != null)
+            {
+                loader.LoadSprite(equippedItem.iconAddress);
+            }
+            else
+            {
+                loader.ClearSprite();
             }
         }
     }

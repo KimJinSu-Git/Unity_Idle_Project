@@ -22,6 +22,7 @@ namespace Bird.Idle.UI
         [SerializeField] private TextMeshProUGUI equipIndicator;
         
         private EquipmentData itemSO;
+        private bool isSpriteLoaded = false;
         
         private ImageLoader imageLoader;
 
@@ -33,13 +34,18 @@ namespace Bird.Idle.UI
         /// <summary>
         /// 컬렉션 UI 갱신을 위해 SO 데이터와 현재 수량/레벨을 받아오기.
         /// </summary>
-        public async void SetCollectionData(EquipmentData soData, int count, int level)
+        public void SetCollectionData(EquipmentData soData, int count, int level)
         {
             itemSO = soData;
             
             if (imageLoader != null && imageLoader.gameObject.activeSelf == false)
             {
                 imageLoader.gameObject.SetActive(true);
+            }
+            
+            if (iconImage != null)
+            {
+                iconImage.enabled = true; 
             }
             
             iconImage.enabled = true; 

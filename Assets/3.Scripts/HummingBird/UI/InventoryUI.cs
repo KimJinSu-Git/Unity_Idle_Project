@@ -53,13 +53,6 @@ namespace Bird.Idle.UI
             SetActiveTab(EquipmentType.Weapon);
         }
         
-        public void ShowPanel()
-        {
-            this.gameObject.SetActive(true); 
-
-            RefreshInventoryUI(); 
-        }
-        
         /// <summary>
         /// 선택된 장비 타입에 따라 해당하는 콘텐츠 영역만 활성화
         /// </summary>

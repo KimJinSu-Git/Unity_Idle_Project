@@ -41,7 +41,7 @@ namespace Bird.Idle.Utils
                 if (targetImage != null && this.gameObject.activeInHierarchy) 
                 {
                     targetImage.sprite = currentHandle.Result;
-                    targetImage.enabled = true;
+                    targetImage.color = new Color(1, 1, 1, 1);
                 } 
                 else
                 {
@@ -62,12 +62,7 @@ namespace Bird.Idle.Utils
                 Addressables.Release(currentHandle);
             }
             targetImage.sprite = null;
-            targetImage.enabled = false;
-        }
-        
-        private void OnDisable()
-        {
-            ClearSprite(); 
+            targetImage.color = new Color(1, 1, 1, 0);
         }
         
         private void OnDestroy()
