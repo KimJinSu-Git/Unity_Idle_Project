@@ -21,7 +21,6 @@ namespace Bird.Idle.Data
         public float healthBonus;
         public long sellPrice;
         
-        // Addressables Key TODO :: 추후 장비 아이콘이 생긴다면 Load용 키
         public string iconAddress; 
     }
 }

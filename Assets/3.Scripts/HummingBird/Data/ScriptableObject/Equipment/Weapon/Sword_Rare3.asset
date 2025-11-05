@@ -19,4 +19,4 @@ MonoBehaviour:
   attackBonus: 80
   healthBonus: 160
   sellPrice: 800
-  iconAddress: 
+  iconAddress: Assets/4.Sprites/Weapons/Sword_Rare3.png

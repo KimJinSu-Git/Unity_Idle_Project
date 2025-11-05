@@ -32,7 +32,11 @@ namespace Bird.Idle.UI
             equipPanel.SetActive(false);
             inventoryPanel.SetActive(false);
             
-            if (activePanel != null)
+            if (activePanel.TryGetComponent<InventoryUI>(out InventoryUI inventoryUI))
+            {
+                inventoryUI.ShowPanel(); 
+            }
+            else
             {
                 activePanel.SetActive(true);
             }

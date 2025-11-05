@@ -19,4 +19,4 @@ MonoBehaviour:
   attackBonus: 400
   healthBonus: 800
   sellPrice: 3500
-  iconAddress: 
+  iconAddress: Assets/4.Sprites/Weapons/Sword_Epic3.png

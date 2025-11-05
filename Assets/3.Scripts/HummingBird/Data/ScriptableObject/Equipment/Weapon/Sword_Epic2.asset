@@ -19,4 +19,4 @@ MonoBehaviour:
   attackBonus: 300
   healthBonus: 600
   sellPrice: 3000
-  iconAddress: 
+  iconAddress: Assets/4.Sprites/Weapons/Sword_Epic2.png

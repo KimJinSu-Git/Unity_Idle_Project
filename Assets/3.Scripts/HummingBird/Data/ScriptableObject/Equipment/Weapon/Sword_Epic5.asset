@@ -19,4 +19,4 @@ MonoBehaviour:
   attackBonus: 600
   healthBonus: 1200
   sellPrice: 4500
-  iconAddress: 
+  iconAddress: Assets/4.Sprites/Weapons/Sword_Epic5.png

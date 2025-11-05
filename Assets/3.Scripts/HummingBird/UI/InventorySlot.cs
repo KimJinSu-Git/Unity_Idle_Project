@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 using Bird.Idle.Data;
 using Bird.Idle.Gameplay;
+using Bird.Idle.Utils;
 
 namespace Bird.Idle.UI
 {
@@ -19,21 +20,35 @@ namespace Bird.Idle.UI
         [SerializeField] private TextMeshProUGUI countText;
         [SerializeField] private TextMeshProUGUI levelText;
         [SerializeField] private TextMeshProUGUI equipIndicator;
-
-        private EquipmentData assignedItem;
         
         private EquipmentData itemSO;
+        
+        private ImageLoader imageLoader;
+
+        private void Awake()
+        {
+            imageLoader = GetComponentInChildren<ImageLoader>();
+        }
 
         /// <summary>
         /// 컬렉션 UI 갱신을 위해 SO 데이터와 현재 수량/레벨을 받아오기.
         /// </summary>
-        public void SetCollectionData(EquipmentData soData, int count, int level)
+        public async void SetCollectionData(EquipmentData soData, int count, int level)
         {
             itemSO = soData;
             
-            // TODO: Addressables 로드 로직
+            if (imageLoader != null && imageLoader.gameObject.activeSelf == false)
+            {
+                imageLoader.gameObject.SetActive(true);
+            }
+            
             iconImage.enabled = true; 
             gradeText.text = GetGradeString(itemSO.grade);
+            
+            if (imageLoader != null)
+            {
+                imageLoader.LoadSprite(itemSO.iconAddress);
+            }
     
             // 수량 및 레벨 표시
             countText.text = $"x{count}";
@@ -66,26 +81,10 @@ namespace Bird.Idle.UI
             countText.text = "";
             levelText.text = "";
             slotButton.interactable = false;
-        }
-        
-        public void SetItemData(EquipmentData item)
-        {
-            assignedItem = item;
-
-            if (item != null)
+            
+            if (imageLoader != null)
             {
-                // TODO: Addressables를 사용해 item.iconAddress에서 아이콘 로드 로직 추가 예정
-                // 임시로 아이콘 활성화
-                iconImage.enabled = true; 
-                gradeText.text = GetGradeString(item.grade);
-                slotButton.interactable = true;
-            }
-            else
-            {
-                // 아이템이 없으면 슬롯 비활성화/초기화
-                iconImage.enabled = false;
-                gradeText.text = "";
-                slotButton.interactable = false;
+                imageLoader.ClearSprite();
             }
         }
         

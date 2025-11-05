@@ -19,4 +19,4 @@ MonoBehaviour:
   attackBonus: 100
   healthBonus: 200
   sellPrice: 1000
-  iconAddress: 
+  iconAddress: Assets/4.Sprites/Weapons/Sword_Rare5.png

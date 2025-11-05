@@ -19,4 +19,4 @@ MonoBehaviour:
   attackBonus: 40
   healthBonus: 80
   sellPrice: 250
-  iconAddress: 
+  iconAddress: Assets/4.Sprites/Weapons/Sword_Common4.png

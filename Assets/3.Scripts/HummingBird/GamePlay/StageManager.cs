@@ -26,6 +26,7 @@ namespace Bird.Idle.Gameplay
         private StageData currentStageData;
         
         public Action<int, int, int> OnStageProgressChanged;
+        public Action<int> OnStageChanged;
         
         public int CurrentStageID => currentStageID;
 
@@ -71,6 +72,8 @@ namespace Bird.Idle.Gameplay
         {
             if (stageDataDictionary.TryGetValue(stageID, out StageData newStageData))
             {
+                OnStageChanged?.Invoke(stageID);
+                
                 currentStageID = stageID;
                 currentStageData = newStageData;
                 currentKillCount = 0;

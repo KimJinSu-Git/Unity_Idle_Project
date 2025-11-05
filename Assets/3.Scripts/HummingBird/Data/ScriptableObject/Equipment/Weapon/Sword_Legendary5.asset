@@ -19,4 +19,4 @@ MonoBehaviour:
   attackBonus: 1400
   healthBonus: 2800
   sellPrice: 14000
-  iconAddress: 
+  iconAddress: Assets/4.Sprites/Weapons/Sword_Legendary5.png

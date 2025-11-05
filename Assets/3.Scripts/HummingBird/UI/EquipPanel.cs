@@ -4,6 +4,8 @@ using UnityEngine.UI;
 using Bird.Idle.Core;
 using Bird.Idle.Data;
 using Bird.Idle.Gameplay;
+using Bird.Idle.Utils;
+using UnityEngine.Serialization;
 
 namespace Bird.Idle.UI
 {
@@ -21,9 +23,24 @@ namespace Bird.Idle.UI
         [SerializeField] private SlotEnhanceDisplay weaponSlotDisplay;
         [SerializeField] private SlotEnhanceDisplay armorSlotDisplay;
         [SerializeField] private SlotEnhanceDisplay accessorySlotDisplay;
+        
+        [Header("Equipped Item Image")]
+        [SerializeField] private ImageLoader equippedWeaponImageLoader;
+        [SerializeField] private ImageLoader equippedArmorImageLoader;
+        [SerializeField] private ImageLoader equippedAccessoryImageLoader;
 
         private CharacterManager characterManager;
         private SlotManager slotManager;
+        
+        private void OnEnable()
+        {
+            RefreshEquippedItemImage();
+            
+            if (InventoryManager.Instance != null)
+            {
+                InventoryManager.Instance.OnEquipmentChanged += RefreshEquippedItemImage;
+            }
+        }
 
         private void Awake()
         {
@@ -85,6 +102,40 @@ namespace Bird.Idle.UI
             
             bool canAfford = CurrencyManager.Instance.CanAfford(CurrencyType.Gold, goldCost);
             levelUpButton.interactable = canAfford;
+        }
+        
+        private void OnDisable()
+        {
+            if (InventoryManager.Instance != null)
+            {
+                InventoryManager.Instance.OnEquipmentChanged -= RefreshEquippedItemImage;
+            }
+        }
+        
+        /// <summary>
+        /// InventoryManager에서 장착된 아이템 정보를 가져와 이미지를 갱신
+        /// </summary>
+        private void RefreshEquippedItemImage()
+        {
+            EquipmentData equippedWeapon = InventoryManager.Instance.GetEquippedItem(EquipmentType.Weapon);
+            EquipmentData equippedArmor = InventoryManager.Instance.GetEquippedItem(EquipmentType.Armor);
+            EquipmentData equippedAccessory = InventoryManager.Instance.GetEquippedItem(EquipmentType.Accessory);
+    
+            if (equippedWeaponImageLoader != null)
+            {
+                if (equippedWeapon != null)
+                {
+                    equippedWeaponImageLoader.LoadSprite(equippedWeapon.iconAddress);
+                    equippedArmorImageLoader.LoadSprite(equippedArmor.iconAddress);
+                    equippedAccessoryImageLoader.LoadSprite(equippedAccessory.iconAddress);
+                }
+                else
+                {
+                    equippedWeaponImageLoader.ClearSprite();
+                    equippedArmorImageLoader.ClearSprite();
+                    equippedAccessoryImageLoader.ClearSprite();
+                }
+            }
         }
     }
 }

@@ -19,4 +19,4 @@ MonoBehaviour:
   attackBonus: 1200
   healthBonus: 2400
   sellPrice: 12000
-  iconAddress: 
+  iconAddress: Assets/4.Sprites/Weapons/Sword_Legendary3.png

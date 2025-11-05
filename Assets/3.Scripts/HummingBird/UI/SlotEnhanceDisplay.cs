@@ -20,7 +20,7 @@ namespace Bird.Idle.UI
 
         private SlotManager slotManager;
         private SlotEnhanceData slotEnhanceData;
-
+        
         private void Awake()
         {
             slotManager = SlotManager.Instance;
@@ -45,8 +45,14 @@ namespace Bird.Idle.UI
             }
         }
 
-        private void RefreshUI()
+        public void RefreshUI()
         {
+            if (slotEnhanceData == null) 
+            {
+                Debug.LogWarning($"[SlotEnhanceDisplay] {enhanceType} 데이터 로드 대기 중. UI 갱신 스킵.");
+                return;
+            }
+            
             int currentLevel = slotManager.GetSlotLevel(enhanceType);
             SlotEnhanceData.SlotEnhanceEntry nextEntry = slotEnhanceData.GetEnhanceEntry(enhanceType, currentLevel);
 
