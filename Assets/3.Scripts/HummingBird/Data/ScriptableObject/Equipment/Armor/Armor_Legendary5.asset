@@ -19,4 +19,4 @@ MonoBehaviour:
   attackBonus: 400
   healthBonus: 9000
   sellPrice: 9000
-  iconAddress: 
+  iconAddress: Assets/4.Sprites/Armors/Armor_Legendary5.png

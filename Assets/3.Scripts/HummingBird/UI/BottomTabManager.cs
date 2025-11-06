@@ -27,6 +27,11 @@ namespace Bird.Idle.UI
             SetActivePanel(equipPanel);
         }
 
+        private void InitializePanel(GameObject panel)
+        {
+            
+        }
+
         private void SetActivePanel(GameObject activePanel)
         {
             equipPanel.SetActive(false);

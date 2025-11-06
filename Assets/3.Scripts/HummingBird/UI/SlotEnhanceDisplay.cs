@@ -78,10 +78,7 @@ namespace Bird.Idle.UI
 
         private void OnEnhanceButtonClicked()
         {
-            if (slotManager.TryEnhanceSlot(enhanceType))
-            {
-                
-            }
+            slotManager.TryEnhanceSlot(enhanceType);
             
             RefreshUI(); 
         }

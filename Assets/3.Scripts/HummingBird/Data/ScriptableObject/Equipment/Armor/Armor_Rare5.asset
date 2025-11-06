@@ -19,4 +19,4 @@ MonoBehaviour:
   attackBonus: 30
   healthBonus: 900
   sellPrice: 900
-  iconAddress: 
+  iconAddress: Assets/4.Sprites/Armors/Armor_Rare5.png

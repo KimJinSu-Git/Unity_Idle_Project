@@ -19,4 +19,4 @@ MonoBehaviour:
   attackBonus: 4
   healthBonus: 250
   sellPrice: 250
-  iconAddress: 
+  iconAddress: Assets/4.Sprites/Armors/Armor_Common4.png

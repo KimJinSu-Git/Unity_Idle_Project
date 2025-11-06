@@ -33,6 +33,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Equipment
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 164c3c8209b5d4268810476b218c2ff4
+    m_Address: Assets/4.Sprites/Armors/Armor_Common2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 16b58eae9ea89415f92c700f2b7a4a01
     m_Address: Assets/4.Sprites/Weapons/Sword_Common4.png
     m_ReadOnly: 0
@@ -67,6 +72,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Equipment
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 25cc219f0f5b942b9a4cb8ef05b0b280
+    m_Address: Assets/4.Sprites/Armors/Armor_Legendary5.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 285f8c08666150f40950de79852864f3
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Equipment/Armor/Armor_Rare5.asset
     m_ReadOnly: 0
@@ -94,6 +104,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Equipment
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3552d99ffbe0a44fa9bdecfe068d83db
+    m_Address: Assets/4.Sprites/Armors/Armor_Legendary1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3789900a707f54d7fa43a49fbb898bfc
     m_Address: Assets/4.Sprites/Weapons/Sword_Common1.png
@@ -128,6 +143,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Equipment
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 406c543cc52bb4f8494f7203c3bd7a25
+    m_Address: Assets/4.Sprites/Armors/Armor_Epic3.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 41442c18a885aa34f917fa091be7257d
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Equipment/Weapon/Sword_Legendary3.asset
@@ -182,6 +202,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Equipment
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 52467ad0c90bb4cfaa4edaa49b5ea5d3
+    m_Address: Assets/4.Sprites/Armors/Armor_Common3.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 542063e3ce44b144092cf4d75af61474
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Equipment/Weapon/Sword_Common4.asset
     m_ReadOnly: 0
@@ -211,6 +236,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Equipment
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5fdbe1dcd8f8c4d918c998f7df07ef3e
+    m_Address: Assets/4.Sprites/Armors/Armor_Epic2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 665bae6505640af41b90d58c2ec7bb3e
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Equipment/Weapon/Sword_Epic4.asset
     m_ReadOnly: 0
@@ -228,6 +258,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Equipment
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6e1a42518ff3742f0bf626541dfc0d6b
+    m_Address: Assets/4.Sprites/Armors/Armor_Common4.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6e9e1048a52864beba159f991a3f7f46
     m_Address: Assets/4.Sprites/Weapons/Sword_Epic5.png
@@ -258,6 +293,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Equipment
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 741038a6cabe34fe0a9202a669ed65d9
+    m_Address: Assets/4.Sprites/Armors/Armor_Rare4.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 76165ff5af6c7c4418067ab4231aff0f
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Equipment/Weapon/Sword_Common3.asset
     m_ReadOnly: 0
@@ -286,11 +326,26 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7f2dfd408a2ef42eca3f51d54ee11ba6
+    m_Address: Assets/4.Sprites/Armors/Armor_Rare1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 832ad33853ef04361acaf10b1333f783
+    m_Address: Assets/4.Sprites/Armors/Armor_Rare2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 861ec8fb6793a43468132489e129fa0c
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Equipment/Acessory/Accessory_Common2.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - Equipment
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 882564a96b43d4639a281d0c442d7583
+    m_Address: Assets/4.Sprites/Armors/Armor_Epic1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8b55887efc3010f4489c76176bc337ab
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Equipment/Weapon/Sword_Legendary4.asset
@@ -309,6 +364,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Equipment
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8e3ac7f465b9d47f8bcf319c8e80a96b
+    m_Address: Assets/4.Sprites/Armors/Armor_Legendary2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8e4330c0a10a144d2bc28603cd2efc49
+    m_Address: Assets/4.Sprites/Armors/Armor_Epic4.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 92db7c803e11e4579ac84dbce5f26870
     m_Address: Assets/4.Sprites/Weapons/Sword_Legendary1.png
@@ -385,11 +450,21 @@ MonoBehaviour:
     m_SerializedLabels:
     - Equipment
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b132893980e3640478a5d10dadb2dc45
+    m_Address: Assets/4.Sprites/Armors/Armor_Rare5.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b448f7d60da257c44a0a8aa853b3767b
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Equipment/Acessory/Accessory_Legendary4.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - Equipment
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b44fec3898b6c496f803dc8dbdc350b2
+    m_Address: Assets/4.Sprites/Armors/Armor_Epic5.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b54ea5e36d96ea84386c60b30dba305f
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Equipment/Weapon/Sword_Common2.asset
@@ -402,14 +477,29 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b6a1e988afa0a41e194733aa52919ef9
+    m_Address: Assets/4.Sprites/Armors/Armor_Rare3.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ba322ae61cab306448e9c698b6e2a28e
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Equipment/Armor/Armor_Rare4.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - Equipment
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bb9a5ca3274b442beb9a6d9880e034cf
+    m_Address: Assets/4.Sprites/Armors/Armor_Legendary4.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bbe0741245aed4477afa4e7c45d17d1f
     m_Address: Assets/4.Sprites/Weapons/Sword_Rare1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bc233c8b071004b488ed7d809e554313
+    m_Address: Assets/4.Sprites/Armors/Armor_Common1.png
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -445,11 +535,21 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cbcbbeaf1cc164c1da990aac2b1fa898
+    m_Address: Assets/4.Sprites/Armors/Armor_Legendary3.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ce723c4752eefd046b8e76136993dd86
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Equipment/Acessory/Accessory_Legendary5.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - Equipment
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d93a81718aeaa471e832afa525ec1128
+    m_Address: Assets/4.Sprites/Armors/Armor_Common5.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: dc23bc9c05325154a8fdd8c1c772ee90
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Equipment/Armor/Armor_Epic5.asset

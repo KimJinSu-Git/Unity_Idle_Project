@@ -19,4 +19,4 @@ MonoBehaviour:
   attackBonus: 50
   healthBonus: 4000
   sellPrice: 4000
-  iconAddress: 
+  iconAddress: Assets/4.Sprites/Armors/Armor_Epic5.png

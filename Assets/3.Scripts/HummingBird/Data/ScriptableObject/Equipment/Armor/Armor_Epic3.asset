@@ -19,4 +19,4 @@ MonoBehaviour:
   attackBonus: 40
   healthBonus: 3000
   sellPrice: 3000
-  iconAddress: 
+  iconAddress: Assets/4.Sprites/Armors/Armor_Epic3.png
