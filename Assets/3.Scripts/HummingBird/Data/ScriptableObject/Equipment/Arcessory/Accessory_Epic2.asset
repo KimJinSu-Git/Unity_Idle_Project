@@ -19,4 +19,4 @@ MonoBehaviour:
   attackBonus: 130
   healthBonus: 1300
   sellPrice: 2500
-  iconAddress: 
+  iconAddress: Assets/4.Sprites/Arcessorys/Accessory_Epic2.png

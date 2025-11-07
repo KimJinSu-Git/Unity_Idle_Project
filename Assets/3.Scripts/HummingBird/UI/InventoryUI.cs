@@ -95,9 +95,9 @@ namespace Bird.Idle.UI
         {
             var allEquipmentSO = EquipmentCollectionManager.Instance.AllEquipmentSO;
             
-            RefreshCollectionSlots(allWeaponSlots, allEquipmentSO, EquipmentType.Weapon);
-            RefreshCollectionSlots(allArmorSlots, allEquipmentSO, EquipmentType.Armor);
-            RefreshCollectionSlots(allAccessorySlots, allEquipmentSO, EquipmentType.Accessory);
+            RefreshCollectionSlotsInternal(allWeaponSlots, allEquipmentSO, EquipmentType.Weapon);
+            RefreshCollectionSlotsInternal(allArmorSlots, allEquipmentSO, EquipmentType.Armor);
+            RefreshCollectionSlotsInternal(allAccessorySlots, allEquipmentSO, EquipmentType.Accessory);
         
             Debug.Log("[InventoryUI] 정적 컬렉션 슬롯 UI 갱신 완료.");
         }
@@ -105,7 +105,7 @@ namespace Bird.Idle.UI
         /// <summary>
         /// 지정된 타입의 슬롯 리스트를 컬렉션 데이터로 갱신
         /// </summary>
-        private void RefreshCollectionSlots(List<InventorySlot> slots, Dictionary<int, EquipmentData> soDataMap, EquipmentType targetType)
+        private void RefreshCollectionSlotsInternal(List<InventorySlot> slots, Dictionary<int, EquipmentData> soDataMap, EquipmentType targetType)
         {
             var sortedEquipment = soDataMap.Values
                 .Where(data => data.type == targetType)
@@ -122,7 +122,7 @@ namespace Bird.Idle.UI
                     int count = collectionManager.GetItemCount(itemSO.equipID);
                     int level = collectionManager.GetCollectionLevel(itemSO.equipID);
             
-                    slots[i].SetCollectionData(itemSO, count, level); 
+                    slots[i].RefreshData(itemSO, count, level); 
                 }
                 else
                 {

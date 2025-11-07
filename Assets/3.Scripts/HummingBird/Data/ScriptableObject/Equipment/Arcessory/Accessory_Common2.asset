@@ -19,4 +19,4 @@ MonoBehaviour:
   attackBonus: 7
   healthBonus: 70
   sellPrice: 150
-  iconAddress: 
+  iconAddress: Assets/4.Sprites/Arcessorys/Accessory_Common2.png

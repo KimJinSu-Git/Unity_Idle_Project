@@ -19,4 +19,4 @@ MonoBehaviour:
   attackBonus: 300
   healthBonus: 3000
   sellPrice: 5000
-  iconAddress: 
+  iconAddress: Assets/4.Sprites/Arcessorys/Accessory_Legendary1.png

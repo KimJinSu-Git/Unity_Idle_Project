@@ -5,6 +5,7 @@ using TMPro;
 using Bird.Idle.Data;
 using Bird.Idle.Gameplay;
 using Bird.Idle.Utils;
+using JetBrains.Annotations;
 
 namespace Bird.Idle.UI
 {
@@ -21,49 +22,31 @@ namespace Bird.Idle.UI
         [SerializeField] private TextMeshProUGUI levelText;
         [SerializeField] private TextMeshProUGUI equipIndicator;
         
-        private EquipmentData itemSO;
-        private bool isSpriteLoaded = false;
+        [SerializeField][CanBeNull] private ImageLoader imageLoader;
         
-        private ImageLoader imageLoader;
-
-        private void Awake()
-        {
-            imageLoader = GetComponentInChildren<ImageLoader>();
-        }
-
+        private EquipmentData itemSO;
+        
         /// <summary>
-        /// 컬렉션 UI 갱신을 위해 SO 데이터와 현재 수량/레벨을 받아오기.
+        /// 슬롯에 SO 데이터를 바인딩하고, 수량/레벨 등 변동 데이터를 갱신
         /// </summary>
-        public void SetCollectionData(EquipmentData soData, int count, int level)
+        public void RefreshData(EquipmentData soData, int count, int level)
         {
             itemSO = soData;
-            
-            if (imageLoader != null && imageLoader.gameObject.activeSelf == false)
-            {
-                imageLoader.gameObject.SetActive(true);
-            }
             
             if (iconImage != null)
             {
                 iconImage.enabled = true; 
             }
             
-            iconImage.enabled = true; 
             gradeText.text = GetGradeString(itemSO.grade);
-            
-            if (imageLoader != null)
-            {
-                imageLoader.LoadSprite(itemSO.iconAddress);
-            }
     
-            // 수량 및 레벨 표시
             countText.text = $"x{count}";
             levelText.text = $"+{level}";
             
             bool isEquipped = InventoryManager.Instance.IsItemEquipped(itemSO.type, itemSO.equipID);
             SetEquippedStatus(isEquipped);
     
-            slotButton.interactable = (count >= EquipmentCollectionManager.Instance.UpgradeCostCount);
+            slotButton.interactable = count >= EquipmentCollectionManager.Instance.UpgradeCostCount;
         }
         
         /// <summary>
@@ -87,11 +70,6 @@ namespace Bird.Idle.UI
             countText.text = "";
             levelText.text = "";
             slotButton.interactable = false;
-            
-            if (imageLoader != null)
-            {
-                imageLoader.ClearSprite();
-            }
         }
         
         // 클릭 시 인벤토리 매니저에 장착/사용 요청
