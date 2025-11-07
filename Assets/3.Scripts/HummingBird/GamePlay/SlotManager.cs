@@ -24,6 +24,7 @@ namespace Bird.Idle.Gameplay
         private SlotEnhanceData loadedSlotEnhanceData;
         
         public Action OnSlotEnhanceChanged;
+        public Action OnSlotDataLoaded; // 데이터 로드가 완료되었음을 알리는 이벤트
 
         private void Awake()
         {
@@ -48,6 +49,8 @@ namespace Bird.Idle.Gameplay
             {
                 loadedSlotEnhanceData = handle.Result;
                 Debug.Log("[SlotManager] SlotEnhanceData Addressables 로드 완료!");
+                
+                OnSlotDataLoaded?.Invoke();
             }
             else
             {

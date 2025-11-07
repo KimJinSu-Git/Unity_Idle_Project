@@ -49,7 +49,7 @@ namespace Bird.Idle.UI
             
             if (slotManager != null)
             {
-                slotManager.OnSlotEnhanceChanged += InitializeSlotDisplays;
+                slotManager.OnSlotDataLoaded += InitializeSlotDisplays;
             }
             
             levelUpButton.onClick.AddListener(OnLevelUpButtonClicked);
@@ -60,7 +60,6 @@ namespace Bird.Idle.UI
             }
             
             RefreshLevelUI(characterManager.CharacterLevel);
-            InitializeSlotDisplays();
         }
         
         // 데이터 로드 완료 후 모든 슬롯 UI를 초기화하는 메서드
@@ -78,7 +77,7 @@ namespace Bird.Idle.UI
             armorSlotDisplay.Initialize(data);
             accessorySlotDisplay.Initialize(data);
     
-            slotManager.OnSlotEnhanceChanged -= InitializeSlotDisplays; 
+            slotManager.OnSlotDataLoaded -= InitializeSlotDisplays;
         }
 
         private void OnLevelUpButtonClicked()
