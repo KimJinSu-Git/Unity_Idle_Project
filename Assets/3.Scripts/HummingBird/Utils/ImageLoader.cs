@@ -11,16 +11,20 @@ namespace Bird.Idle.Utils
     /// </summary>
     public class ImageLoader : MonoBehaviour
     {
-        private Image targetImage;
+        [SerializeField] private Image targetImage;
         private AsyncOperationHandle<Sprite> currentHandle;
 
         private void Awake()
         {
-            targetImage = GetComponent<Image>();
+            if (targetImage == null)
+            {
+                targetImage = GetComponent<Image>();
+            }
         }
 
         public async Task LoadSprite(string address)
         {
+            Debug.Log("몇 번 호출했나요 ?");
             if (string.IsNullOrEmpty(address))
             {
                 ClearSprite();
@@ -38,7 +42,7 @@ namespace Bird.Idle.Utils
 
             if (currentHandle.Status == AsyncOperationStatus.Succeeded)
             {
-                if (targetImage != null && this.gameObject.activeInHierarchy) 
+                if (targetImage != null) 
                 {
                     targetImage.sprite = currentHandle.Result;
                     targetImage.color = new Color(1, 1, 1, 1);
