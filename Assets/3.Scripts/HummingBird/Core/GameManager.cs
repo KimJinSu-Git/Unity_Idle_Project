@@ -42,6 +42,11 @@ namespace Bird.Idle.Core
         {
             GameSaveData loadedData = await DataManager.Instance.LoadGameData();
             
+            if (EquipmentCollectionManager.Instance != null)
+            {
+                await EquipmentCollectionManager.Instance.WaitForDataLoad();
+            }
+            
             ApplyLoadedDataToManagers(loadedData);
             
             CalculateIdleReward(loadedData);

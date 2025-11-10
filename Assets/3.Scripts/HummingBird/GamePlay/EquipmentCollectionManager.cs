@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using System.Threading.Tasks;
 using Bird.Idle.Data;
 using Bird.Idle.Core;
 using Bird.Idle.UI;
@@ -28,6 +29,8 @@ namespace Bird.Idle.Gameplay
         [SerializeField] private UpgradePopup upgradePopupPrefab;
         
         private UpgradePopup activePopupInstance;
+        
+        private Task equipmentDataLoadTask;
 
         private Dictionary<int, CollectionEntry> collectionMap = new Dictionary<int, CollectionEntry>();
         private Dictionary<int, EquipmentData> allEquipmentSO = new Dictionary<int, EquipmentData>();
@@ -36,6 +39,7 @@ namespace Bird.Idle.Gameplay
         
         public Dictionary<int, EquipmentData> AllEquipmentSO { get; private set; } = new Dictionary<int, EquipmentData>();
         public int UpgradeCostCount => upgradeCostCount;
+        public Task WaitForDataLoad() => equipmentDataLoadTask;
 
         private void Awake()
         {
@@ -82,8 +86,10 @@ namespace Bird.Idle.Gameplay
         
         private async void LoadAllEquipmentDataAsync()
         {
+            var tcs = new TaskCompletionSource<bool>();
+            equipmentDataLoadTask = tcs.Task;
+            
             AsyncOperationHandle<IList<EquipmentData>> handle = Addressables.LoadAssetsAsync<EquipmentData>(allEquipmentLabel, null);
-
             await handle.Task; 
         
             if (handle.Status == AsyncOperationStatus.Succeeded)
@@ -101,11 +107,13 @@ namespace Bird.Idle.Gameplay
                 }
                 
                 AllEquipmentSO = loadedMap;
-                Debug.Log($"[CollectionManager] 모든 장비 데이터 로드 및 컬렉션 맵 초기화 완료. (총 {allEquipmentSO.Count}종)");
+                Debug.Log($"[CollectionManager] 모든 장비 데이터 로드 및 컬렉션 맵 초기화 완료. (총 {AllEquipmentSO.Count}종)");
+                tcs.SetResult(true);
             }
             else
             {
                 Debug.LogError($"[CollectionManager] 장비 데이터 로드 실패: {handle.OperationException}");
+                tcs.SetResult(false); // 로드 실패 신호
             }
         }
 
