@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
@@ -19,7 +20,6 @@ namespace Bird.Idle.UI
         [SerializeField] private Button enhanceButton;
 
         private SlotManager slotManager;
-        private SlotEnhanceData slotEnhanceData;
         
         private void Awake()
         {
@@ -28,12 +28,10 @@ namespace Bird.Idle.UI
 
             // TODO: SlotEnhanceData Addressables 로드가 완료된 후 참조 방식 구현 예정
         }
-
-        public void Initialize(SlotEnhanceData data)
+        
+        public void Initialize()
         {
-            slotEnhanceData = data;
             RefreshUI();
-            
             slotManager.OnSlotEnhanceChanged += RefreshUI;
         }
 
@@ -47,14 +45,15 @@ namespace Bird.Idle.UI
 
         public void RefreshUI()
         {
-            if (slotEnhanceData == null) 
+            SlotEnhanceData currentData = slotManager.GetSlotEnhanceData();
+            if (currentData == null) 
             {
                 Debug.LogWarning($"[SlotEnhanceDisplay] {enhanceType} 데이터 로드 대기 중. UI 갱신 스킵.");
                 return;
             }
             
             int currentLevel = slotManager.GetSlotLevel(enhanceType);
-            SlotEnhanceData.SlotEnhanceEntry nextEntry = slotEnhanceData.GetEnhanceEntry(enhanceType, currentLevel);
+            SlotEnhanceData.SlotEnhanceEntry nextEntry = currentData.GetEnhanceEntry(enhanceType, currentLevel);
 
             levelText.text = $"{enhanceType} Lv. {currentLevel}";
             

@@ -142,5 +142,22 @@ namespace Bird.Idle.Core
             
             lastExitTime = DateTime.UtcNow;
         }
+        
+        /// <summary>
+        /// 저장된 게임 데이터를 완전히 삭제합니다. (테스트/초기화 용도)
+        /// </summary>
+        private bool ResetGameData()
+        {
+            if (File.Exists(savePath))
+            {
+                File.Delete(savePath);
+                Debug.LogWarning($"[DataManager] 저장된 게임 데이터 파일 삭제 완료: {savePath}");
+            
+                return true;
+            }
+            Debug.LogWarning("[DataManager] 삭제할 저장 파일이 존재하지 않습니다.");
+            return false;
+        }
+        public void OnResetButtonClicked() => ResetGameData();
     }
 }

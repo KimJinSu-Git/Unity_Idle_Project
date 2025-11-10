@@ -24,7 +24,6 @@ namespace Bird.Idle.Utils
 
         public async Task LoadSprite(string address)
         {
-            Debug.Log("몇 번 호출했나요 ?");
             if (string.IsNullOrEmpty(address))
             {
                 ClearSprite();

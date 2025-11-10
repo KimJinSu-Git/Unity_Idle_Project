@@ -62,9 +62,7 @@ namespace Bird.Idle.Gameplay
                 if (collectionMap.ContainsKey(entry.equipID))
                 {
                     collectionMap[entry.equipID].count = entry.count;
-                    Debug.Log($"[EquipmentCollectionManager] entry.count : {entry.count}");
                     collectionMap[entry.equipID].collectionLevel = entry.collectionLevel;
-                    Debug.Log($"[EquipmentCollectionManager] entry.equipID : {entry.equipID} : {entry.collectionLevel}");
                 }
                 else
                 {

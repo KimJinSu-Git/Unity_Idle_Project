@@ -5,6 +5,7 @@ using Bird.Idle.Data;
 using Bird.Idle.Core;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using System.Threading.Tasks;
 
 namespace Bird.Idle.Gameplay
 {
@@ -23,8 +24,14 @@ namespace Bird.Idle.Gameplay
 
         private SlotEnhanceData loadedSlotEnhanceData;
         
+        private Task slotDataLoadTask;
+        
         public Action OnSlotEnhanceChanged;
         public Action OnSlotDataLoaded; // 데이터 로드가 완료되었음을 알리는 이벤트
+        
+        public Dictionary<EquipmentType, int> GetSlotLevels() => slotLevels;
+        
+        public Task WaitForDataLoad() => slotDataLoadTask;
 
         private void Awake()
         {
@@ -40,8 +47,74 @@ namespace Bird.Idle.Gameplay
             LoadSlotEnhanceDataAsync();
         }
         
+        /// <summary>
+        /// GameManager에서 로드된 데이터를 받아 슬롯 레벨을 초기화
+        /// </summary>
+        public void Initialize(Dictionary<EquipmentType, int> loadedSlotLevels)
+        {
+            if (loadedSlotLevels == null) return;
+            
+            // 레벨 복원
+            foreach (var type in Enum.GetValues(typeof(EquipmentType)))
+            {
+                EquipmentType equipType = (EquipmentType)type;
+                int levelToRestore = 0;
+
+                if (loadedSlotLevels.TryGetValue(equipType, out int loadedLevel))
+                {
+                    levelToRestore = loadedLevel;
+                }
+                
+                // ApplyPermanentBonus(equipType, levelToRestore);
+
+                slotLevels[equipType] = levelToRestore;
+            }
+
+            Debug.Log($"[SlotManager] 슬롯 레벨 데이터 로드 완료. 무기 슬롯 레벨: {GetSlotLevel(EquipmentType.Weapon)}");
+            OnSlotEnhanceChanged?.Invoke();
+        }
+        
+        /// <summary>
+        /// 로드된 레벨까지의 총 영구 스탯 보너스를 CharacterManager에 적용
+        /// </summary>
+        private void ApplyPermanentBonus(EquipmentType type, int targetLevel)
+        {
+            if (loadedSlotEnhanceData == null || CharacterManager.Instance == null) return;
+
+            // 현재 레벨부터 목표 레벨까지 반복하여 스탯 합산
+            float totalAttackIncrease = 0f;
+            float totalHealthIncrease = 0f;
+
+            for (int i = 1; i <= targetLevel; i++)
+            {
+                SlotEnhanceData.SlotEnhanceEntry entry = loadedSlotEnhanceData.GetEnhanceEntry(type, i - 1);
+                if (entry.EnhanceLevel != -1)
+                {
+                    totalAttackIncrease += entry.AttackIncrease;
+                    totalHealthIncrease += entry.HealthIncrease;
+                }
+            }
+
+            // CharacterManager에 합산된 보너스를 한 번에 적용
+            if (totalAttackIncrease > 0 || totalHealthIncrease > 0)
+            {
+                CharacterManager.Instance.ApplyBaseStatUpgrade(totalAttackIncrease, totalHealthIncrease);
+            }
+        }
+        
+        /// <summary>
+        /// DataManager에 저장할 현재 슬롯 레벨을 수집하여 GameSaveData에 추가
+        /// </summary>
+        public void CollectSaveData(GameSaveData data)
+        {
+            data.SlotLevels = slotLevels;
+        }
+        
         private async void LoadSlotEnhanceDataAsync()
         {
+            var tcs = new TaskCompletionSource<bool>();
+            slotDataLoadTask = tcs.Task;
+            
             AsyncOperationHandle<SlotEnhanceData> handle = slotEnhanceDataReference.LoadAssetAsync<SlotEnhanceData>();
             await handle.Task;
         
@@ -50,11 +123,13 @@ namespace Bird.Idle.Gameplay
                 loadedSlotEnhanceData = handle.Result;
                 Debug.Log("[SlotManager] SlotEnhanceData Addressables 로드 완료!");
                 
-                OnSlotDataLoaded?.Invoke();
+                // OnSlotDataLoaded?.Invoke();
+                tcs.SetResult(true);
             }
             else
             {
                 Debug.LogError($"[SlotManager] SlotEnhanceData 로드 실패: {handle.OperationException}");
+                tcs.SetResult(false);
             }
         }
         

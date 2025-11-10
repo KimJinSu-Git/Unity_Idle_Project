@@ -28,6 +28,53 @@ namespace Bird.Idle.Gameplay
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
+        
+        /// <summary>
+        /// GameManager에서 로드된 데이터를 받아 장착 상태를 초기화
+        /// </summary>
+        public void Initialize(EquipSaveData savedEquips, Dictionary<int, EquipmentData> allEquipmentMap)
+        {
+            if (savedEquips == null) return;
+            equippedItems.Clear();
+
+            // 장착 데이터를 복원하고, 장비 데이터(SO)를 맵에서 찾아 EquipItem을 호출
+            TryRestoreEquip(savedEquips.WeaponID, allEquipmentMap);
+            TryRestoreEquip(savedEquips.ArmorID, allEquipmentMap);
+            TryRestoreEquip(savedEquips.AccessoryID, allEquipmentMap);
+            
+            // 모든 장착이 완료된 후 스탯 재계산 요청
+            if (CharacterManager.Instance != null)
+            {
+                CharacterManager.Instance.ApplyEquipmentStats(); 
+            }
+
+            Debug.Log($"[InventoryManager] 장착 데이터 로드 완료. WeaponID: {savedEquips.WeaponID}");
+            OnEquipmentChanged?.Invoke();
+        }
+        
+        private void TryRestoreEquip(int equipID, Dictionary<int, EquipmentData> allEquipmentMap)
+        {
+            if (equipID > 0 && allEquipmentMap.TryGetValue(equipID, out EquipmentData item))
+            {
+                equippedItems[item.type] = item;
+            }
+        }
+        
+        /// <summary>
+        /// DataManager에 저장할 현재 장착 데이터를 수집하여 GameSaveData에 추가
+        /// </summary>
+        public void CollectSaveData(GameSaveData data)
+        {
+            // EquipSaveData 객체를 생성하고 현재 장착된 아이템의 ID를 저장
+            EquipSaveData equippedData = new EquipSaveData
+            {
+                WeaponID = GetEquippedItem(EquipmentType.Weapon)?.equipID ?? 0,
+                ArmorID = GetEquippedItem(EquipmentType.Armor)?.equipID ?? 0,
+                AccessoryID = GetEquippedItem(EquipmentType.Accessory)?.equipID ?? 0
+            };
+
+            data.EquippedItems = equippedData;
+        }
 
         /// <summary>
         /// 장비를 장착하고 스탯을 CharacterManager에 반영하도록 요청

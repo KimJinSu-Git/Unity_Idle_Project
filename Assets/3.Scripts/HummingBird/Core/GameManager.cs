@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Bird.Idle.Core;
 using Bird.Idle.Data;
 using Bird.Idle.Gameplay;
+using Bird.Idle.UI;
 
 namespace Bird.Idle.Core
 {
@@ -46,8 +48,18 @@ namespace Bird.Idle.Core
             {
                 await EquipmentCollectionManager.Instance.WaitForDataLoad();
             }
+            if (SlotManager.Instance != null)
+            {
+                await SlotManager.Instance.WaitForDataLoad(); 
+            }
             
             ApplyLoadedDataToManagers(loadedData);
+            
+            EquipPanel equipPanel = FindObjectOfType<EquipPanel>(true);
+            if (equipPanel != null)
+            {
+                equipPanel.InitializeAfterDataLoad(); 
+            }
             
             CalculateIdleReward(loadedData);
             
@@ -62,7 +74,12 @@ namespace Bird.Idle.Core
             // TODO: SlotManager
             CurrencyManager.Instance.InitializeGold(data.GoldAmount);
             CharacterManager.Instance.Initialize(data);
+            
+            Dictionary<int, EquipmentData> allEquipmentMap = EquipmentCollectionManager.Instance?.AllEquipmentSO;
+            
             EquipmentCollectionManager.Instance.Initialize(data.CollectionEntries);
+            InventoryManager.Instance.Initialize(data.EquippedItems, allEquipmentMap);
+            SlotManager.Instance.Initialize(data.SlotLevels);
         
             Debug.Log("[GameManager] 로드된 데이터로 모든 관리자 초기화 완료.");
         }
@@ -86,10 +103,24 @@ namespace Bird.Idle.Core
                 Debug.Log("[EquipmentCollectionManager] CollectSaveData 호출");
                 EquipmentCollectionManager.Instance.CollectSaveData(data);
             }
+
+            if (InventoryManager.Instance != null)
+            {
+                Debug.Log("[InventoryManager] CollectSaveData 호출");
+                InventoryManager.Instance.CollectSaveData(data);
+            }
+
+            if (SlotManager.Instance != null)
+            {
+                Debug.Log("[SlotManager] CollectSaveData 호출");
+                SlotManager.Instance.CollectSaveData(data);
+            }
         
             data.LastExitTimeTicks = DateTime.UtcNow.Ticks;
 
             await DataManager.Instance.SaveGameData(data);
+
+            // DataManager.Instance.OnResetButtonClicked(); // Data 삭제후 테스트할거면 해제하면 됌
         }
         
         /// <summary>
