@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
+using Bird.Idle.Data;
 using Bird.Idle.UI;
 
 namespace Bird.Idle.Core
@@ -39,17 +40,10 @@ namespace Bird.Idle.Core
         /// <summary>
         /// 비동기 방식으로 게임 데이터를 저장합니다.
         /// </summary>
-        public async Task SaveGameData()
+        public async Task SaveGameData(GameSaveData data)
         {
-            lastExitTime = DateTime.UtcNow;
+            var saveData = data;
 
-            var saveData = new GameSaveData
-            {
-                LastExitTimeTicks = lastExitTime.Ticks,
-                GoldAmount = CurrencyManager.Instance.GetAmount(Data.CurrencyType.Gold)
-            };
-
-            // 파일 I/O는 시간이 걸리므로 Task.Run으로 메인 스레드에서 분리
             await Task.Run(() =>
             {
                 try
@@ -71,13 +65,13 @@ namespace Bird.Idle.Core
         /// <summary>
         /// 비동기 방식으로 게임 데이터를 로드
         /// </summary>
-        public async void LoadGameData()
+        public async Task<GameSaveData> LoadGameData()
         {
             if (!File.Exists(savePath))
             {
                 Debug.LogWarning("[DataManager] 저장된 파일이 없습니다. 새 게임 시작.");
                 lastExitTime = DateTime.UtcNow;
-                return;
+                return new GameSaveData { LastExitTimeTicks = lastExitTime.Ticks };
             }
 
             GameSaveData loadedData = null;
@@ -94,6 +88,7 @@ namespace Bird.Idle.Core
                 catch (Exception e)
                 {
                     Debug.LogError($"[DataManager] 데이터 로드 실패. 새 게임을 시작합니다. 에러: {e.Message}");
+                    loadedData = new GameSaveData();
                 }
             });
 
@@ -101,15 +96,10 @@ namespace Bird.Idle.Core
             if (loadedData != null)
             {
                 lastExitTime = new DateTime(loadedData.LastExitTimeTicks, DateTimeKind.Utc);
-                
                 Debug.Log($"[DataManager] 데이터 로드 완료. 마지막 종료 시간: {lastExitTime}");
-                CalculateIdleReward();
             }
-        }
-        
-        private async void OnApplicationQuit()
-        {
-            await SaveGameData();
+            
+            return loadedData;
         }
 
         // ==================== 방치 보상 로직 ====================
@@ -117,7 +107,7 @@ namespace Bird.Idle.Core
         /// <summary>
         /// 게임 접속 시 오프라인 보상을 계산하고 지급
         /// </summary>
-        private void CalculateIdleReward()
+        public void CalculateIdleReward()
         {
             TimeSpan idleDuration = DateTime.UtcNow - lastExitTime;
             double totalSeconds = idleDuration.TotalSeconds;

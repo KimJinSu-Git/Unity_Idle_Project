@@ -37,8 +37,19 @@ namespace Bird.Idle.Core
                 currencyAmounts[type] = 0; 
             }
             
-            currencyAmounts[CurrencyType.Gold] = 100000;
             Debug.Log($"[CurrencyManager] 모든 재화 초기화 완료. 골드: {currencyAmounts[CurrencyType.Gold]}");
+        }
+        
+        /// <summary>
+        /// 데이터 로드 시 골드 데이터를 초기화
+        /// </summary>
+        public void InitializeGold(long amount) 
+        {
+            currencyAmounts[CurrencyType.Gold] = amount;
+            Debug.Log($"[CurrencyManager] 골드 로드 완료 및 설정: {amount:N0}");
+            
+            // UI 갱신을 위해 이벤트 호출
+            OnCurrencyChanged?.Invoke(CurrencyType.Gold, amount); 
         }
 
         

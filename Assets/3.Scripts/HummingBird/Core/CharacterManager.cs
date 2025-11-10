@@ -74,6 +74,41 @@ namespace Bird.Idle.Core
         }
         
         /// <summary>
+        /// GameManager에서 로드된 데이터를 받아 캐릭터 상태를 초기화
+        /// </summary>
+        public void Initialize(GameSaveData data)
+        {
+            // 레벨 복원
+            characterLevel = data.PlayerLevel;
+            
+            // 기본 스탯 복원
+            baseAttackPower = data.BaseAttackPower;
+            baseMaxHealth = data.BaseMaxHealth;
+            
+            // 영구 보너스 스탯 복원 (Slot 강화 등으로 얻은 스탯)
+            permanentAttackBonus = data.PermanentAttackBonus;
+            permanentHealthBonus = data.PermanentHealthBonus;
+            
+            Debug.Log($"[CharacterManager] 캐릭터 데이터 로드 완료. Lv.{characterLevel}, 영구 보너스 ATK: {permanentAttackBonus:F2}");
+            
+            // UI 갱신
+            OnLevelUp?.Invoke(characterLevel);
+            OnStatsRecalculated?.Invoke();
+        }
+        
+        /// <summary>
+        /// DataManager에 저장할 캐릭터 데이터를 GameSaveData 형식으로 수집하여 반환
+        /// </summary>
+        public void CollectSaveData(GameSaveData data)
+        {
+            data.PlayerLevel = characterLevel;
+            data.BaseAttackPower = baseAttackPower;
+            data.BaseMaxHealth = baseMaxHealth;
+            data.PermanentAttackBonus = permanentAttackBonus;
+            data.PermanentHealthBonus = permanentHealthBonus;
+        }
+        
+        /// <summary>
         /// Addressables를 사용하여 LevelData를 로드
         /// </summary>
         private async void LoadLevelUpCostDataAsync()
