@@ -46,6 +46,40 @@ namespace Bird.Idle.Gameplay
             LoadAllEquipmentDataAsync();
         }
         
+        /// <summary>
+        /// GameManager에서 로드된 데이터를 받아 컬렉션 상태를 초기화
+        /// </summary>
+        public void Initialize(List<CollectionEntry> loadedEntries)
+        {
+            if (loadedEntries == null) return;
+            
+            foreach (var entry in loadedEntries)
+            {
+                if (collectionMap.ContainsKey(entry.equipID))
+                {
+                    collectionMap[entry.equipID].count = entry.count;
+                    Debug.Log($"[EquipmentCollectionManager] entry.count : {entry.count}");
+                    collectionMap[entry.equipID].collectionLevel = entry.collectionLevel;
+                    Debug.Log($"[EquipmentCollectionManager] entry.equipID : {entry.equipID} : {entry.collectionLevel}");
+                }
+                else
+                {
+                    Debug.LogWarning($"[CollectionManager] 로드된 ID {entry.equipID}는 현재 정의되지 않은 아이템입니다. 무시합니다.");
+                }
+            }
+            
+            Debug.Log($"[CollectionManager] 컬렉션 데이터 로드 완료. 로드된 항목 수: {loadedEntries.Count}");
+            OnCollectionChanged?.Invoke();
+        }
+        
+        /// <summary>
+        /// DataManager에 저장할 현재 컬렉션 데이터를 수집하여 반환
+        /// </summary>
+        public void CollectSaveData(GameSaveData data)
+        {
+            data.CollectionEntries = collectionMap.Values.ToList();
+        }
+        
         private async void LoadAllEquipmentDataAsync()
         {
             AsyncOperationHandle<IList<EquipmentData>> handle = Addressables.LoadAssetsAsync<EquipmentData>(allEquipmentLabel, null);

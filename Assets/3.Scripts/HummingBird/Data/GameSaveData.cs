@@ -9,7 +9,7 @@ namespace Bird.Idle.Data
         public long LastExitTimeTicks;
         
         public long GoldAmount;
-        // TODO: public long GemAmount;
+        public long GemAmount;
         
         public int PlayerLevel;
         public float BaseAttackPower;

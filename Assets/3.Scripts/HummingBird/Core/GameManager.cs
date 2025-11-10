@@ -54,9 +54,10 @@ namespace Bird.Idle.Core
         /// </summary>
         private void ApplyLoadedDataToManagers(GameSaveData data)
         {
-            // TODO: CollectionManager, SlotManager
+            // TODO: SlotManager
             CurrencyManager.Instance.InitializeGold(data.GoldAmount);
             CharacterManager.Instance.Initialize(data);
+            EquipmentCollectionManager.Instance.Initialize(data.CollectionEntries);
         
             Debug.Log("[GameManager] 로드된 데이터로 모든 관리자 초기화 완료.");
         }
@@ -67,13 +68,19 @@ namespace Bird.Idle.Core
         
             if (CharacterManager.Instance != null)
             {
+                Debug.Log("[CharacterManager] CollectSaveData 호출");
                 CharacterManager.Instance.CollectSaveData(data);
             }
-            // TODO :: CurrencyManager에 추가해야함 
-            // if (CurrencyManager.Instance != null)
-            // {
-            //     CurrencyManager.Instance.CollectSaveData(data);
-            // }
+            if (CurrencyManager.Instance != null)
+            {
+                Debug.Log("[CurrencyManager] CollectSaveData 호출");
+                CurrencyManager.Instance.CollectSaveData(data);
+            }
+            if (EquipmentCollectionManager.Instance != null)
+            {
+                Debug.Log("[EquipmentCollectionManager] CollectSaveData 호출");
+                EquipmentCollectionManager.Instance.CollectSaveData(data);
+            }
         
             data.LastExitTimeTicks = DateTime.UtcNow.Ticks;
 
@@ -111,6 +118,11 @@ namespace Bird.Idle.Core
         {
             SetBattleState(true);
             Debug.Log("[GameManager] 방치 보상 완료, 전투 재개.");
+        }
+
+        private void OnApplicationQuit()
+        {
+            SaveGameOnExit();
         }
     }
 }

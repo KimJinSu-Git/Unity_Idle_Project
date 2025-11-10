@@ -51,6 +51,15 @@ namespace Bird.Idle.Core
             // UI 갱신을 위해 이벤트 호출
             OnCurrencyChanged?.Invoke(CurrencyType.Gold, amount); 
         }
+        
+        /// <summary>
+        /// DataManager에 저장할 현재 재화 데이터를 수집
+        /// </summary>
+        public void CollectSaveData(GameSaveData data)
+        {
+            data.GoldAmount = GetAmount(CurrencyType.Gold);
+            data.GemAmount = GetAmount(CurrencyType.Gem);
+        }
 
         
         /// <summary>
