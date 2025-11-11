@@ -52,6 +52,10 @@ namespace Bird.Idle.Core
             {
                 await SlotManager.Instance.WaitForDataLoad(); 
             }
+            if (StageManager.Instance != null)
+            {
+                await StageManager.Instance.WaitForDataLoad();
+            }
             
             ApplyLoadedDataToManagers(loadedData);
             
@@ -71,9 +75,9 @@ namespace Bird.Idle.Core
         /// </summary>
         private void ApplyLoadedDataToManagers(GameSaveData data)
         {
-            // TODO: SlotManager
             CurrencyManager.Instance.InitializeGold(data.GoldAmount);
             CharacterManager.Instance.Initialize(data);
+            StageManager.Instance.Initialize(data);
             
             Dictionary<int, EquipmentData> allEquipmentMap = EquipmentCollectionManager.Instance?.AllEquipmentSO;
             
@@ -90,32 +94,29 @@ namespace Bird.Idle.Core
         
             if (CharacterManager.Instance != null)
             {
-                Debug.Log("[CharacterManager] CollectSaveData 호출");
                 CharacterManager.Instance.CollectSaveData(data);
             }
             if (CurrencyManager.Instance != null)
             {
-                Debug.Log("[CurrencyManager] CollectSaveData 호출");
                 CurrencyManager.Instance.CollectSaveData(data);
             }
             if (EquipmentCollectionManager.Instance != null)
             {
-                Debug.Log("[EquipmentCollectionManager] CollectSaveData 호출");
                 EquipmentCollectionManager.Instance.CollectSaveData(data);
             }
-
             if (InventoryManager.Instance != null)
             {
-                Debug.Log("[InventoryManager] CollectSaveData 호출");
                 InventoryManager.Instance.CollectSaveData(data);
             }
-
             if (SlotManager.Instance != null)
             {
-                Debug.Log("[SlotManager] CollectSaveData 호출");
                 SlotManager.Instance.CollectSaveData(data);
             }
-        
+            if (StageManager.Instance != null)
+            {
+                StageManager.Instance.CollectSaveData(data);
+            }
+
             data.LastExitTimeTicks = DateTime.UtcNow.Ticks;
 
             await DataManager.Instance.SaveGameData(data);
@@ -128,12 +129,7 @@ namespace Bird.Idle.Core
         /// </summary>
         private void CalculateIdleReward(GameSaveData data)
         {
-            // DataManager의 로직을 여기에 가져오거나, DataManager의 기존 메서드를 활용
-        
-            // DataManager.Instance.CalculateIdleReward(data.LastExitTimeTicks); // DataManager 수정 필요
-        
-            // 현재는 DataManager의 기존 로직을 그대로 호출
-            DataManager.Instance.CalculateIdleReward(); // DataManager 내부에서 lastExitTime 사용
+            DataManager.Instance.CalculateIdleReward();
         }
 
         /// <summary>

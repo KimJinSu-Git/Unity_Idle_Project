@@ -17,6 +17,9 @@ namespace Bird.Idle.Data
         public float PermanentAttackBonus;
         public float PermanentHealthBonus;
         
+        public int CurrentStageID; 
+        public int CurrentKillCount;
+        
         public List<CollectionEntry> CollectionEntries;
         
         public EquipSaveData EquippedItems; 
@@ -28,6 +31,9 @@ namespace Bird.Idle.Data
             CollectionEntries = new List<CollectionEntry>();
             EquippedItems = new EquipSaveData();
             SlotLevels = new Dictionary<EquipmentType, int>();
+            
+            CurrentStageID = 1; 
+            CurrentKillCount = 0;
         }
     }
     
