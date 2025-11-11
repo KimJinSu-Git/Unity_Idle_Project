@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Bird.Idle.Core;
 using UnityEngine;
@@ -18,10 +19,19 @@ namespace Bird.Idle.Visual
         [SerializeField] private float stopDuration = 0.1f; // 공격 시 멈추는 시간
         
         [Header("Data References")]
+        [SerializeField] private AssetReferenceT<Texture2D> mountainBackgroundRef;
         [SerializeField] private AssetReferenceT<Texture2D> desertBackgroundRef;
+        [SerializeField] private AssetReferenceT<Texture2D> graveyardBackgroundRef;
+        [SerializeField] private AssetReferenceT<Texture2D> snowBackgroundRef;
         
-        [SerializeField] private Renderer backgroundRenderer; 
+        [SerializeField] private MeshRenderer backgroundRenderer; 
 
+        private static readonly int MainTexOffset = Shader.PropertyToID("_MainTex");
+        
+        private AsyncOperationHandle<Texture2D> currentBackgroundHandle;
+        
+        private AssetReferenceT<Texture2D> currentlyLoadedRef;
+        
         private BattleManager battleManager;
         private bool isMoving = true;
         private float currentOffset = 0f;
@@ -37,14 +47,26 @@ namespace Bird.Idle.Visual
             // battleManager.OnBattleStateChanged += SetMovementState;
         }
 
+        private void Start()
+        {
+            backgroundRenderer = GetComponent<MeshRenderer>();
+        }
+
         private void Update()
         {
             if (!GameManager.Instance.IsBattleActive) return;
 
+            Debug.Log(isMoving);
+            
             if (isMoving)
             {
                 currentOffset += Time.deltaTime * scrollSpeed;
-                backgroundRenderer.material.mainTextureOffset = new Vector2(-currentOffset, 0);
+                
+                if (backgroundRenderer != null && backgroundRenderer.material != null)
+                {
+                    Debug.Log("isMoving이랑 backgroundRenderer 까지 통과했나요?");
+                    backgroundRenderer.material.SetTextureOffset(MainTexOffset, new Vector2(currentOffset, 0));
+                }
             }
         }
 
@@ -80,30 +102,62 @@ namespace Bird.Idle.Visual
         public void HandleStageTransition(int newStageID)
         {
             // TODO: 페이드 인/아웃 코루틴 시작
-
-            if (newStageID > 100)
+            currentOffset = 0f;
+            if (backgroundRenderer != null && backgroundRenderer.material != null)
             {
-                LoadNewBackground(desertBackgroundRef);
+                backgroundRenderer.material.SetTextureOffset(MainTexOffset, Vector2.zero);
             }
-            else
+            
+            int mapIndex = (newStageID - 1) / 100;
+            AssetReferenceT<Texture2D> nextBackgroundRef = mountainBackgroundRef;
+            
+            switch (mapIndex)
             {
-                // 배경 스크롤 위치 초기화 (배경 유지)
-                backgroundRenderer.material.mainTextureOffset = Vector2.zero;
+                case 1: nextBackgroundRef = desertBackgroundRef; break;
+                case 2: nextBackgroundRef = graveyardBackgroundRef; break;
+                case 3: nextBackgroundRef = snowBackgroundRef; break;
+                default: nextBackgroundRef = mountainBackgroundRef; break;
             }
+            
+            LoadNewBackground(nextBackgroundRef);
         }
         
         private async void LoadNewBackground(AssetReferenceT<Texture2D> backgroundRef)
         {
-            var handle = backgroundRef.LoadAssetAsync();
-            await handle.Task;
-
-            if (handle.Status == AsyncOperationStatus.Succeeded)
+            if (backgroundRef == null || !backgroundRef.IsValid()) return;
+            
+            if (currentlyLoadedRef == backgroundRef)
             {
-                backgroundRenderer.material.mainTexture = handle.Result;
+                Debug.Log($"[Scroller] 배경 {backgroundRef.AssetGUID}는 이미 로드되어 있습니다. 스킵.");
+                return;
+            }
+            
+            if (currentBackgroundHandle.IsValid())
+            {
+                Addressables.Release(currentBackgroundHandle);
+                currentlyLoadedRef = null;
+            }
+            
+            currentBackgroundHandle = backgroundRef.LoadAssetAsync();
+            currentlyLoadedRef = backgroundRef;
+            
+            if (!currentBackgroundHandle.IsValid())
+            {
+                Debug.LogError("[Scroller] 로딩 핸들이 유효하지 않습니다.");
+                return;
+            }
+            
+            await currentBackgroundHandle.Task;
+
+            if (currentBackgroundHandle.Status == AsyncOperationStatus.Succeeded)
+            {
+                backgroundRenderer.material.mainTexture = currentBackgroundHandle.Result;
+                Debug.Log($"[Scroller] 배경 로드 성공: {backgroundRef.AssetGUID}");
             }
             else
             {
-                Debug.LogError($"배경 로드 실패: {handle.OperationException}");
+                Debug.LogError($"[Scroller] 배경 로드 실패: {currentBackgroundHandle.OperationException}");
+                currentlyLoadedRef = null;
             }
         }
         
@@ -112,6 +166,11 @@ namespace Bird.Idle.Visual
             if (StageManager.Instance != null)
             {
                 StageManager.Instance.OnStageChanged -= HandleStageTransition;
+            }
+            
+            if (currentBackgroundHandle.IsValid())
+            {
+                Addressables.Release(currentBackgroundHandle);
             }
         }
     }

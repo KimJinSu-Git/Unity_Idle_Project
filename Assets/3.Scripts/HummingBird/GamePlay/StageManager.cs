@@ -102,11 +102,16 @@ namespace Bird.Idle.Gameplay
         {
             if (stageDataDictionary.TryGetValue(stageID, out StageData newStageData))
             {
-                OnStageChanged?.Invoke(stageID);
+                bool stageActuallyChanged = (currentStageID != stageID);
                 
                 currentStageID = stageID;
                 currentStageData = newStageData;
                 currentKillCount = killCount;
+                
+                if (stageActuallyChanged)
+                {
+                    OnStageChanged?.Invoke(stageID);
+                }
                 
                 OnStageProgressChanged?.Invoke(currentKillCount, newStageData.MonsterKillCountRequired, stageID);
 

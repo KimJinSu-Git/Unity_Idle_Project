@@ -21,6 +21,7 @@ namespace Bird.Idle.Gameplay
         private bool isBattleActiveInternal = false;
         
         public Action OnAttackStart;
+        public Action<bool> OnBattleStateChanged;
         
         private void Awake()
         {
