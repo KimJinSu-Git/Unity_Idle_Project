@@ -87,8 +87,8 @@ namespace Bird.Idle.UI
         
         private void UpdateStatsTextOnly()
         {
-            attackText.text = $"공격력: {characterManager.AttackPower.ToString("F1")}";
-            healthText.text = $"체력: {characterManager.MaxHealth.ToString("F1")}";
+            attackText.text = $"Attack: {characterManager.AttackPower.ToString("F1")}";
+            healthText.text = $"Health: {characterManager.MaxHealth.ToString("F1")}";
     
             Debug.Log("[StatsDisplay] 장비 변경으로 스탯 텍스트 UI 갱신 완료.");
         }

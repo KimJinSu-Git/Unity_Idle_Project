@@ -24,7 +24,8 @@ namespace Bird.Idle.Visual
 
         private BattleManager battleManager;
         private bool isMoving = true;
-
+        private float currentOffset = 0f;
+        
         private void Awake()
         {
             battleManager = BattleManager.Instance;
@@ -33,7 +34,7 @@ namespace Bird.Idle.Visual
             {
                 StageManager.Instance.OnStageChanged += HandleStageTransition;
             }
-            // battleManager.OnAttackStart += StopScrollingTemporarily;
+            // battleManager.OnBattleStateChanged += SetMovementState;
         }
 
         private void Update()
@@ -42,17 +43,18 @@ namespace Bird.Idle.Visual
 
             if (isMoving)
             {
-                float offset = Time.time * scrollSpeed;
-                backgroundRenderer.material.mainTextureOffset = new Vector2(offset, 0);
+                currentOffset += Time.deltaTime * scrollSpeed;
+                backgroundRenderer.material.mainTextureOffset = new Vector2(-currentOffset, 0);
             }
         }
 
-        public void StopScrollingTemporarily()
+        public void SetMovementState(bool isBattleActive)
         {
-            if (!isMoving) return;
-            
-            isMoving = false; 
-            StartCoroutine(StartMoveAfterDelay(stopDuration)); 
+            // isBattleActive == false (몬스터 전투 중)일 때 멈추고 싶다면
+            // isMoving = !isBattleActive; 
+    
+            // 현재는 공격 애니메이션 시 멈추는 로직이므로, IsBattleActive 상태를 따릅니다.
+            isMoving = !isBattleActive; // 전투 중(Active)일 때 멈추고, 전투 아닐 때(이동) 움직입니다.
         }
 
         private IEnumerator StartMoveAfterDelay(float delay)

@@ -93,7 +93,7 @@ namespace Bird.Idle.Core
 
             OnCurrencyChanged?.Invoke(type, newAmount); 
 
-            Debug.Log($"[Change] {type}이(가) {amount:+#;-#;0} 만큼 변경되었습니다. 현재 수량: {newAmount}");
+            // Debug.Log($"[Change] {type}이(가) {amount:+#;-#;0} 만큼 변경되었습니다. 현재 수량: {newAmount}");
             return true;
         }
 

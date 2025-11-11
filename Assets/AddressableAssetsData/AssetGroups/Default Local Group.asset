@@ -15,11 +15,23 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: 876d73a1f56770d47afe4359d0d038ab
   m_SerializeEntries:
+  - m_GUID: 02e4ea7728f2abf46a95aebfd92e0a78
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Stage/StageData_3.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Stage
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 02fb45071f62d2d4d9961383fddc641b
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Equipment/Acessory/Accessory_Rare4.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - Equipment
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0a6010b8289409d40b039f1832da7a32
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Stage/StageData_5.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Stage
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0aa992e00b1964968aa69f7f07dc31ae
     m_Address: Assets/4.Sprites/Arcessorys/Accessory_Legendary5.png
@@ -52,12 +64,6 @@ MonoBehaviour:
     m_Address: Assets/4.Sprites/Weapons/Sword_Common4.png
     m_ReadOnly: 0
     m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 199271f155822d146863a67a4c4cae0d
-    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Stage/StageID3.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Stage
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1ab0dae578b3b974f8cd33a85a7990fa
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Equipment/Armor/Armor_Epic1.asset
@@ -196,23 +202,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Equipment
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 41feda5bf5f48744c8f4a7d22e10bfb2
-    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Stage/StageID2.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Stage
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 44ba94de8165fd142b9662b366abe14d
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Equipment/Weapon/Sword_Epic3.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - Equipment
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 476f86218ca402547a070d1393b4ac5d
-    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Stage/StageID4.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Stage
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 481ec72393bfc4bba90e2a6b6695d682
     m_Address: Assets/4.Sprites/Arcessorys/Accessory_Common3.png
@@ -273,12 +267,6 @@ MonoBehaviour:
     m_Address: Assets/4.Sprites/Weapons/Sword_Legendary4.png
     m_ReadOnly: 0
     m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 5c464091cec658e409dabca016466968
-    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Stage/StageID1.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Stage
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5d33fcca712a9aa42b2163f5a1488c93
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Equipment/Weapon/Sword_Rare1.asset
@@ -370,6 +358,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Equipment
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7bbff01da5a1a7a46a67c54ebc712b40
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Stage/StageData_4.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Stage
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7e045a4a2343f5e408968946940f04b0
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Equipment/Weapon/Sword_Common5.asset
     m_ReadOnly: 0
@@ -435,6 +429,12 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 91e9561c7ad28a94ea15c5668d96fbe4
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Stage/StageData_1.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Stage
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 92db7c803e11e4579ac84dbce5f26870
     m_Address: Assets/4.Sprites/Weapons/Sword_Legendary1.png
     m_ReadOnly: 0
@@ -479,6 +479,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Equipment
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9c07af7b0d796b24e85501de39afd188
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Stage/StageData_2.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Stage
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9fd9bd306de2f9d449c2c9f4d5011bde
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Equipment/Acessory/Accessory_Legendary1.asset
     m_ReadOnly: 0
@@ -496,6 +502,12 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Equipment
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a66a880ce0ed657468e9f1d348e27781
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Stage/StageData_6.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Stage
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a7198ab48570b4742bb577b10b35b812
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Equipment/Weapon/Sword_Rare2.asset
