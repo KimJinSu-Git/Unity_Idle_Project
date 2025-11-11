@@ -18,3 +18,8 @@ MonoBehaviour:
   baseDamage: 50
   goldReward: 250
   expReward: 250
+  dropTable:
+  - itemSO: {fileID: 0}
+    dropRate: 0
+  - itemSO: {fileID: 0}
+    dropRate: 0

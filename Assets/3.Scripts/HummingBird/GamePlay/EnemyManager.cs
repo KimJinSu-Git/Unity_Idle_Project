@@ -18,9 +18,9 @@ namespace Bird.Idle.Gameplay
         [Header("Data References")]
         [SerializeField] private AssetLabelReference monsterDataLabel; // 라벨 기반 컬렉션 로드용 AssetLabelRefrence라 함.
         
-        [Header("Loot Drop Settings")]
-        [SerializeField] private float dropChance = 0.1f;
-        [SerializeField] private List<EquipmentData> droppableEquipment;
+        // [Header("Loot Drop Settings")]
+        // [SerializeField] private float dropChance = 0.1f;
+        // [SerializeField] private List<EquipmentData> droppableEquipment;
         
         [SerializeField] private float spawnInterval = 1.0f; // 몬스터 스폰 주기
         [SerializeField] private int maxMonsterCount = 5; // 최대 몬스터 수
@@ -32,6 +32,9 @@ namespace Bird.Idle.Gameplay
         
         private StageData currentStageData;
         private List<int> currentStageMonsterIDs;
+        
+        private float currentMonsterHealth; 
+        private MonsterData currentSpawnedMonsterData;
 
         private void Awake()
         {
@@ -103,7 +106,10 @@ namespace Bird.Idle.Gameplay
             
             if (loadedMonsterDictionary.TryGetValue(monsterIdToSpawn, out MonsterData monsterData))
             {
-                // TODO: monsterData.prefabAddress를 사용해 Addressables 비동기 로드 후 인스턴스화
+                currentMonsterCount++;
+                currentSpawnedMonsterData = monsterData;
+                
+                currentMonsterHealth = monsterData.baseHealth;
         
                 Debug.Log($"[EnemyManager] {monsterData.monsterName} (ID: {monsterIdToSpawn}) 스폰! 현재 수: {currentMonsterCount}");
             }
@@ -112,54 +118,75 @@ namespace Bird.Idle.Gameplay
                 Debug.LogError($"[EnemyManager] ID {monsterIdToSpawn} 몬스터 데이터가 없습니다!");
             }
         }
-
+        
+        public void ApplyDamageToCurrentMonster(float damage)
+        {
+            if (currentSpawnedMonsterData == null || currentMonsterHealth <= 0) return;
+            
+            currentMonsterHealth -= damage;
+            
+            Debug.Log($"[EnemyManager] 몬스터 ({currentSpawnedMonsterData?.monsterName}) 피격! 남은 HP: {currentMonsterHealth:F0}");
+            
+            if (currentMonsterHealth <= 0)
+            {
+                KillCurrentMonster();
+            }
+        }
+        
         /// <summary>
         /// 몬스터 처치 시 호출되어 보상을 지급하고 StageManager에 알림.
         /// </summary>
-        public void KillMonster()
+        public void KillCurrentMonster()
         {
-            if (currentMonsterCount <= 0 || loadedMonsterDictionary.Count == 0) return;
+            if (currentMonsterCount <= 0 || currentSpawnedMonsterData == null || currentStageData == null) return;
             
             StageManager.Instance.OnMonsterKilled();
             
-            int rewardMonsterId = currentStageMonsterIDs[0];
-            
-            if (!loadedMonsterDictionary.TryGetValue(rewardMonsterId, out MonsterData baseMonster))
-            {
-                Debug.LogError($"[EnemyManager] ID {rewardMonsterId} 몬스터 보상 데이터 로드 실패. (Dict에 없음)");
-                return;
-            }
-
-            long goldReward = (long)(baseMonster.goldReward * currentStageData.GoldRewardMultiplier);
-            long expReward = (long)(baseMonster.expReward * currentStageData.ExpRewardMultiplier);
+            // 보상 계산은 현재 스폰된 몬스터 데이터를 사용
+            long goldReward = (long)(currentSpawnedMonsterData.goldReward * currentStageData.GoldRewardMultiplier);
+            long expReward = (long)(currentSpawnedMonsterData.expReward * currentStageData.ExpRewardMultiplier);
             
             currentMonsterCount--;
 
             CurrencyManager.Instance.ChangeCurrency(CurrencyType.Gold, goldReward);
             
-            if (UnityEngine.Random.value < dropChance)
-            {
-                DropEquipment();
-            }
+            // 몬스터별 드롭 테이블 사용
+            DropEquipment(currentSpawnedMonsterData.dropTable);
             
-            Debug.Log($"[EnemyManager] 몬스터 처치! 골드 {goldReward} (x{currentStageData.GoldRewardMultiplier}), EXP {expReward} 획득.");
+            Debug.Log($"[EnemyManager] 몬스터 처치! 골드 {goldReward}, EXP {expReward} 획득.");
+            
+            currentSpawnedMonsterData = null;
         }
         
-        private void DropEquipment()
+        /// <summary>
+        /// 드롭 테이블을 사용하여 장비 드롭 시도
+        /// </summary>
+        private void DropEquipment(List<DropItem> dropTable)
         {
-            if (droppableEquipment == null || droppableEquipment.Count == 0) return;
-    
-            // 드롭할 장비 무작위 선택
-            int randomIndex = UnityEngine.Random.Range(0, droppableEquipment.Count);
-            EquipmentData droppedItem = droppableEquipment[randomIndex];
+            if (dropTable == null || dropTable.Count == 0) return;
 
-            if (EquipmentCollectionManager.Instance != null)
+            float totalChance = 0f;
+            foreach (var dropItem in dropTable)
             {
-                EquipmentCollectionManager.Instance.AddItem(droppedItem);
+                totalChance += dropItem.dropRate;
+            }
+
+            float randomValue = UnityEngine.Random.value * totalChance;
+            float cumulative = 0f;
+
+            foreach (var dropItem in dropTable)
+            {
+                cumulative += dropItem.dropRate;
+                if (randomValue <= cumulative)
+                {
+                    EquipmentCollectionManager.Instance.AddItem(dropItem.itemSO);
+                    Debug.Log($"[EnemyManager] 장비 드롭 성공: {dropItem.itemSO.equipName}");
+                    return; 
+                }
             }
         }
 
         [ContextMenu("몬스터 즉시 처치")]
-        public void TestKillMonster() => KillMonster();
+        public void TestKillMonster() => KillCurrentMonster();
     }
 }

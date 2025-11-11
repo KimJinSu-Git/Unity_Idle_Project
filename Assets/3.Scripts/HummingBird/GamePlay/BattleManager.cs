@@ -58,7 +58,11 @@ namespace Bird.Idle.Gameplay
         /// </summary>
         public void SetBattleActive(bool active)
         {
+            if (isBattleActiveInternal == active) return;
+            
             isBattleActiveInternal = active;
+            OnBattleStateChanged?.Invoke(active); 
+            Debug.Log($"[BattleManager] 전투 상태 변경: {active}");
         }
 
         /// <summary>
@@ -77,7 +81,8 @@ namespace Bird.Idle.Gameplay
             // TODO: 필드의 몬스터 프리팹 리스트를 순회하며 공격하도록 변경(현재는 임시 로직)
             float damage = characterManager.AttackPower;
             
-            enemyManager.KillMonster(); 
+            // enemyManager.KillMonster(); 
+            enemyManager.ApplyDamageToCurrentMonster(damage);
         }
     }
 }

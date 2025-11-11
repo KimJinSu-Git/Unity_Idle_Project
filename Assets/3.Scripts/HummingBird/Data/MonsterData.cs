@@ -1,7 +1,16 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Bird.Idle.Data
 {
+    [System.Serializable]
+    public struct DropItem
+    {
+        public EquipmentData itemSO; // 드롭될 장비 SO
+        [Range(0f, 1f)]
+        public float dropRate;      // 드롭 확률
+    }
+    
     /// <summary>
     /// 개별 몬스터의 기본 스탯과 보상 정보를 정의하는 Scriptable Object.
     /// 에셋 생성 메뉴 경로: Assets/Create/Bird/Monster Data
@@ -15,6 +24,10 @@ namespace Bird.Idle.Data
         public float baseDamage;
         public long goldReward;
         public long expReward;
+        
+        [Header("드롭 설정")]
+        public List<DropItem> dropTable = new List<DropItem>();
+        
         // TODO: 몬스터 모델/프리팹 참조 추가
     }
 }
