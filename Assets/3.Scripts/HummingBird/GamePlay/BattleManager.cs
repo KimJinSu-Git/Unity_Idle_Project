@@ -82,5 +82,10 @@ namespace Bird.Idle.Gameplay
             // enemyManager.KillMonster(); 
             enemyManager.ApplyDamageToCurrentMonster(damage);
         }
+        
+        private void TryMonsterAttack()
+        {
+            // TODO: 몬스터의 공격 추가
+        }
     }
 }

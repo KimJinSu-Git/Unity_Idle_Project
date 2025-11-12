@@ -58,8 +58,6 @@ namespace Bird.Idle.Visual
         private void Update()
         {
             if (!GameManager.Instance.IsBattleActive) return;
-
-            Debug.Log(isMoving);
             
             if (isMoving)
             {
@@ -67,7 +65,6 @@ namespace Bird.Idle.Visual
                 
                 if (backgroundRenderer != null && backgroundRenderer.material != null)
                 {
-                    Debug.Log("isMoving이랑 backgroundRenderer 까지 통과했나요?");
                     backgroundRenderer.material.SetTextureOffset(MainTexOffset, new Vector2(currentOffset, 0));
                 }
             }
@@ -75,11 +72,7 @@ namespace Bird.Idle.Visual
 
         public void SetMovementState(bool isBattleActive)
         {
-            // isBattleActive == false (몬스터 전투 중)일 때 멈추고 싶다면
-            // isMoving = !isBattleActive; 
-    
-            // 현재는 공격 애니메이션 시 멈추는 로직이므로, IsBattleActive 상태를 따릅니다.
-            isMoving = !isBattleActive; // 전투 중(Active)일 때 멈추고, 전투 아닐 때(이동) 움직입니다.
+            isMoving = !isBattleActive;
         }
 
         private IEnumerator StartMoveAfterDelay(float delay)

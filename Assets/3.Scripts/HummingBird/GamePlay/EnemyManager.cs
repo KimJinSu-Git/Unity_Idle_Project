@@ -18,10 +18,6 @@ namespace Bird.Idle.Gameplay
         [Header("Data References")]
         [SerializeField] private AssetLabelReference monsterDataLabel; // 라벨 기반 컬렉션 로드용 AssetLabelRefrence라 함.
         
-        // [Header("Loot Drop Settings")]
-        // [SerializeField] private float dropChance = 0.1f;
-        // [SerializeField] private List<EquipmentData> droppableEquipment;
-        
         [SerializeField] private float spawnInterval = 1.0f; // 몬스터 스폰 주기
         [SerializeField] private int maxMonsterCount = 5; // 최대 몬스터 수
 
@@ -33,8 +29,9 @@ namespace Bird.Idle.Gameplay
         private StageData currentStageData;
         private List<int> currentStageMonsterIDs;
         
-        private float currentMonsterHealth; 
-        private MonsterData currentSpawnedMonsterData;
+        private List<MonsterController> activeMonsters = new List<MonsterController>();
+        private int monsterInstanceCounter = 0;
+        private MonsterController frontMonster;
 
         private void Awake()
         {
@@ -81,6 +78,32 @@ namespace Bird.Idle.Gameplay
                 SpawnMonster();
                 currentSpawnTime = 0f;
             }
+            
+            CheckBattleState();
+        }
+        
+        /// <summary>
+        /// 최전방 몬스터의 위치를 기반으로 전투 상태를 확인하고 BattleManager에 전달
+        /// </summary>
+        private void CheckBattleState()
+        {
+            if (frontMonster == null)
+            {
+                BattleManager.Instance.SetBattleActive(false);
+                return;
+            }
+
+            // TODO: Player의 위치를 기반으로 거리를 측정하는 로직 필요
+            float distanceToPlayer = Vector3.Distance(frontMonster.transform.position, Vector3.zero);
+            
+            if (distanceToPlayer <= frontMonster.AttackRange)
+            {
+                BattleManager.Instance.SetBattleActive(true);
+            }
+            else
+            {
+                BattleManager.Instance.SetBattleActive(false); // 이동
+            }
         }
         
         /// <summary>
@@ -99,19 +122,27 @@ namespace Bird.Idle.Gameplay
                 Debug.LogWarning("[EnemyManager] 몬스터 데이터 또는 스테이지 목록이 없습니다.");
                 return;
             }
-            currentMonsterCount++;
             
             int randomIndex = UnityEngine.Random.Range(0, currentStageMonsterIDs.Count);
             int monsterIdToSpawn = currentStageMonsterIDs[randomIndex];
             
             if (loadedMonsterDictionary.TryGetValue(monsterIdToSpawn, out MonsterData monsterData))
             {
-                currentMonsterCount++;
-                currentSpawnedMonsterData = monsterData;
+                // 임시: 몬스터 오브젝트를 생성하고 Controller를 할당
+                GameObject monsterGO = new GameObject("Monster Placeholder"); 
+                MonsterController controller = monsterGO.AddComponent<MonsterController>();
                 
-                currentMonsterHealth = monsterData.baseHealth;
-        
-                Debug.Log($"[EnemyManager] {monsterData.monsterName} (ID: {monsterIdToSpawn}) 스폰! 현재 수: {currentMonsterCount}");
+                monsterInstanceCounter++;
+                
+                controller.Initialize(monsterData, 1.0f, monsterInstanceCounter);
+                
+                activeMonsters.Add(controller);
+                currentMonsterCount = activeMonsters.Count;
+                
+                if (frontMonster == null)
+                {
+                    frontMonster = controller;
+                }
             }
             else
             {
@@ -121,41 +152,43 @@ namespace Bird.Idle.Gameplay
         
         public void ApplyDamageToCurrentMonster(float damage)
         {
-            if (currentSpawnedMonsterData == null || currentMonsterHealth <= 0) return;
+            if (frontMonster == null || !frontMonster.IsAlive) return;
             
-            currentMonsterHealth -= damage;
-            
-            Debug.Log($"[EnemyManager] 몬스터 ({currentSpawnedMonsterData?.monsterName}) 피격! 남은 HP: {currentMonsterHealth:F0}");
-            
-            if (currentMonsterHealth <= 0)
-            {
-                KillCurrentMonster();
-            }
+            frontMonster.ApplyDamage(damage);
         }
         
         /// <summary>
-        /// 몬스터 처치 시 호출되어 보상을 지급하고 StageManager에 알림.
+        /// 몬스터 처치 시 호출되어 보상을 지급하고 StageManager에 알림
         /// </summary>
-        public void KillCurrentMonster()
+        public void ProcessMonsterDefeat(MonsterData monsterData)
         {
-            if (currentMonsterCount <= 0 || currentSpawnedMonsterData == null || currentStageData == null) return;
-            
+            if (monsterData == null || currentStageData == null) return;
+
             StageManager.Instance.OnMonsterKilled();
             
-            // 보상 계산은 현재 스폰된 몬스터 데이터를 사용
-            long goldReward = (long)(currentSpawnedMonsterData.goldReward * currentStageData.GoldRewardMultiplier);
-            long expReward = (long)(currentSpawnedMonsterData.expReward * currentStageData.ExpRewardMultiplier);
+            // 보상 지급
+            long goldReward = (long)(monsterData.goldReward * currentStageData.GoldRewardMultiplier);
+            long expReward = (long)(monsterData.expReward * currentStageData.ExpRewardMultiplier);
             
-            currentMonsterCount--;
-
             CurrencyManager.Instance.ChangeCurrency(CurrencyType.Gold, goldReward);
             
-            // 몬스터별 드롭 테이블 사용
-            DropEquipment(currentSpawnedMonsterData.dropTable);
+            DropEquipment(monsterData.dropTable);
             
-            Debug.Log($"[EnemyManager] 몬스터 처치! 골드 {goldReward}, EXP {expReward} 획득.");
-            
-            currentSpawnedMonsterData = null;
+            RemoveDefeatedMonster(monsterData.monsterID); 
+        
+            Debug.Log($"[EnemyManager] 몬스터 처치 완료.");
+        }
+        
+        private void RemoveDefeatedMonster(int monsterID)
+        {
+            MonsterController defeated = activeMonsters.Find(m => m.MonsterData.monsterID == monsterID);
+            if (defeated != null)
+            {
+                activeMonsters.Remove(defeated);
+                currentMonsterCount = activeMonsters.Count;
+                
+                frontMonster = activeMonsters.Count > 0 ? activeMonsters[0] : null;
+            }
         }
         
         /// <summary>
@@ -186,7 +219,7 @@ namespace Bird.Idle.Gameplay
             }
         }
 
-        [ContextMenu("몬스터 즉시 처치")]
-        public void TestKillMonster() => KillCurrentMonster();
+        // [ContextMenu("몬스터 즉시 처치")]
+        // public void TestKillMonster() => KillCurrentMonster();
     }
 }
