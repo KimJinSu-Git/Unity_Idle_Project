@@ -23,3 +23,9 @@ MonoBehaviour:
     dropRate: 0.1
   - itemSO: {fileID: 11400000, guid: b54ea5e36d96ea84386c60b30dba305f, type: 2}
     dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: 76165ff5af6c7c4418067ab4231aff0f, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: 542063e3ce44b144092cf4d75af61474, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: 7e045a4a2343f5e408968946940f04b0, type: 2}
+    dropRate: 0.1

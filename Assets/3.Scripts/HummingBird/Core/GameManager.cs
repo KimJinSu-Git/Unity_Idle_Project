@@ -121,7 +121,7 @@ namespace Bird.Idle.Core
 
             await DataManager.Instance.SaveGameData(data);
 
-            DataManager.Instance.OnResetButtonClicked(); // Data 삭제후 테스트할거면 해제하면 됌
+            // DataManager.Instance.OnResetButtonClicked(); // Data 삭제후 테스트할거면 해제하면 됌
         }
         
         /// <summary>

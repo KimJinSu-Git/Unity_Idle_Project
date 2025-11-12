@@ -19,7 +19,13 @@ MonoBehaviour:
   goldReward: 250
   expReward: 250
   dropTable:
-  - itemSO: {fileID: 0}
-    dropRate: 0
-  - itemSO: {fileID: 0}
-    dropRate: 0
+  - itemSO: {fileID: 11400000, guid: 4a424c992d58e8a44a5ff62f6537d523, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: f40e8d46421d8e84abf5e7c35dbff673, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: 0e62b460a2cfef7469e5ec76e2a6de8d, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: 68ae640dd2cdd8b44ab484e462af144a, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: 9aa72c1b77905a845b4243ca03234020, type: 2}
+    dropRate: 0.1

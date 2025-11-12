@@ -20,7 +20,6 @@ namespace Bird.Idle.Gameplay
         
         private bool isBattleActiveInternal = false;
         
-        public Action OnAttackStart;
         public Action<bool> OnBattleStateChanged;
         
         private void Awake()
@@ -75,11 +74,10 @@ namespace Bird.Idle.Gameplay
                 Debug.LogError("[BattleManager] 매니저 참조가 누락되었습니다.");
                 return;
             }
-            
-            OnAttackStart?.Invoke();
 
             // TODO: 필드의 몬스터 프리팹 리스트를 순회하며 공격하도록 변경(현재는 임시 로직)
             float damage = characterManager.AttackPower;
+            Debug.Log(characterManager.AttackPower);
             
             // enemyManager.KillMonster(); 
             enemyManager.ApplyDamageToCurrentMonster(damage);

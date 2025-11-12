@@ -47,7 +47,7 @@ namespace Bird.Idle.UI
                 stageManager.OnStageProgressChanged += UpdateStageProgress;
             }
             
-            UpdateAllStatsUI(characterManager.CharacterLevel);
+            // UpdateAllStatsUI(characterManager.CharacterLevel);
         }
 
         private void OnDisable()

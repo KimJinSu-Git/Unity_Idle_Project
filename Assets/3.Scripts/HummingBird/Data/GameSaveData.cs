@@ -28,12 +28,15 @@ namespace Bird.Idle.Data
 
         public GameSaveData()
         {
+            PlayerLevel = 1; 
+            BaseAttackPower = 10f;  
+            BaseMaxHealth = 100f;
+            CurrentStageID = 1; 
+            CurrentKillCount = 0;
+            
             CollectionEntries = new List<CollectionEntry>();
             EquippedItems = new EquipSaveData();
             SlotLevels = new Dictionary<EquipmentType, int>();
-            
-            CurrentStageID = 1; 
-            CurrentKillCount = 0;
         }
     }
     

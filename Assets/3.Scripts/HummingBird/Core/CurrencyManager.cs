@@ -36,8 +36,6 @@ namespace Bird.Idle.Core
             {
                 currencyAmounts[type] = 0; 
             }
-            
-            Debug.Log($"[CurrencyManager] 모든 재화 초기화 완료. 골드: {currencyAmounts[CurrencyType.Gold]}");
         }
         
         /// <summary>

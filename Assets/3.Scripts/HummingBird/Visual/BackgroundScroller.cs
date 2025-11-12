@@ -44,7 +44,10 @@ namespace Bird.Idle.Visual
             {
                 StageManager.Instance.OnStageChanged += HandleStageTransition;
             }
-            // battleManager.OnBattleStateChanged += SetMovementState;
+            if (battleManager != null)
+            {
+                battleManager.OnBattleStateChanged += SetMovementState; 
+            }
         }
 
         private void Start()
@@ -166,6 +169,11 @@ namespace Bird.Idle.Visual
             if (StageManager.Instance != null)
             {
                 StageManager.Instance.OnStageChanged -= HandleStageTransition;
+            }
+            
+            if (battleManager != null)
+            {
+                battleManager.OnBattleStateChanged -= SetMovementState; 
             }
             
             if (currentBackgroundHandle.IsValid())
