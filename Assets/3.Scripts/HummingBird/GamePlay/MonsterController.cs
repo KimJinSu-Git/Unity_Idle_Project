@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using Bird.Idle.Data;
 using Bird.Idle.Core;
@@ -13,7 +14,17 @@ namespace Bird.Idle.Gameplay
         // 몬스터 프리팹에 인스펙터로 할당됩니다.
         public MonsterData MonsterData; 
         
+        [Header("Movement")]
+        [SerializeField] private float moveSpeed = 1.0f;
+        
+        [Header("Combat")]
+        [SerializeField] private float attackInterval = 0.2f;
+        
         private float currentHealth;
+        
+        private bool isMoving = true;
+        private bool currentlyAttacking = false;
+        
         
         public bool IsAlive => currentHealth > 0;
         public float AttackRange = 2f; // Player에게 접근해야 하는 거리
@@ -32,7 +43,64 @@ namespace Bird.Idle.Gameplay
             
             gameObject.name = $"{MonsterData.monsterName}_{InstanceID}";
         }
+        
+        private void Update()
+        {
+            if (isMoving)
+            {
+                Vector3 targetPosition = Vector3.zero;
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+            }
 
+            if (isMoving)
+            {
+                float distance = Vector3.Distance(transform.position, Vector3.zero);
+                
+                if (distance <= AttackRange)
+                {
+                    EnterCombatState();
+                }
+            }
+        }
+        
+        private void EnterCombatState()
+        {
+            if (currentlyAttacking) return;
+            
+            isMoving = false;
+            currentlyAttacking = true;
+            
+            // TODO: 이동 애니메이션 멈춤
+            // TODO: 공격 애니메이션 시작
+            
+            StartCoroutine(AttackLoop());
+        }
+        
+        private IEnumerator AttackLoop()
+        {
+            while (IsAlive)
+            {
+                yield return new WaitForSeconds(attackInterval); 
+                
+                if (IsAlive && CharacterManager.Instance.IsAlive)
+                {
+                    TryAttackPlayer();
+                }
+            }
+        }
+        
+        private void TryAttackPlayer()
+        {
+            float monsterDamage = MonsterData.baseDamage;
+            Debug.Log($"[MonsterController] {monsterDamage}를 Player에게 입혔습니다.");
+            
+            if (CharacterManager.Instance != null && monsterDamage > 0)
+            {
+                CharacterManager.Instance.ApplyDamage(monsterDamage);
+                // TODO: 공격 애니메이션 트리거
+            }
+        }
+        
         public void ApplyDamage(float damage)
         {
             if (!IsAlive) return;

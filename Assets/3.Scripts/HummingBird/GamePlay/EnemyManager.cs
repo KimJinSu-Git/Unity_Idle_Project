@@ -18,8 +18,10 @@ namespace Bird.Idle.Gameplay
         [Header("Data References")]
         [SerializeField] private AssetLabelReference monsterDataLabel; // 라벨 기반 컬렉션 로드용 AssetLabelRefrence라 함.
         
+        [Header("Spawn Settings")]
         [SerializeField] private float spawnInterval = 1.0f; // 몬스터 스폰 주기
-        [SerializeField] private int maxMonsterCount = 5; // 최대 몬스터 수
+        [SerializeField] private int maxMonsterCount = 15; // 최대 몬스터 수
+        [SerializeField] private Vector3 spawnPosition = new Vector3(4.5f, 0f, 0f);
 
         private float currentSpawnTime;
         private int currentMonsterCount = 0;
@@ -93,7 +95,6 @@ namespace Bird.Idle.Gameplay
                 return;
             }
 
-            // TODO: Player의 위치를 기반으로 거리를 측정하는 로직 필요
             float distanceToPlayer = Vector3.Distance(frontMonster.transform.position, Vector3.zero);
             
             if (distanceToPlayer <= frontMonster.AttackRange)
@@ -132,8 +133,9 @@ namespace Bird.Idle.Gameplay
                 GameObject monsterGO = new GameObject("Monster Placeholder"); 
                 MonsterController controller = monsterGO.AddComponent<MonsterController>();
                 
-                monsterInstanceCounter++;
+                monsterGO.transform.position = spawnPosition;
                 
+                monsterInstanceCounter++;
                 controller.Initialize(monsterData, 1.0f, monsterInstanceCounter);
                 
                 activeMonsters.Add(controller);
@@ -188,6 +190,8 @@ namespace Bird.Idle.Gameplay
                 currentMonsterCount = activeMonsters.Count;
                 
                 frontMonster = activeMonsters.Count > 0 ? activeMonsters[0] : null;
+                
+                CheckBattleState();
             }
         }
         
@@ -218,8 +222,5 @@ namespace Bird.Idle.Gameplay
                 }
             }
         }
-
-        // [ContextMenu("몬스터 즉시 처치")]
-        // public void TestKillMonster() => KillCurrentMonster();
     }
 }

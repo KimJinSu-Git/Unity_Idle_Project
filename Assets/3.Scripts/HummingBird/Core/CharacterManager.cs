@@ -11,7 +11,7 @@ namespace Bird.Idle.Core
     /// <summary>
     /// 플레이어의 레벨, 스탯, 경험치를 관리하는 싱글톤 클래스
     /// </summary>
-    public class CharacterManager : MonoBehaviour
+    public class CharacterManager : MonoBehaviour, IDamageable
     {
         public static CharacterManager Instance { get; private set; }
 
@@ -27,10 +27,13 @@ namespace Bird.Idle.Core
         
         private LevelUpCostData loadedLevelUpCostData;
         
+        private float currentHealth;
+        
         private float permanentAttackBonus = 0f;
         private float permanentHealthBonus = 0f;
 
         public int CharacterLevel => characterLevel;
+        public bool IsAlive => currentHealth > 0;
         public float AttackPower 
         {
             get 
@@ -53,12 +56,14 @@ namespace Bird.Idle.Core
                 {
                     bonus = InventoryManager.Instance.GetTotalEquipmentBonus().totalHealth;
                 }
-                return baseAttackPower + permanentHealthBonus + bonus;
+                return baseMaxHealth + permanentHealthBonus + bonus;
             }
         }
 
         public Action<int> OnLevelUp; // 레벨 업 이벤트 (레벨업 시 스탯 변경 이벤트)
         public Action OnStatsRecalculated; // 스탯 변경 이벤트(장비 장착/해제 시 UI 업데이트 용도)
+        public Action OnPlayerDied; // 플레이어 사망 이벤트
+        public Action OnHealthChanged; // 체력 변경 이벤트 (UI 갱신용)
 
         private void Awake()
         {
@@ -69,6 +74,8 @@ namespace Bird.Idle.Core
             }
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            
+            currentHealth = baseMaxHealth;
             
             LoadLevelUpCostDataAsync();
         }
@@ -89,11 +96,36 @@ namespace Bird.Idle.Core
             permanentAttackBonus = data.PermanentAttackBonus;
             permanentHealthBonus = data.PermanentHealthBonus;
             
+            currentHealth = MaxHealth;
+            
             Debug.Log($"[CharacterManager] 캐릭터 데이터 로드 완료. Lv.{characterLevel}, 영구 보너스 ATK: {permanentAttackBonus:F2}");
             
             // UI 갱신
             OnLevelUp?.Invoke(characterLevel);
             OnStatsRecalculated?.Invoke();
+        }
+        
+        public void ApplyDamage(float damage)
+        {
+            if (!IsAlive) return;
+
+            currentHealth -= damage;
+            
+            OnHealthChanged?.Invoke(); 
+
+            if (currentHealth <= 0)
+            {
+                Die();
+            }
+        }
+        
+        private void Die()
+        {
+            currentHealth = 0;
+            Debug.Log("[CharacterManager] 플레이어가 사망했습니다!");
+            OnPlayerDied?.Invoke();
+            
+            // TODO: 스테이지 재시작 로직 호출
         }
         
         /// <summary>
@@ -199,5 +231,6 @@ namespace Bird.Idle.Core
             
             return nextEntry.RequiredGold;
         }
+
     }
 }

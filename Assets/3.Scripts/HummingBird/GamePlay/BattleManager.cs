@@ -45,7 +45,7 @@ namespace Bird.Idle.Gameplay
             
             currentAttackCooldown -= Time.deltaTime;
 
-            if (currentAttackCooldown <= 0f)
+            if (currentAttackCooldown <= 0f && CharacterManager.Instance.IsAlive)
             {
                 TryAutoAttack();
                 currentAttackCooldown = attackInterval;
@@ -81,11 +81,6 @@ namespace Bird.Idle.Gameplay
             
             // enemyManager.KillMonster(); 
             enemyManager.ApplyDamageToCurrentMonster(damage);
-        }
-        
-        private void TryMonsterAttack()
-        {
-            // TODO: 몬스터의 공격 추가
         }
     }
 }

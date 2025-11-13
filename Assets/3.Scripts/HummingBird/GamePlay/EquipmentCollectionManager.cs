@@ -129,7 +129,7 @@ namespace Bird.Idle.Gameplay
                 return;
             }
             
-            if (item.grade <= autoSellGradeThreshold)
+            if (item.grade < autoSellGradeThreshold)
             {
                 SellItem(item);
             }
