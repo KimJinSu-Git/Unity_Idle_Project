@@ -28,6 +28,7 @@ namespace Bird.Idle.Data
         [Header("드롭 설정")]
         public List<DropItem> dropTable = new List<DropItem>();
         
-        // TODO: 몬스터 모델/프리팹 참조 추가
+        [Header("시각적 요소")]
+        public UnityEngine.AddressableAssets.AssetReferenceT<GameObject> prefabReference;
     }
 }

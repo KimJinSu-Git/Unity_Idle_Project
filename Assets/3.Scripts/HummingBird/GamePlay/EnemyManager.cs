@@ -129,27 +129,57 @@ namespace Bird.Idle.Gameplay
             
             if (loadedMonsterDictionary.TryGetValue(monsterIdToSpawn, out MonsterData monsterData))
             {
-                // 임시: 몬스터 오브젝트를 생성하고 Controller를 할당
-                GameObject monsterGO = new GameObject("Monster Placeholder"); 
-                MonsterController controller = monsterGO.AddComponent<MonsterController>();
-                
-                monsterGO.transform.position = spawnPosition;
-                
-                monsterInstanceCounter++;
-                controller.Initialize(monsterData, 1.0f, monsterInstanceCounter);
-                
-                activeMonsters.Add(controller);
-                currentMonsterCount = activeMonsters.Count;
-                
-                if (frontMonster == null)
-                {
-                    frontMonster = controller;
-                }
+                SpawnMonsterFromPrefab(monsterData);
             }
             else
             {
                 Debug.LogError($"[EnemyManager] ID {monsterIdToSpawn} 몬스터 데이터가 없습니다!");
             }
+        }
+        
+        /// <summary>
+        /// Addressables를 사용하여 몬스터 프리팹을 로드
+        /// </summary>
+        private async void SpawnMonsterFromPrefab(MonsterData monsterData)
+        {
+            if (monsterData.prefabReference == null || !monsterData.prefabReference.IsValid())
+            {
+                Debug.LogError($"[EnemyManager] {monsterData.monsterName} 프리팹 참조가 유효하지 않습니다.");
+                return;
+            }
+
+            AsyncOperationHandle<GameObject> handle = monsterData.prefabReference.InstantiateAsync(spawnPosition, Quaternion.identity);
+        
+            await handle.Task;
+        
+            if (handle.Status != AsyncOperationStatus.Succeeded)
+            {
+                Debug.LogError($"[EnemyManager] {monsterData.monsterName} 프리팹 로드 실패: {handle.OperationException}");
+                return;
+            }
+
+            GameObject monsterGO = handle.Result;
+            MonsterController controller = monsterGO.GetComponent<MonsterController>();
+
+            if (controller == null)
+            {
+                Debug.LogError($"[EnemyManager] 스폰된 {monsterData.monsterName} 프리팹에 MonsterController가 없습니다!");
+                Addressables.ReleaseInstance(handle); 
+                return;
+            }
+
+            monsterInstanceCounter++;
+            controller.Initialize(monsterData, 1.0f, monsterInstanceCounter);
+        
+            activeMonsters.Add(controller);
+            currentMonsterCount = activeMonsters.Count;
+        
+            if (frontMonster == null)
+            {
+                frontMonster = controller;
+            }
+        
+            // TODO: 로드된 핸들을 관리하는 리스트에 추가하여 OnDestroy 시 해제 로직 구현 필요
         }
         
         public void ApplyDamageToCurrentMonster(float damage)

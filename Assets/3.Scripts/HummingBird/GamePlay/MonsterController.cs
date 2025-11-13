@@ -25,7 +25,6 @@ namespace Bird.Idle.Gameplay
         private bool isMoving = true;
         private bool currentlyAttacking = false;
         
-        
         public bool IsAlive => currentHealth > 0;
         public float AttackRange = 2f; // Player에게 접근해야 하는 거리
         
