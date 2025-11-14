@@ -74,30 +74,12 @@ namespace Bird.Idle.Visual
         {
             isMoving = !isBattleActive;
         }
-
-        private IEnumerator StartMoveAfterDelay(float delay)
-        {
-            yield return new WaitForSeconds(delay);
-            isMoving = true;
-        }
-        
-        /// <summary>
-        /// 스테이지 클리어/진입 시 호출되어 배경을 초기화하고 페이드 인/아웃을 처리
-        /// </summary>
-        public void HandleStageTransition()
-        {
-            // TODO: StageManager가 Stage 클리어 시 호출
-            // 배경 페이드 아웃/인 처리
-            // 배경 위치 초기화 (textureOffset = Vector2.zero)
-            // 맵 변경 로직
-        }
         
         /// <summary>
         /// 스테이지 클리어/진입 시 호출되어 배경을 초기화하고 페이드 인/아웃을 처리
         /// </summary>
         public void HandleStageTransition(int newStageID)
         {
-            // TODO: 페이드 인/아웃 코루틴 시작
             currentOffset = 0f;
             if (backgroundRenderer != null && backgroundRenderer.material != null)
             {

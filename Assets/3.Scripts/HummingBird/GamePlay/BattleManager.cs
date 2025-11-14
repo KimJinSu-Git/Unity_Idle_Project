@@ -11,8 +11,8 @@ namespace Bird.Idle.Gameplay
     {
         public static BattleManager Instance { get; private set; }
 
-        [Header("Auto Attack Settings")]
-        [SerializeField] private float attackInterval = 0.5f; // 초당 2회 공격
+        [Header("Player Attack Settings")]
+        [SerializeField] private float attackInterval = 3f;
         private float currentAttackCooldown;
 
         private CharacterManager characterManager;
@@ -21,6 +21,8 @@ namespace Bird.Idle.Gameplay
         private bool isBattleActiveInternal = false;
         
         public Action<bool> OnBattleStateChanged;
+
+        public float GetAttackInterval => attackInterval;
         
         private void Awake()
         {

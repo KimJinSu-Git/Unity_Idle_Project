@@ -19,7 +19,7 @@ namespace Bird.Idle.Gameplay
         [SerializeField] private AssetLabelReference monsterDataLabel; // 라벨 기반 컬렉션 로드용 AssetLabelRefrence라 함.
         
         [Header("Spawn Settings")]
-        [SerializeField] private float spawnInterval = 1.0f; // 몬스터 스폰 주기
+        [SerializeField] private float spawnInterval = 4f; // 몬스터 스폰 주기
         [SerializeField] private int maxMonsterCount = 15; // 최대 몬스터 수
         [SerializeField] private Vector3 spawnPosition = new Vector3(4.5f, 0f, 0f);
 
