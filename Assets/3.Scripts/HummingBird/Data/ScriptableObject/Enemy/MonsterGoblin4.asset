@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsterID: 1004
   monsterName: Goblin
-  baseHealth: 100
-  baseDamage: 50
+  baseHealth: 50
+  baseDamage: 5
   goldReward: 250
   expReward: 250
   dropTable: []

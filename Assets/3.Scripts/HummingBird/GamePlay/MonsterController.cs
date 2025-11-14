@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using Bird.Idle.Data;
 using Bird.Idle.Core;
+using Bird.Idle.Visual;
 using UnityEngine.Serialization;
 
 namespace Bird.Idle.Gameplay
@@ -21,12 +23,17 @@ namespace Bird.Idle.Gameplay
         [SerializeField] private float attackInterval = 0.2f;
         
         private float currentHealth;
+        private float maxHealth;
         
         private bool isMoving = true;
         private bool currentlyAttacking = false;
         
+        public Action OnHealthChanged;
+        
         public bool IsAlive => currentHealth > 0;
         public float AttackRange = 2f; // Player에게 접근해야 하는 거리
+        public float GetCurrentHealth() => currentHealth;
+        public float GetMaxHealth() => maxHealth;
         
         public int InstanceID { get; private set; } 
 
@@ -38,22 +45,26 @@ namespace Bird.Idle.Gameplay
             MonsterData = data;
             InstanceID = instanceID;
             
-            currentHealth = MonsterData.baseHealth * stageDifficultyMultiplier;
+            maxHealth = MonsterData.baseHealth * stageDifficultyMultiplier;
+            currentHealth = maxHealth;
             
             gameObject.name = $"{MonsterData.monsterName}_{InstanceID}";
         }
         
         private void Update()
         {
+            if (PlayerController.PlayerTransform == null) return;
+            
+            Vector3 targetPosition = PlayerController.PlayerTransform.position;
+            
             if (isMoving)
             {
-                Vector3 targetPosition = Vector3.zero;
                 transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
             }
 
             if (isMoving)
             {
-                float distance = Vector3.Distance(transform.position, Vector3.zero);
+                float distance = Vector3.Distance(transform.position, targetPosition);
                 
                 if (distance <= AttackRange)
                 {
@@ -105,6 +116,8 @@ namespace Bird.Idle.Gameplay
             if (!IsAlive) return;
             
             currentHealth -= damage;
+
+            OnHealthChanged?.Invoke();
             
             if (currentHealth <= 0)
             {

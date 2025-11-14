@@ -96,7 +96,6 @@ namespace Bird.Idle.Core
             if (loadedData != null)
             {
                 lastExitTime = new DateTime(loadedData.LastExitTimeTicks, DateTimeKind.Utc);
-                Debug.Log($"[DataManager] 데이터 로드 완료. 마지막 종료 시간: {lastExitTime}");
             }
             
             return loadedData;
@@ -123,8 +122,6 @@ namespace Bird.Idle.Core
                 
                 CurrencyManager.Instance.ChangeCurrency(Data.CurrencyType.Gold, rewardedGold);
                 
-                Debug.Log($"[AFK] 방치 시간: {idleDuration.Hours}시간 {idleDuration.Minutes}분. 골드 보상: {rewardedGold}");
-                
                 AFKRewardPopup popup = FindObjectOfType<AFKRewardPopup>(true); 
                 if (popup != null)
                 {
@@ -133,7 +130,6 @@ namespace Bird.Idle.Core
             }
             else
             {
-                Debug.Log("방치 시간이 짧아 보상 지급 대상이 아닙니다.");
                 if (GameManager.Instance != null)
                 {
                     GameManager.Instance.ResumeGameAfterAFK();

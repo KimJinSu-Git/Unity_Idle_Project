@@ -32,6 +32,7 @@ namespace Bird.Idle.Core
         private float permanentAttackBonus = 0f;
         private float permanentHealthBonus = 0f;
 
+        public float GetCurrentHealth() => currentHealth;
         public int CharacterLevel => characterLevel;
         public bool IsAlive => currentHealth > 0;
         public float AttackPower 

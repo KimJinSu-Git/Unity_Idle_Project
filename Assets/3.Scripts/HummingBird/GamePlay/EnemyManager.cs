@@ -22,6 +22,7 @@ namespace Bird.Idle.Gameplay
         [SerializeField] private float spawnInterval = 4f; // 몬스터 스폰 주기
         [SerializeField] private int maxMonsterCount = 15; // 최대 몬스터 수
         [SerializeField] private Vector3 spawnPosition = new Vector3(4.5f, 0f, 0f);
+        [SerializeField] private Quaternion spawnRotation = new Quaternion(0f, 180f, 0f, 0f);
 
         private float currentSpawnTime;
         private int currentMonsterCount = 0;
@@ -153,7 +154,7 @@ namespace Bird.Idle.Gameplay
                 return;
             }
             
-            AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(monsterData.prefabAddress, spawnPosition, Quaternion.identity);
+            AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(monsterData.prefabAddress, spawnPosition, spawnRotation);
         
             await handle.Task;
         

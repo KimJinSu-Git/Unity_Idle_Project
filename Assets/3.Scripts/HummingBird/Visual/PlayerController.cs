@@ -10,6 +10,8 @@ namespace Bird.Idle.Visual
     /// </summary>
     public class PlayerController : MonoBehaviour
     {
+        public static Transform PlayerTransform { get; private set; }
+        
         [Header("Animation")]
         [SerializeField] private Animator animator;
         [SerializeField] private string runAnim = "Run";
@@ -24,6 +26,8 @@ namespace Bird.Idle.Visual
         {
             characterManager = CharacterManager.Instance;
             battleManager = BattleManager.Instance;
+            
+            PlayerTransform = transform;
             
             if (animator == null) animator = GetComponentInChildren<Animator>();
 
