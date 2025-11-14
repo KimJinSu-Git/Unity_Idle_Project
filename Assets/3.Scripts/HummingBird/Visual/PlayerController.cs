@@ -39,7 +39,6 @@ namespace Bird.Idle.Visual
         
         private void OnEnable()
         {
-            // 게임 시작 시 초기 상태로 설정 (전투 상태가 아닐 때 Run/Idle)
             UpdateVisualState(false); 
         }
 

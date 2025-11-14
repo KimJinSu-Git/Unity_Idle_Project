@@ -1,0 +1,343 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Sprite
+  m_EditorClassIdentifier: 
+  m_GroupName: Sprite
+  m_GUID: dda6155a78be4574689e60d862125842
+  m_SerializeEntries:
+  - m_GUID: 0aa992e00b1964968aa69f7f07dc31ae
+    m_Address: Assets/4.Sprites/Arcessorys/Accessory_Legendary5.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 16204c7fef5b24406bdc1bac781150ef
+    m_Address: Assets/4.Sprites/Arcessorys/Accessory_Rare5.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 164c3c8209b5d4268810476b218c2ff4
+    m_Address: Assets/4.Sprites/Armors/Armor_Common2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 16b58eae9ea89415f92c700f2b7a4a01
+    m_Address: Assets/4.Sprites/Weapons/Sword_Common4.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1eb0e0a92d1e947afb5e7c151a1c4b92
+    m_Address: Assets/4.Sprites/Arcessorys/Accessory_Epic3.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1eb5d88658c34495180fe540ce06d37c
+    m_Address: Assets/4.Sprites/Weapons/Sword_Legendary5.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2137d98d4c66444fcb1ddd6d93113fc3
+    m_Address: Assets/4.Sprites/Arcessorys/Accessory_Rare1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 25cc219f0f5b942b9a4cb8ef05b0b280
+    m_Address: Assets/4.Sprites/Armors/Armor_Legendary5.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 28cab715ab1f243f5bc8ac56b11d29b3
+    m_Address: Assets/4.Sprites/Weapons/Sword_Common5.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2d4622e52ebd44f648992e727ed94baa
+    m_Address: Assets/4.Sprites/Weapons/Sword_Epic3.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3552d99ffbe0a44fa9bdecfe068d83db
+    m_Address: Assets/4.Sprites/Armors/Armor_Legendary1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 367fef7c7a0cf8b4e8fc2020259965e9
+    m_Address: Assets/4.Sprites/StageBackground/3_Graveyard.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3789900a707f54d7fa43a49fbb898bfc
+    m_Address: Assets/4.Sprites/Weapons/Sword_Common1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 37b1d829bc3f54ab0a0712720ab7cf35
+    m_Address: Assets/4.Sprites/Weapons/Sword_Rare5.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3e6408ebebc714d40a5d5f336ce4b6f2
+    m_Address: Assets/4.Sprites/Arcessorys/Accessory_Legendary4.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3eef0c8f36d094078b8fb31c10733de4
+    m_Address: Assets/4.Sprites/Arcessorys/Accessory_Common5.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3f7e371f7cf924667920c98c7e7c658b
+    m_Address: Assets/4.Sprites/Arcessorys/Accessory_Epic1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 406c543cc52bb4f8494f7203c3bd7a25
+    m_Address: Assets/4.Sprites/Armors/Armor_Epic3.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 429517ea1b1287a47952cd5cd8261d74
+    m_Address: Assets/4.Sprites/StageBackground/4_Snow.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 481ec72393bfc4bba90e2a6b6695d682
+    m_Address: Assets/4.Sprites/Arcessorys/Accessory_Common3.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4afb3724ad0ee4dde90e2b7f7e2816f7
+    m_Address: Assets/4.Sprites/Arcessorys/Accessory_Common1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 50417e03c0157433faec74c6e29872c6
+    m_Address: Assets/4.Sprites/Arcessorys/Accessory_Common4.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 52467ad0c90bb4cfaa4edaa49b5ea5d3
+    m_Address: Assets/4.Sprites/Armors/Armor_Common3.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5a99f76b789464b07b9f88d1121fba80
+    m_Address: Assets/4.Sprites/Weapons/Sword_Legendary4.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5fdbe1dcd8f8c4d918c998f7df07ef3e
+    m_Address: Assets/4.Sprites/Armors/Armor_Epic2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6e1a42518ff3742f0bf626541dfc0d6b
+    m_Address: Assets/4.Sprites/Armors/Armor_Common4.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6e9e1048a52864beba159f991a3f7f46
+    m_Address: Assets/4.Sprites/Weapons/Sword_Epic5.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 741038a6cabe34fe0a9202a669ed65d9
+    m_Address: Assets/4.Sprites/Armors/Armor_Rare4.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 747837f962a9b467985876189b56df72
+    m_Address: Assets/4.Sprites/Arcessorys/Accessory_Epic4.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 77df9309f8e8f4aa0b33a3370cad608d
+    m_Address: Assets/4.Sprites/Weapons/Sword_Epic4.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7ecb537780811432fba7f3ea9ee010f6
+    m_Address: Assets/4.Sprites/Weapons/Sword_Epic2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7f2dfd408a2ef42eca3f51d54ee11ba6
+    m_Address: Assets/4.Sprites/Armors/Armor_Rare1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 832ad33853ef04361acaf10b1333f783
+    m_Address: Assets/4.Sprites/Armors/Armor_Rare2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 882564a96b43d4639a281d0c442d7583
+    m_Address: Assets/4.Sprites/Armors/Armor_Epic1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8b01ce860bfd84eebbfb8de5a11b460f
+    m_Address: Assets/4.Sprites/Arcessorys/Accessory_Rare2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8e3ac7f465b9d47f8bcf319c8e80a96b
+    m_Address: Assets/4.Sprites/Armors/Armor_Legendary2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8e4330c0a10a144d2bc28603cd2efc49
+    m_Address: Assets/4.Sprites/Armors/Armor_Epic4.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 92db7c803e11e4579ac84dbce5f26870
+    m_Address: Assets/4.Sprites/Weapons/Sword_Legendary1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9313fe94fef1d444e8b870266c8e2375
+    m_Address: Assets/4.Sprites/Arcessorys/Accessory_Epic5.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9560ce633ba004f049d9f78d7e744859
+    m_Address: Assets/4.Sprites/Weapons/Sword_Common2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9d1a3e0bc36dfc9468a738d92b6e92d4
+    m_Address: Assets/4.Sprites/StageBackground/2_Desert.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aac2cd4add0e34911a6cc20c22028758
+    m_Address: Assets/4.Sprites/Arcessorys/Accessory_Rare4.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b132893980e3640478a5d10dadb2dc45
+    m_Address: Assets/4.Sprites/Armors/Armor_Rare5.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b44fec3898b6c496f803dc8dbdc350b2
+    m_Address: Assets/4.Sprites/Armors/Armor_Epic5.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b6722f13eaeec4136a0d94e751f0b1db
+    m_Address: Assets/4.Sprites/Weapons/Sword_Common3.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b6a1e988afa0a41e194733aa52919ef9
+    m_Address: Assets/4.Sprites/Armors/Armor_Rare3.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bb9a5ca3274b442beb9a6d9880e034cf
+    m_Address: Assets/4.Sprites/Armors/Armor_Legendary4.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bbc0358ff108b4a2fb95a24c123a8eb0
+    m_Address: Assets/4.Sprites/Arcessorys/Accessory_Legendary1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bbe0741245aed4477afa4e7c45d17d1f
+    m_Address: Assets/4.Sprites/Weapons/Sword_Rare1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bc233c8b071004b488ed7d809e554313
+    m_Address: Assets/4.Sprites/Armors/Armor_Common1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bc252f1d8c3f043d8a8557e4f873120d
+    m_Address: Assets/4.Sprites/Weapons/Sword_Legendary3.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bd2cf2b6864e7457f9ff12df8f96a477
+    m_Address: Assets/4.Sprites/Weapons/Sword_Legendary2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c08be3d544b144937b62be02d666f465
+    m_Address: Assets/4.Sprites/Weapons/Sword_Rare2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: caa1bceafee5545f3b2ed01cbf030c83
+    m_Address: Assets/4.Sprites/Weapons/Sword_Epic1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cbcbbeaf1cc164c1da990aac2b1fa898
+    m_Address: Assets/4.Sprites/Armors/Armor_Legendary3.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d93a81718aeaa471e832afa525ec1128
+    m_Address: Assets/4.Sprites/Armors/Armor_Common5.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e4d1eae0be466462d826d66049d0fb61
+    m_Address: Assets/4.Sprites/Weapons/Sword_Rare4.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e7ad7b0dc154b4cdb9b426ed79affbd0
+    m_Address: Assets/4.Sprites/Arcessorys/Accessory_Legendary3.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f41287e9ee4db42a092821c0bd9dd437
+    m_Address: Assets/4.Sprites/Arcessorys/Accessory_Epic2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f48c82ce770824165a4b940a85133b99
+    m_Address: Assets/4.Sprites/Arcessorys/Accessory_Rare3.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fa79e648f83b24125bb534dc593740e0
+    m_Address: Assets/4.Sprites/Weapons/Sword_Rare3.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fc1ad6c9a638848888ea3abe42d11557
+    m_Address: Assets/4.Sprites/Arcessorys/Accessory_Legendary2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fd00b29c3d9553d4c8e0ab3b572af409
+    m_Address: Assets/4.Sprites/StageBackground/1_Mountain.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fd84ebdefbec94423913216d2e774853
+    m_Address: Assets/4.Sprites/Arcessorys/Accessory_Common2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 009803a58dabf5c4baba03c3d54c1cc9, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: e3d79a49009493443a37e7ecfa710f80, type: 2}
+    - {fileID: 11400000, guid: 0b67426b822918f47b2ef6f8fa52586d, type: 2}

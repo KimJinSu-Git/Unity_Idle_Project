@@ -29,3 +29,4 @@ MonoBehaviour:
     dropRate: 0.1
   - itemSO: {fileID: 11400000, guid: 9aa72c1b77905a845b4243ca03234020, type: 2}
     dropRate: 0.1
+  prefabAddress: Assets/8.Prefabs/Character/MobGoblin.prefab

@@ -18,3 +18,5 @@ MonoBehaviour:
   baseDamage: 50
   goldReward: 250
   expReward: 250
+  dropTable: []
+  prefabAddress: Assets/8.Prefabs/Character/MobGoblin.prefab

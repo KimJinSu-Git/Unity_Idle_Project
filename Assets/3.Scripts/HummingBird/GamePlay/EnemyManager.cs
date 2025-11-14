@@ -34,6 +34,8 @@ namespace Bird.Idle.Gameplay
         private List<MonsterController> activeMonsters = new List<MonsterController>();
         private int monsterInstanceCounter = 0;
         private MonsterController frontMonster;
+        
+        private bool isDataLoaded = false;
 
         private void Awake()
         {
@@ -64,6 +66,7 @@ namespace Bird.Idle.Gameplay
                     loadedMonsterDictionary.Add(monsterData.monsterID, monsterData);
                 }
                 Debug.Log($"[EnemyManager] MonsterData Addressables 로드 완료! (총 {loadedMonsterDictionary.Count}종)");
+                isDataLoaded = true;
             }
             else
             {
@@ -73,6 +76,8 @@ namespace Bird.Idle.Gameplay
 
         private void Update()
         {
+            if (!isDataLoaded) return;
+            
             currentSpawnTime += Time.deltaTime;
 
             if (currentMonsterCount < maxMonsterCount && currentSpawnTime >= spawnInterval)
@@ -129,7 +134,7 @@ namespace Bird.Idle.Gameplay
             
             if (loadedMonsterDictionary.TryGetValue(monsterIdToSpawn, out MonsterData monsterData))
             {
-                SpawnMonsterFromPrefab(monsterData);
+                SpawnMonsterFromAddress(monsterData);
             }
             else
             {
@@ -140,15 +145,15 @@ namespace Bird.Idle.Gameplay
         /// <summary>
         /// Addressables를 사용하여 몬스터 프리팹을 로드
         /// </summary>
-        private async void SpawnMonsterFromPrefab(MonsterData monsterData)
+        private async void SpawnMonsterFromAddress(MonsterData monsterData)
         {
-            if (monsterData.prefabReference == null || !monsterData.prefabReference.IsValid())
+            if (string.IsNullOrEmpty(monsterData.prefabAddress))
             {
-                Debug.LogError($"[EnemyManager] {monsterData.monsterName} 프리팹 참조가 유효하지 않습니다.");
+                Debug.LogError($"[EnemyManager] {monsterData.monsterName} 프리팹 주소(string)가 비어있습니다.");
                 return;
             }
-
-            AsyncOperationHandle<GameObject> handle = monsterData.prefabReference.InstantiateAsync(spawnPosition, Quaternion.identity);
+            
+            AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(monsterData.prefabAddress, spawnPosition, Quaternion.identity);
         
             await handle.Task;
         
