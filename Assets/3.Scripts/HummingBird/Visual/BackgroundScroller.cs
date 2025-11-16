@@ -57,7 +57,7 @@ namespace Bird.Idle.Visual
 
         private void Update()
         {
-            if (!GameManager.Instance.IsBattleActive) return;
+            if (battleManager.PlayerBattleMode) return;
             
             if (isMoving)
             {

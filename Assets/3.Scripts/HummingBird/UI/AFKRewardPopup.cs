@@ -45,11 +45,6 @@ namespace Bird.Idle.UI
         private void OnConfirmButtonClicked()
         {
             gameObject.SetActive(false);
-
-            if (GameManager.Instance != null)
-            {
-                GameManager.Instance.ResumeGameAfterAFK();
-            }
         }
     }
 }

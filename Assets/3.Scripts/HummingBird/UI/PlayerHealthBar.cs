@@ -45,7 +45,7 @@ namespace Bird.Idle.UI
         {
             if (characterManager == null || healthSlider == null) return;
             
-            float current = characterManager.GetCurrentHealth();
+            float current = characterManager.GetCurrentHealth;
             float max = characterManager.MaxHealth;
             
             healthSlider.maxValue = max;

@@ -49,6 +49,8 @@ namespace Bird.Idle.Gameplay
             currentHealth = maxHealth;
             
             gameObject.name = $"{MonsterData.monsterName}_{InstanceID}";
+            
+            OnHealthChanged?.Invoke();
         }
         
         private void Update()
@@ -79,9 +81,6 @@ namespace Bird.Idle.Gameplay
             
             isMoving = false;
             currentlyAttacking = true;
-            
-            // TODO: 이동 애니메이션 멈춤
-            // TODO: 공격 애니메이션 시작
             
             StartCoroutine(AttackLoop());
         }

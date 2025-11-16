@@ -662,4 +662,5 @@ MonoBehaviour:
   MonsterData: {fileID: 0}
   moveSpeed: 1
   attackInterval: 1.5
+  healthBar: {fileID: 2783908304613277955}
   AttackRange: 0.5

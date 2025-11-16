@@ -15,9 +15,6 @@ namespace Bird.Idle.Core
     {
         public static GameManager Instance { get; private set; }
 
-        private bool isBattleActive = false;
-        public bool IsBattleActive => isBattleActive;
-
         private BattleManager battleManager;
 
         private void Awake()
@@ -29,8 +26,6 @@ namespace Bird.Idle.Core
             }
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            
-            isBattleActive = false;
             
             battleManager = BattleManager.Instance;
             
@@ -130,26 +125,6 @@ namespace Bird.Idle.Core
         private void CalculateIdleReward(GameSaveData data)
         {
             DataManager.Instance.CalculateIdleReward();
-        }
-
-        /// <summary>
-        /// 게임의 전투 활성화 상태를 변경
-        /// </summary>
-        public void SetBattleState(bool active)
-        {
-            isBattleActive = active;
-            if (battleManager != null)
-            {
-                battleManager.SetBattleActive(active); 
-            }
-            Debug.Log($"[GameManager] 전투 상태 변경: {active}");
-        }
-        
-        // TODO: 방치 보상 팝업 닫히면 호출할 메서드
-        public void ResumeGameAfterAFK()
-        {
-            SetBattleState(true);
-            Debug.Log("[GameManager] 방치 보상 완료, 전투 재개.");
         }
 
         private void OnApplicationQuit()

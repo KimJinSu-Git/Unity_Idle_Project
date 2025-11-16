@@ -12,17 +12,18 @@ namespace Bird.Idle.Gameplay
         public static BattleManager Instance { get; private set; }
 
         [Header("Player Attack Settings")]
-        [SerializeField] private float attackInterval = 3f;
+        [SerializeField] private float attackInterval = 1f;
         private float currentAttackCooldown;
 
         private CharacterManager characterManager;
         private EnemyManager enemyManager;
         
-        private bool isBattleActiveInternal = false;
+        private bool playerBattleMode = false;
         
         public Action<bool> OnBattleStateChanged;
 
         public float GetAttackInterval => attackInterval;
+        public bool PlayerBattleMode => playerBattleMode;
         
         private void Awake()
         {
@@ -42,11 +43,10 @@ namespace Bird.Idle.Gameplay
 
         private void Update()
         {
-            // 상태가 true일 때만 전투 실행
-            if (!isBattleActiveInternal) return;
-            
             currentAttackCooldown -= Time.deltaTime;
-
+            
+            if (!playerBattleMode) return;
+            
             if (currentAttackCooldown <= 0f && CharacterManager.Instance.IsAlive)
             {
                 TryAutoAttack();
@@ -59,9 +59,9 @@ namespace Bird.Idle.Gameplay
         /// </summary>
         public void SetBattleActive(bool active)
         {
-            if (isBattleActiveInternal == active) return;
+            if (playerBattleMode == active) return;
             
-            isBattleActiveInternal = active;
+            playerBattleMode = active;
             OnBattleStateChanged?.Invoke(active); 
             Debug.Log($"[BattleManager] 전투 상태 변경: {active}");
         }
@@ -79,9 +79,6 @@ namespace Bird.Idle.Gameplay
 
             // TODO: 필드의 몬스터 프리팹 리스트를 순회하며 공격하도록 변경(현재는 임시 로직)
             float damage = characterManager.AttackPower;
-            Debug.Log(characterManager.AttackPower);
-            
-            // enemyManager.KillMonster(); 
             enemyManager.ApplyDamageToCurrentMonster(damage);
         }
     }

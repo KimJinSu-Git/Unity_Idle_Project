@@ -128,13 +128,6 @@ namespace Bird.Idle.Core
                     popup.Show(idleDuration, rewardedGold);
                 }
             }
-            else
-            {
-                if (GameManager.Instance != null)
-                {
-                    GameManager.Instance.ResumeGameAfterAFK();
-                }
-            }
             
             lastExitTime = DateTime.UtcNow;
         }

@@ -5,6 +5,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Bird.Idle.Core;
 using Bird.Idle.Data;
+using Bird.Idle.Visual;
 
 namespace Bird.Idle.Gameplay
 {
@@ -100,10 +101,12 @@ namespace Bird.Idle.Gameplay
                 BattleManager.Instance.SetBattleActive(false);
                 return;
             }
-
-            float distanceToPlayer = Vector3.Distance(frontMonster.transform.position, Vector3.zero);
             
-            if (distanceToPlayer <= frontMonster.AttackRange)
+            Vector3 targetPosition = PlayerController.PlayerTransform.position;
+
+            float distanceToPlayer = Vector3.Distance(frontMonster.transform.position, targetPosition);
+            
+            if (distanceToPlayer <= CharacterManager.Instance.PlayerAttackRange)
             {
                 BattleManager.Instance.SetBattleActive(true);
             }

@@ -13435,6 +13435,7 @@ MonoBehaviour:
   characterLevel: 1
   baseAttackPower: 10
   baseMaxHealth: 100
+  playerAttackRange: 1
   levelUpCostDataReference:
     m_AssetGUID: 9aa3fbfb9526d4d40bb48834f9ba5d79
     m_SubObjectName: 
@@ -51560,7 +51561,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e132ab2dc7fee64dbcd219e3b962806, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackInterval: 3
+  attackInterval: 1
 --- !u!114 &1633579766
 MonoBehaviour:
   m_ObjectHideFlags: 0

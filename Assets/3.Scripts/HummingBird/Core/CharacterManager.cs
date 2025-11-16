@@ -21,6 +21,7 @@ namespace Bird.Idle.Core
         [Header("Battle Stats")]
         [SerializeField] private float baseAttackPower = 10f; // 기본 공격력
         [SerializeField] private float baseMaxHealth = 100f; // 최대 체력
+        [SerializeField] private float playerAttackRange = 1.0f;
         
         [Header("Data References")]
         [SerializeField] private AssetReferenceT<LevelUpCostData> levelUpCostDataReference;
@@ -32,15 +33,15 @@ namespace Bird.Idle.Core
         private float permanentAttackBonus = 0f;
         private float permanentHealthBonus = 0f;
 
-        public float GetCurrentHealth() => currentHealth;
+        public float GetCurrentHealth => currentHealth;
         public int CharacterLevel => characterLevel;
+        public float PlayerAttackRange => playerAttackRange;
         public bool IsAlive => currentHealth > 0;
         public float AttackPower 
         {
             get 
             {
                 float bonus = 0;
-                // 장비 보너스 추가
                 if (InventoryManager.Instance != null)
                 {
                     bonus = InventoryManager.Instance.GetTotalEquipmentBonus().totalAttack;
@@ -172,9 +173,6 @@ namespace Bird.Idle.Core
         public void ApplyEquipmentStats()
         {
             OnStatsRecalculated?.Invoke(); 
-    
-            // TODO :: UI 로직: StatsDisplay에서 이 이벤트를 구독하여 AttackText, HealthText를 갱신
-            Debug.Log($"[CharacterManager] 장비 스탯 재계산 완료. 최종 ATK: {AttackPower}");
         }
         
         public void ApplyBaseStatUpgrade(float attackIncrease, float healthIncrease)
@@ -183,8 +181,6 @@ namespace Bird.Idle.Core
             permanentHealthBonus += healthIncrease;
     
             OnStatsRecalculated?.Invoke(); 
-    
-            Debug.Log($"[CharacterManager] 기본 스탯 영구 증가! ATK: {permanentAttackBonus:F2}");
         }
         
         /// <summary>
