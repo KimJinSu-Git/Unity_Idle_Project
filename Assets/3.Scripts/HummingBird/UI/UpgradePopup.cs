@@ -46,7 +46,7 @@ namespace Bird.Idle.UI
                 statBonusText.text = $"ATK: +{nextAtk:F1}\nHP: +{nextHp:F1}";
 
                 long totalGoldCost = GOLD_COST_PER_LEVEL * (entry.collectionLevel + 1); // 레벨에 따라 비용 증가 가정
-                costText.text = $"비용: {EquipmentCollectionManager.Instance.UpgradeCostCount} number / {totalGoldCost:N0} Gold";
+                costText.text = $"Cost: {EquipmentCollectionManager.Instance.UpgradeCostCount} number / {totalGoldCost:N0} Gold";
                 
                 long currentGold = CurrencyManager.Instance.GetAmount(CurrencyType.Gold);
                 bool canAfford = (entry.count >= EquipmentCollectionManager.Instance.UpgradeCostCount) && (currentGold >= totalGoldCost);
