@@ -45,8 +45,11 @@ namespace Bird.Idle.UI
             
             bool isEquipped = InventoryManager.Instance.IsItemEquipped(itemSO.type, itemSO.equipID);
             SetEquippedStatus(isEquipped);
-    
-            slotButton.interactable = count >= EquipmentCollectionManager.Instance.UpgradeCostCount;
+
+            if (slotButton.interactable == false)
+            {
+                slotButton.interactable = true;
+            }
         }
         
         /// <summary>
