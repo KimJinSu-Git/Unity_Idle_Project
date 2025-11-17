@@ -27,6 +27,7 @@ namespace Bird.Idle.Gameplay
         
         [Header("UI References")]
         [SerializeField] private UpgradePopup upgradePopupPrefab;
+        [SerializeField] private Transform upgradePopupTransform;
         
         private UpgradePopup activePopupInstance;
         
@@ -154,25 +155,6 @@ namespace Bird.Idle.Gameplay
             }
             Debug.Log($"[Collection] {item.equipName} (Grade:{item.grade}) 자동 판매됨.");
         }
-
-        private void CheckForUpgrade(CollectionEntry entry, EquipmentData item)
-        {
-            while (entry.count >= upgradeCostCount)
-            {
-                entry.count -= upgradeCostCount;
-                entry.collectionLevel++;
-
-                if (CharacterManager.Instance != null)
-                {
-                    float upgradeAtk = item.attackBonus * 0.05f;
-                    float upgradeHp = item.healthBonus * 0.05f;
-                    CharacterManager.Instance.ApplyBaseStatUpgrade(upgradeAtk, upgradeHp);
-                }
-
-                Debug.Log($"[Collection] {item.equipName} 컬렉션 레벨 업! Lv.{entry.collectionLevel}");
-                OnCollectionChanged?.Invoke(); 
-            }
-        }
         
         public void ShowUpgradePopup(int equipID)
         {
@@ -180,8 +162,7 @@ namespace Bird.Idle.Gameplay
 
             if (activePopupInstance == null)
             {
-                activePopupInstance = Instantiate(upgradePopupPrefab);
-                activePopupInstance.transform.SetParent(GameObject.FindObjectOfType<Canvas>().transform, false); 
+                activePopupInstance = Instantiate(upgradePopupPrefab, upgradePopupTransform, false);
             }
 
             activePopupInstance.Show(entry); 
