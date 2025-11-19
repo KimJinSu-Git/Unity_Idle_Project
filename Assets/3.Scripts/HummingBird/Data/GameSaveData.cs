@@ -20,6 +20,8 @@ namespace Bird.Idle.Data
         public int CurrentStageID; 
         public int CurrentKillCount;
         
+        public List<QuestProgress> QuestProgressList;
+        
         public List<CollectionEntry> CollectionEntries;
         
         public EquipSaveData EquippedItems; 
@@ -34,6 +36,7 @@ namespace Bird.Idle.Data
             CurrentStageID = 1; 
             CurrentKillCount = 0;
             
+            QuestProgressList = new List<QuestProgress>();
             CollectionEntries = new List<CollectionEntry>();
             EquippedItems = new EquipSaveData();
             SlotLevels = new Dictionary<EquipmentType, int>();
@@ -46,5 +49,14 @@ namespace Bird.Idle.Data
         public int WeaponID;
         public int ArmorID;
         public int AccessoryID;
+    }
+    
+    [Serializable]
+    public class QuestProgress
+    {
+        public int questID;
+        public long currentValue;    // 현재까지 누적된 값
+        public int rewardsClaimed;   // 수령 가능한 보상 횟수
+        public bool isCompleted;     // 일일/업적 퀘스트의 완료 여부
     }
 }

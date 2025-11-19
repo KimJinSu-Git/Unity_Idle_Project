@@ -30,6 +30,7 @@ namespace Bird.Idle.Gameplay
         
         public Action<int, int, int> OnStageProgressChanged;
         public Action<int> OnStageChanged;
+        public Action OnMonsterKilledGlobal;
         
         public Task WaitForDataLoad() => dataLoadTCS.Task;
         public int CurrentStageID => currentStageID;
@@ -133,7 +134,7 @@ namespace Bird.Idle.Gameplay
             if (currentStageData == null) return;
 
             currentKillCount++;
-
+            OnMonsterKilledGlobal?.Invoke();
             OnStageProgressChanged?.Invoke(currentKillCount, currentStageData.MonsterKillCountRequired, currentStageID);
             
             if (currentKillCount >= currentStageData.MonsterKillCountRequired)
