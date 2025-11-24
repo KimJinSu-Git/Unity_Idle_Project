@@ -6,16 +6,25 @@ namespace Bird.Idle.Data
     [Serializable]
     public class GameSaveData
     {
-        public long LastExitTimeTicks;
+        public long LastExitTimeTicks; // 마지막 접속 시간
         
-        public long GoldAmount;
-        public long GemAmount;
+        public long GoldAmount; // Gold 재화
+        public long GemAmount; // Gem(보석) 재화
         
-        public int PlayerLevel;
-        public float BaseAttackPower;
-        public float BaseMaxHealth;
-        public float PermanentAttackBonus;
-        public float PermanentHealthBonus;
+        public int PlayerLevel; // Player 캐릭터 레벨
+        public float BaseAttackPower; // 기본 공격력
+        public float BaseMaxHealth; // 기본 체력
+        public float PermanentAttackBonus; // 추가된 공격력
+        public float PermanentHealthBonus; // 추가된 체력
+        
+        public long CurrentEXP; // 현재 Exp
+        public int AvailableStatPoints; // Stat Point
+        
+        // 임시 스탯들
+        public int Strength; // 힘
+        public int Dexterity; // 민첩
+        public int Intelligence; // 지능
+        public int Luck; // 행운
         
         public int CurrentStageID; 
         public int CurrentKillCount;
@@ -35,6 +44,13 @@ namespace Bird.Idle.Data
             BaseMaxHealth = 100f;
             CurrentStageID = 1; 
             CurrentKillCount = 0;
+            
+            CurrentEXP = 0;
+            AvailableStatPoints = 0;
+            Strength = 1;
+            Dexterity = 1;
+            Intelligence = 1;
+            Luck = 1;
             
             QuestProgressList = new List<QuestProgress>();
             CollectionEntries = new List<CollectionEntry>();

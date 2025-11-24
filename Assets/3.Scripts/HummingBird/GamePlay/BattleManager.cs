@@ -18,7 +18,7 @@ namespace Bird.Idle.Gameplay
         private CharacterManager characterManager;
         private EnemyManager enemyManager;
         
-        private bool playerBattleMode = false;
+        private bool playerBattleMode = true;
         
         public Action<bool> OnBattleStateChanged;
 
@@ -55,7 +55,7 @@ namespace Bird.Idle.Gameplay
         }
         
         /// <summary>
-        /// GameManager로부터 호출되어 전투 상태를 설정
+        /// 전투 상태를 설정
         /// </summary>
         public void SetBattleActive(bool active)
         {

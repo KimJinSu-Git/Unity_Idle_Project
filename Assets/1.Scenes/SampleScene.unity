@@ -12045,8 +12045,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterLevel: 1
-  baseAttackPower: 10
-  baseMaxHealth: 100
   playerAttackRange: 1
   levelUpCostDataReference:
     m_AssetGUID: 9aa3fbfb9526d4d40bb48834f9ba5d79
@@ -27827,7 +27825,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1015832468
 RectTransform:
   m_ObjectHideFlags: 0
@@ -35753,7 +35751,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1293312884
 RectTransform:
   m_ObjectHideFlags: 0

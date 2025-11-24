@@ -213,11 +213,16 @@ namespace Bird.Idle.Gameplay
             
             CurrencyManager.Instance.ChangeCurrency(CurrencyType.Gold, goldReward);
             
+            if (CharacterManager.Instance != null)
+            {
+                CharacterManager.Instance.GainExperience(expReward);
+            }
+            
             DropEquipment(monsterData.dropTable);
             
             RemoveDefeatedMonster(monsterData.monsterID); 
         
-            Debug.Log($"[EnemyManager] 몬스터 처치 완료.");
+            Debug.Log($"[EnemyManager] 몬스터 처치 완료. EXP: {expReward}");
         }
         
         private void RemoveDefeatedMonster(int monsterID)

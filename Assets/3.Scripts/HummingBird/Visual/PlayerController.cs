@@ -63,6 +63,8 @@ namespace Bird.Idle.Visual
         /// </summary>
         public void UpdateVisualState(bool isFighting)
         {
+            Debug.Log("UpdateVisualState: " + isFighting);
+            Debug.Log($"characterManager: {characterManager} ||| charaterManager.IsAlive: {characterManager.IsAlive}");
             if (characterManager != null && !characterManager.IsAlive) return;
 
             if (isFighting)

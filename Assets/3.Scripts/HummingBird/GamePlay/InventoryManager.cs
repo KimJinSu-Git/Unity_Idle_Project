@@ -148,15 +148,35 @@ namespace Bird.Idle.Gameplay
         /// </summary>
         public (float totalAttack, float totalHealth) GetTotalEquipmentBonus()
         {
+            var fullStats = GetTotalEquipmentBonusExtended();
+            return (fullStats.attack, fullStats.health);
+        }
+        
+        public (float attack, float health, float critChance, float critDamage, float attackSpeed, float defensivePower, float magicResistance, float healthRegen, float evasion, float accuracy, float luckBonus) GetTotalEquipmentBonusExtended()
+        {
             float totalAttack = 0;
             float totalHealth = 0;
+            float totalCritChance = 0;
+            float totalCritDamage = 0;
+            float totalAttackSpeed = 0;
+            float totalDefensivePower = 0;
+            float totalMagicResistance = 0;
+            float totalHealthRegen = 0;
+            float totalEvasion = 0;
+            float totalAccuracy = 0;
+            float totalLuckBonus = 0;
 
             foreach (var item in equippedItems.Values)
             {
                 totalAttack += item.attackBonus;
                 totalHealth += item.healthBonus;
+            
+                // ItemData에 CritChance, CritDamage, AttackSpeed 등 필드 필요
+                // 임시로 0 반환.
+                // 실제 구현 시 EquipmentData에 해당 Stat 필드를 추가해야 합니다.
             }
-            return (totalAttack, totalHealth); // 반환 형식에서 이름을 지정했기 때문에, 컴파일러는 이 값들이 그 이름에 해당한다고 유추.
+
+            return (totalAttack, totalHealth, totalCritChance, totalCritDamage, totalAttackSpeed, totalDefensivePower, totalMagicResistance, totalHealthRegen, totalEvasion, totalAccuracy, totalLuckBonus);
         }
     }
 }

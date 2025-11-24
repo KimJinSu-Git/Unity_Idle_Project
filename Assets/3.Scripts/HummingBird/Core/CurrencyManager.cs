@@ -41,8 +41,9 @@ namespace Bird.Idle.Core
         /// <summary>
         /// 데이터 로드 시 골드 데이터를 초기화
         /// </summary>
-        public void InitializeGold(long amount) 
+        public void InitializeGold(long amount)
         {
+            amount = 500000;
             currencyAmounts[CurrencyType.Gold] = amount;
             Debug.Log($"[CurrencyManager] 골드 로드 완료 및 설정: {amount:N0}");
             

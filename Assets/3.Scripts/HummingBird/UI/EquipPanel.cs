@@ -84,31 +84,31 @@ namespace Bird.Idle.UI
 
         private void OnLevelUpButtonClicked()
         {
-            if (characterManager.TryLevelUp())
-            {
-                // TODO :: 성공 시 추가할 내용
-            }
+            // if (characterManager.TryLevelUp())
+            // {
+            //     // TODO :: 성공 시 추가할 내용
+            // }
             
             RefreshLevelUI(characterManager.CharacterLevel); // UI 즉시 갱신
         }
         
         private void RefreshLevelUI(int currentLevel)
         {
-            currentLevelText.text = $"Lv. {currentLevel:N0}";
-
-            long goldCost = characterManager.GetLevelUpCost(currentLevel);
-            
-            if (goldCost == -1)
-            {
-                levelUpCostText.text = "MAX";
-                levelUpButton.interactable = false;
-                return;
-            }
-            
-            levelUpCostText.text = $"{goldCost:N0} Gold";
-            
-            bool canAfford = CurrencyManager.Instance.CanAfford(CurrencyType.Gold, goldCost);
-            levelUpButton.interactable = canAfford;
+            // currentLevelText.text = $"Lv. {currentLevel:N0}";
+            //
+            // long goldCost = characterManager.GetLevelUpCost(currentLevel);
+            //
+            // if (goldCost == -1)
+            // {
+            //     levelUpCostText.text = "MAX";
+            //     levelUpButton.interactable = false;
+            //     return;
+            // }
+            //
+            // levelUpCostText.text = $"{goldCost:N0} Gold";
+            //
+            // bool canAfford = CurrencyManager.Instance.CanAfford(CurrencyType.Gold, goldCost);
+            // levelUpButton.interactable = canAfford;
         }
         
         private void OnDisable()
