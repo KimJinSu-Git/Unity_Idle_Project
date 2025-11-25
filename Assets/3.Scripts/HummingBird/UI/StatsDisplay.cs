@@ -16,6 +16,17 @@ namespace Bird.Idle.UI
         [SerializeField] private TextMeshProUGUI attackText;
         [SerializeField] private TextMeshProUGUI healthText;
         
+        [Header("Core Stat Text")]
+        [SerializeField] private TextMeshProUGUI strengthText;
+        [SerializeField] private TextMeshProUGUI dexterityText;
+        [SerializeField] private TextMeshProUGUI intelligenceText;
+        [SerializeField] private TextMeshProUGUI luckText;
+        
+        [Header("Final Combat Stat Text")]
+        [SerializeField] private TextMeshProUGUI critChanceText;
+        [SerializeField] private TextMeshProUGUI critDamageText;
+        [SerializeField] private TextMeshProUGUI healthRegenText;
+        
         [Header("Stage Progress Slider")]
         [SerializeField] private Slider stageProgressSlider;
         [SerializeField] private TextMeshProUGUI stageProgressText;
@@ -87,9 +98,19 @@ namespace Bird.Idle.UI
         
         private void UpdateStatsTextOnly()
         {
-            attackText.text = $"Attack: {characterManager.AttackPower.ToString("F1")}";
-            healthText.text = $"Health: {characterManager.MaxHealth.ToString("F1")}";
+            strengthText.text = $"STR: {characterManager.Strength}";
+            dexterityText.text = $"DEX: {characterManager.Dexterity}";
+            intelligenceText.text = $"INT: {characterManager.Intelligence}";
+            luckText.text = $"LCK: {characterManager.Luck}";
+            
+            attackText.text = $"Attack: {characterManager.AttackPower:F1}";
+            healthText.text = $"Health: {characterManager.MaxHealth:F1}";
+            
+            critDamageText.text = $"CDMG: { (characterManager.PlayerStats.FinalCritDamage * 100):F0}%";
+            healthRegenText.text = $"Regen: {characterManager.PlayerStats.FinalHealthRegen:F2}/s";
     
+            // TODO: 나머지 Final Stat도 표시
+            
             Debug.Log("[StatsDisplay] 장비 변경으로 스탯 텍스트 UI 갱신 완료.");
         }
     }

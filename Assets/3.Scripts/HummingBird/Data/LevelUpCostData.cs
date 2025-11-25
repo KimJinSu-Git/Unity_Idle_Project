@@ -17,9 +17,7 @@ namespace Bird.Idle.Data
         public struct LevelEntry
         {
             public int Level;
-            public long RequiredGold; // 요구 골드 비용
-            public float AttackIncrease; // 해당 레벨에서 증가하는 기본 공격력
-            public float HealthIncrease; // 해당 레벨에서 증가하는 최대 체력
+            public long RequiredEXP;
         }
         
         /// <summary>

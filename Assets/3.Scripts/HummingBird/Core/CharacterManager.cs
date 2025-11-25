@@ -171,7 +171,7 @@ namespace Bird.Idle.Core
             
             if (nextEntry.Level == 0) return -1;
             
-            return nextEntry.RequiredGold; // TODO ::: 임시로 RequiredGold 필드를 EXP로 사용 나중에 RequiredEXP 추가해야함.
+            return nextEntry.RequiredEXP;
         }
         
         

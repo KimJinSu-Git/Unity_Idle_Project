@@ -51,9 +51,9 @@ namespace Bird.Editor
                     dataAsset.LevelTable.Add(new LevelUpCostData.LevelEntry
                     {
                         Level = level,
-                        RequiredGold = requiredGold,
-                        AttackIncrease = attackIncrease,
-                        HealthIncrease = healthIncrease
+                        // RequiredGold = requiredGold,
+                        // AttackIncrease = attackIncrease,
+                        // HealthIncrease = healthIncrease
                     });
                 }
             }
