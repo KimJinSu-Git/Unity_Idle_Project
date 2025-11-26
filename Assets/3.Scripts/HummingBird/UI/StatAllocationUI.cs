@@ -86,7 +86,7 @@ namespace Bird.Idle.UI
 
             if (characterManager.TryAllocateStatPoint(statName))
             {
-                // 성공 시 CharacterManager 내부에서 RecalculateAllFinalStats 및 OnStatsRecalculated 호출됨
+                
             }
             else
             {

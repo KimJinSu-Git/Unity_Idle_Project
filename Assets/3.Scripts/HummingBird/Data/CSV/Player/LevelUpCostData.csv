@@ -1,7 +1,7 @@
-﻿Level,RequiredGold,AttackIncrease,HealthIncrease
-1,0,0,0
-2,1000,5.5,50
-3,3000,7,75
-4,6000,9,100
-5,10000,12,120
-6,50000,20,300
+﻿Level,RequiredEXP
+1,0
+2,20
+3,40
+4,60
+5,80
+6,100

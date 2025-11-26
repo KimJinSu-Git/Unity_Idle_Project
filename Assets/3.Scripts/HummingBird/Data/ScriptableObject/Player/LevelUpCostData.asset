@@ -14,26 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LevelTable:
   - Level: 1
-    RequiredGold: 0
-    AttackIncrease: 0
-    HealthIncrease: 0
+    RequiredEXP: 0
   - Level: 2
-    RequiredGold: 1000
-    AttackIncrease: 5.5
-    HealthIncrease: 50
+    RequiredEXP: 20
   - Level: 3
-    RequiredGold: 3000
-    AttackIncrease: 7
-    HealthIncrease: 75
+    RequiredEXP: 40
   - Level: 4
-    RequiredGold: 6000
-    AttackIncrease: 9
-    HealthIncrease: 100
+    RequiredEXP: 60
   - Level: 5
-    RequiredGold: 10000
-    AttackIncrease: 12
-    HealthIncrease: 120
+    RequiredEXP: 80
   - Level: 6
-    RequiredGold: 50000
-    AttackIncrease: 20
-    HealthIncrease: 300
+    RequiredEXP: 100

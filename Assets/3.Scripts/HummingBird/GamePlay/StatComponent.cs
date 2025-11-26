@@ -25,7 +25,13 @@ namespace Bird.Idle.Gameplay
         public float FinalAttackSpeed { get; private set; } // 민첩 기반
         public float FinalHealthRegen { get; private set; } // 지능 기반
         
-        // TODO: DefensivePower, MagicResistance, Evasion, Accuracy, GoldDrop, ItemDrop, GemDrop 추가 필요
+        public float FinalDefensivePower { get; private set; }
+        public float FinalMagicResistance { get; private set; }
+        public float FinalEvasion { get; private set; } // % 단위 (0 ~ 1)
+        public float FinalAccuracy { get; private set; } // % 단위 (0 ~ 1)
+        public float FinalGoldDrop { get; private set; } // % 단위 (1.0 = 100% 드롭률 기준)
+        public float FinalItemDrop { get; private set; } 
+        public float FinalGemDrop { get; private set; }
 
         /// <summary>
         /// 모든 Core Stat과 외부 보너스를 합산하여 최종 전투 스탯을 계산
@@ -34,19 +40,24 @@ namespace Bird.Idle.Gameplay
             (float attack, float health, float critChance, float critDamage, float attackSpeed, float defensivePower, float magicResistance, float healthRegen, float evasion, float accuracy, float luckBonus) equipBonus,
             float permanentAtk, float permanentHp)
         {
-            // ATK: STR 기여 기본 공격력 7.5f에 초기스탯 1씩을 포함해서 2.5f 더하면 10f로 시작하도록 가정
             FinalAttackPower = (7.5f + (Strength * 2.5f)) + permanentAtk + equipBonus.attack;
-            
-            // MaxHealth: STR 기여
             FinalMaxHealth = (95f + (Strength * 5f)) + permanentHp + equipBonus.health;
-
-            // Crit Damage (%): STR/LCK 기여 // 기본 100%(1.0f) 기준
-            FinalCritDamage = 1.0f + (Strength * 0.05f) + (Luck * 0.05f) + equipBonus.critDamage; 
-            
-            // HealthRegen: INT 기여
             FinalHealthRegen = (Intelligence * 0.1f) + equipBonus.healthRegen;
 
-            // TODO: 나머지 Stat 계산 로직 추가
+            FinalCritDamage = 1.0f + (Strength * 0.05f) + (Luck * 0.05f) + equipBonus.critDamage; 
+            FinalCritChance = (Dexterity * 0.005f) + equipBonus.critChance; // DEX당 0.5% 증가 (0.0 ~ 1.0)
+            
+            FinalAttackSpeed = 1.0f + (Dexterity * 0.01f) + equipBonus.attackSpeed; // 기본 100% (1.0)
+            FinalDefensivePower = 0f + equipBonus.defensivePower; // 장비 위주
+            FinalMagicResistance = (Intelligence * 0.1f) + equipBonus.magicResistance; // INT가 저항에 기여
+            
+            FinalEvasion = (Dexterity * 0.001f) + equipBonus.evasion; // DEX당 0.1% 증가
+            FinalAccuracy = 1.0f + (Dexterity * 0.005f) + equipBonus.accuracy; // 기본 100% (1.0) + DEX 기여
+            
+            FinalGoldDrop = 1.0f + (Luck * 0.01f) + equipBonus.luckBonus; // 기본 100% (1.0) + LCK 기여
+            // FinalItemDrop = 0.01f + (Luck * 0.0005f) + equipBonus.itemDrop;
+            // FinalGemDrop = 0.0001f + (Luck * 0.00005f) + equipBonus.gemDrop; 
+            
         }
 
         /// <summary>

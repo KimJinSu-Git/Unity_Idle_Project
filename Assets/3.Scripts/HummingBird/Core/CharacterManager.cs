@@ -55,38 +55,6 @@ namespace Bird.Idle.Core
         public int CharacterLevel => characterLevel;
         public float PlayerAttackRange => playerAttackRange;
         public bool IsAlive => currentHealth > 0;
-        // public float AttackPower 
-        // {
-        //     get 
-        //     {
-        //         // STR 당 2.5 ATK
-        //         float baseAtk = 7.5f + (float)strength * 2.5f;
-        //         
-        //         float equipmentBonus = 0;
-        //         if (InventoryManager.Instance != null)
-        //         {
-        //             equipmentBonus = InventoryManager.Instance.GetTotalEquipmentBonus().totalAttack;
-        //         }
-        //
-        //         return baseAtk + permanentAttackBonus + equipmentBonus;
-        //     }
-        // }
-        // public float MaxHealth 
-        // {
-        //     get 
-        //     {
-        //         float baseHp = 95f + (strength * 5f);
-        //         
-        //         float equipmentBonus = 0;
-        //         if (InventoryManager.Instance != null)
-        //         {
-        //             equipmentBonus = InventoryManager.Instance.GetTotalEquipmentBonus().totalHealth;
-        //         }
-        //         
-        //         // baseHp + 영구보너스 + 장비보너스
-        //         return baseHp + permanentHealthBonus + equipmentBonus;
-        //     }
-        // }
 
         public Action<int> OnLevelUp; // 레벨 업 이벤트 (레벨업 시 스탯 변경 이벤트)
         public Action OnStatsRecalculated; // 스탯 변경 이벤트(장비 장착/해제 시 UI 업데이트 용도)
@@ -145,9 +113,12 @@ namespace Bird.Idle.Core
             
             while (CheckForLevelUp())
             {
+                long requiredExp = GetRequiredEXP(characterLevel);
+        
+                currentEXP -= requiredExp;
+                
                 characterLevel++;
                 availableStatPoints++; // 레벨업 당 1포인트 지급
-                // TODO ::: 레벨업 시 경험치 필요량 차감 로직 추가
                 
                 OnLevelUp?.Invoke(characterLevel);
                 Debug.Log($"[CharacterManager] 레벨 업! Lv.{characterLevel}. 스탯 포인트 획득.");

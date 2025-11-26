@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine.UI;
 using Bird.Idle.Core;
 using Bird.Idle.Gameplay;
+using UnityEngine.Serialization;
 
 namespace Bird.Idle.UI
 {
@@ -13,23 +14,32 @@ namespace Bird.Idle.UI
     {
         [Header("Stat Text")]
         [SerializeField] private TextMeshProUGUI levelText;
-        [SerializeField] private TextMeshProUGUI attackText;
+        [SerializeField] private TextMeshProUGUI topAttackText;
+        [SerializeField] private TextMeshProUGUI panelAttackText;
         [SerializeField] private TextMeshProUGUI healthText;
-        
-        [Header("Core Stat Text")]
-        [SerializeField] private TextMeshProUGUI strengthText;
-        [SerializeField] private TextMeshProUGUI dexterityText;
-        [SerializeField] private TextMeshProUGUI intelligenceText;
-        [SerializeField] private TextMeshProUGUI luckText;
         
         [Header("Final Combat Stat Text")]
         [SerializeField] private TextMeshProUGUI critChanceText;
         [SerializeField] private TextMeshProUGUI critDamageText;
+        [SerializeField] private TextMeshProUGUI attackSpeedText;
+        [SerializeField] private TextMeshProUGUI defensivePowerText;
+        [SerializeField] private TextMeshProUGUI magicResistanceText;
         [SerializeField] private TextMeshProUGUI healthRegenText;
+        [SerializeField] private TextMeshProUGUI evasionText;
+        [SerializeField] private TextMeshProUGUI accuracyText;
+        [SerializeField] private TextMeshProUGUI skillDamageText;
+        [SerializeField] private TextMeshProUGUI skillCoolDownText;
+        [SerializeField] private TextMeshProUGUI goldDropText;
+        [SerializeField] private TextMeshProUGUI itemDropText;
+        [SerializeField] private TextMeshProUGUI gemDropText;
         
         [Header("Stage Progress Slider")]
         [SerializeField] private Slider stageProgressSlider;
         [SerializeField] private TextMeshProUGUI stageProgressText;
+        
+        [Header("Top Bars")]
+        [SerializeField] private Slider healthBar;
+        [SerializeField] private Slider expBar;
 
         private CharacterManager characterManager;
         private StageManager stageManager;
@@ -51,6 +61,7 @@ namespace Bird.Idle.UI
             {
                 characterManager.OnLevelUp += UpdateAllStatsUI;
                 characterManager.OnStatsRecalculated += UpdateStatsTextOnly;
+                characterManager.OnHealthChanged += UpdateHealthBar;
             }
             
             if (stageManager != null)
@@ -59,6 +70,7 @@ namespace Bird.Idle.UI
             }
             
             // UpdateAllStatsUI(characterManager.CharacterLevel);
+            UpdateHealthBar();
         }
 
         private void OnDisable()
@@ -67,11 +79,38 @@ namespace Bird.Idle.UI
             {
                 characterManager.OnLevelUp -= UpdateAllStatsUI;
                 characterManager.OnStatsRecalculated -= UpdateStatsTextOnly;
+                characterManager.OnHealthChanged -= UpdateHealthBar;
             }
             if (stageManager != null)
             {
                 stageManager.OnStageProgressChanged -= UpdateStageProgress;
             }
+        }
+        
+        public void UpdateHealthBar()
+        {
+            if (healthBar == null) return;
+            
+            healthBar.maxValue = characterManager.MaxHealth;
+            healthBar.value = characterManager.GetCurrentHealth; 
+        }
+        
+        private void UpdateExpBar(int level)
+        {
+            if (expBar == null) return;
+            
+            long requiredExp = characterManager.GetRequiredEXP(level);
+            long currentExp = characterManager.CurrentEXP;
+            
+            if (requiredExp == -1) // 최대 레벨
+            {
+                expBar.maxValue = 1f;
+                expBar.value = 1f;
+                return;
+            }
+            
+            expBar.maxValue = (float)requiredExp;
+            expBar.value = (float)currentExp;
         }
         
         public void UpdateStageProgress(int currentKills, int requiredKills, int stageID)
@@ -88,28 +127,27 @@ namespace Bird.Idle.UI
         /// </summary>
         private void UpdateAllStatsUI(int level)
         {
-            levelText.text = $"Lv. {level.ToString("N0")}";
+            levelText.text = $"Lv. {level:N0}";
+
+            UpdateStatsTextOnly();
             
-            attackText.text = $"Attack: {characterManager.AttackPower.ToString("F1")}";
-            healthText.text = $"Health: {characterManager.MaxHealth.ToString("F1")}";
-            
-            Debug.Log($"[StatsDisplay] UI 업데이트 완료: Lv.{level}, ATK:{characterManager.AttackPower}");
+            UpdateExpBar(level);
         }
         
         private void UpdateStatsTextOnly()
         {
-            strengthText.text = $"STR: {characterManager.Strength}";
-            dexterityText.text = $"DEX: {characterManager.Dexterity}";
-            intelligenceText.text = $"INT: {characterManager.Intelligence}";
-            luckText.text = $"LCK: {characterManager.Luck}";
-            
-            attackText.text = $"Attack: {characterManager.AttackPower:F1}";
+            topAttackText.text = $"Attack: {characterManager.AttackPower:F1}";
+            panelAttackText.text = $"Attack: {characterManager.AttackPower:F1}";
             healthText.text = $"Health: {characterManager.MaxHealth:F1}";
-            
-            critDamageText.text = $"CDMG: { (characterManager.PlayerStats.FinalCritDamage * 100):F0}%";
+            critChanceText.text = $"Crit: {(characterManager.PlayerStats.FinalCritChance * 100):F1}%";
+            critDamageText.text = $"CDMG: {(characterManager.PlayerStats.FinalCritDamage * 100):F0}%";
+            attackSpeedText.text = $"ASPD: {characterManager.PlayerStats.FinalAttackSpeed:F2}x";
+            defensivePowerText.text = $"DEF: {characterManager.PlayerStats.FinalDefensivePower:F0}";
+            evasionText.text = $"Evasion: {(characterManager.PlayerStats.FinalEvasion * 100):F1}%";
+            accuracyText.text = $"Accuracy: {(characterManager.PlayerStats.FinalAccuracy * 100):F1}%";
             healthRegenText.text = $"Regen: {characterManager.PlayerStats.FinalHealthRegen:F2}/s";
     
-            // TODO: 나머지 Final Stat도 표시
+            goldDropText.text = $"Gold%: {((characterManager.PlayerStats.FinalGoldDrop - 1.0f) * 100):F1}%"; // 기본 100%를 제외한 증가분 표시
             
             Debug.Log("[StatsDisplay] 장비 변경으로 스탯 텍스트 UI 갱신 완료.");
         }

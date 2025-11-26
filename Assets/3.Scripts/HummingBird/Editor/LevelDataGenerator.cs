@@ -35,31 +35,26 @@ namespace Bird.Editor
             
             dataAsset.LevelTable.Clear();
 
-            // CSV 파일 읽기 및 파싱
             string[] lines = File.ReadAllLines(CSV_PATH);
-            // 첫 줄 건너뛰기(1부터 시작)
+            
             for (int i = 1; i < lines.Length; i++) 
             {
                 string[] values = lines[i].Split(',');
-                if (values.Length < 4) continue;
+                
+                if (values.Length < 2) continue; 
 
-                // 파싱 및 데이터 유효성 검사
-                if (int.TryParse(values[0], out int level) && long.TryParse(values[1], out long requiredGold) &&
-                    float.TryParse(values[2], out float attackIncrease) && float.TryParse(values[3], out float healthIncrease))
+                if (int.TryParse(values[0], out int level) && long.TryParse(values[1], out long requiredExp))
                 {
-                    // SO 데이터에 추가
                     dataAsset.LevelTable.Add(new LevelUpCostData.LevelEntry
                     {
                         Level = level,
-                        // RequiredGold = requiredGold,
-                        // AttackIncrease = attackIncrease,
-                        // HealthIncrease = healthIncrease
+                        RequiredEXP = requiredExp,
                     });
                 }
             }
 
             // 에셋 저장 및 업데이트
-            EditorUtility.SetDirty(dataAsset); // 변경사항 표시
+            EditorUtility.SetDirty(dataAsset);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 

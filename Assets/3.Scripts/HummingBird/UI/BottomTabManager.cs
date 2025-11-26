@@ -10,17 +10,20 @@ namespace Bird.Idle.UI
     public class BottomTabManager : MonoBehaviour
     {
         [Header("Tab Buttons")]
+        [SerializeField] private Button statTabButton;
         [SerializeField] private Button equipTabButton;
         [SerializeField] private Button inventoryTabButton;
         // TODO :: (추가 탭 버튼)
 
         [Header("Content Panels")]
+        [SerializeField] private GameObject statPanel;
         [SerializeField] private GameObject equipPanel;
         [SerializeField] private GameObject inventoryPanel;
         // TODO :: (추가 콘텐츠 패널)
 
         private void Awake()
         {
+            statTabButton.onClick.AddListener(() => SetActivePanel(statPanel));
             equipTabButton.onClick.AddListener(() => SetActivePanel(equipPanel));
             inventoryTabButton.onClick.AddListener(() => SetActivePanel(inventoryPanel));
 
