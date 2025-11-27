@@ -47,10 +47,10 @@ namespace Bird.Idle.Core
         public float FinalHealthRegen => PlayerStats.FinalHealthRegen;
         public long CurrentEXP => currentEXP;
         public int AvailableStatPoints => availableStatPoints;
-        public int Strength => strength;
-        public int Dexterity => dexterity;
-        public int Intelligence => intelligence;
-        public int Luck => luck;
+        public int Strength => PlayerStats.Strength;
+        public int Dexterity => PlayerStats.Dexterity;
+        public int Intelligence => PlayerStats.Intelligence;
+        public int Luck => PlayerStats.Luck;
         public float GetCurrentHealth => currentHealth;
         public int CharacterLevel => characterLevel;
         public float PlayerAttackRange => playerAttackRange;
@@ -60,6 +60,7 @@ namespace Bird.Idle.Core
         public Action OnStatsRecalculated; // 스탯 변경 이벤트(장비 장착/해제 시 UI 업데이트 용도)
         public Action OnPlayerDied; // 플레이어 사망 이벤트
         public Action OnHealthChanged; // 체력 변경 이벤트 (UI 갱신용)
+        public Action OnEXPChanged; // 경험치 변경 이벤트
 
         private void Awake()
         {
@@ -109,7 +110,9 @@ namespace Bird.Idle.Core
         
         public void GainExperience(long expAmount)
         {
-            currentEXP += expAmount;
+            currentEXP += expAmount
+                ;
+            OnEXPChanged?.Invoke();
             
             while (CheckForLevelUp())
             {
@@ -197,7 +200,7 @@ namespace Bird.Idle.Core
                 RecalculateAllFinalStats();
                 return true;
             }
-            return true;
+            return false;
         }
         
         /// <summary>
@@ -249,48 +252,5 @@ namespace Bird.Idle.Core
     
             OnStatsRecalculated?.Invoke(); 
         }
-        
-        // /// <summary>
-        // /// 골드를 소모하여 플레이어 레벨업을 시도
-        // /// </summary>
-        // public bool TryLevelUp()
-        // {
-        //     if (loadedLevelUpCostData == null) return false;
-        //     
-        //     LevelUpCostData.LevelEntry nextLevelEntry = loadedLevelUpCostData.GetLevelEntry(characterLevel + 1);
-        //
-        //     if (nextLevelEntry.Level == 0)
-        //     {
-        //         Debug.Log("[CharacterManager] 이미 최대 레벨입니다.");
-        //         return false;
-        //     }
-        //
-        //     long goldCost = nextLevelEntry.RequiredGold;
-        //
-        //     if (CurrencyManager.Instance == null || !CurrencyManager.Instance.CanAfford(CurrencyType.Gold, goldCost))
-        //     {
-        //         Debug.LogWarning($"[CharacterManager] 레벨업 골드 부족. 필요: {goldCost:N0}");
-        //         return false;
-        //     }
-        //
-        //     CurrencyManager.Instance.ChangeCurrency(CurrencyType.Gold, -goldCost);
-        //     characterLevel++;
-        //
-        //     OnLevelUp?.Invoke(characterLevel);
-        //
-        //     Debug.Log($"[CharacterManager] 레벨 업! Lv.{characterLevel}.");
-        //     return true;
-        // }
-        
-        // public long GetLevelUpCost(int currentLevel)
-        // {
-        //     if (loadedLevelUpCostData == null) return 0;
-        //
-        //     LevelUpCostData.LevelEntry nextEntry = loadedLevelUpCostData.GetLevelEntry(currentLevel + 1);
-        //     
-        //     if (nextEntry.Level == 0) return -1;
-        //     
-        //     return nextEntry.RequiredGold;
-        // }
     }
 }

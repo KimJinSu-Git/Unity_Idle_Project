@@ -1,9 +1,9 @@
+using System;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using Bird.Idle.Core;
 using Bird.Idle.Gameplay;
-using UnityEngine.Serialization;
 
 namespace Bird.Idle.UI
 {
@@ -62,14 +62,17 @@ namespace Bird.Idle.UI
                 characterManager.OnLevelUp += UpdateAllStatsUI;
                 characterManager.OnStatsRecalculated += UpdateStatsTextOnly;
                 characterManager.OnHealthChanged += UpdateHealthBar;
+                characterManager.OnEXPChanged += UpdateExpBarOnly;
             }
             
             if (stageManager != null)
             {
                 stageManager.OnStageProgressChanged += UpdateStageProgress;
             }
-            
-            // UpdateAllStatsUI(characterManager.CharacterLevel);
+        }
+
+        private void Start()
+        {
             UpdateHealthBar();
         }
 
@@ -80,6 +83,7 @@ namespace Bird.Idle.UI
                 characterManager.OnLevelUp -= UpdateAllStatsUI;
                 characterManager.OnStatsRecalculated -= UpdateStatsTextOnly;
                 characterManager.OnHealthChanged -= UpdateHealthBar;
+                characterManager.OnEXPChanged -= UpdateExpBarOnly;
             }
             if (stageManager != null)
             {
@@ -93,6 +97,11 @@ namespace Bird.Idle.UI
             
             healthBar.maxValue = characterManager.MaxHealth;
             healthBar.value = characterManager.GetCurrentHealth; 
+        }
+        
+        private void UpdateExpBarOnly()
+        {
+            UpdateExpBar(characterManager.CharacterLevel); 
         }
         
         private void UpdateExpBar(int level)
