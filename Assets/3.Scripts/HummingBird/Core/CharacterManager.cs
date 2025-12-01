@@ -61,6 +61,7 @@ namespace Bird.Idle.Core
         public Action OnPlayerDied; // 플레이어 사망 이벤트
         public Action OnHealthChanged; // 체력 변경 이벤트 (UI 갱신용)
         public Action OnEXPChanged; // 경험치 변경 이벤트
+        public Action OnRequestStageRestart; // 재시작 요청 이벤트
 
         private void Awake()
         {
@@ -76,7 +77,7 @@ namespace Bird.Idle.Core
             
             LoadLevelUpCostDataAsync();
         }
-        
+
         /// <summary>
         /// GameManager에서 로드된 데이터를 받아 캐릭터 상태를 초기화
         /// </summary>
@@ -105,6 +106,7 @@ namespace Bird.Idle.Core
             
             // UI 갱신
             OnLevelUp?.Invoke(characterLevel);
+            OnHealthChanged?.Invoke();
             OnStatsRecalculated?.Invoke();
         }
         
@@ -170,7 +172,7 @@ namespace Bird.Idle.Core
             Debug.Log("[CharacterManager] 플레이어가 사망했습니다!");
             OnPlayerDied?.Invoke();
             
-            // TODO: 스테이지 재시작 로직 호출
+            OnRequestStageRestart?.Invoke();
         }
         
         /// <summary>
@@ -242,7 +244,21 @@ namespace Bird.Idle.Core
         /// </summary>
         public void ApplyEquipmentStats()
         {
+            float oldMaxHealth = MaxHealth;
+            
             RecalculateAllFinalStats();
+            
+            float newMaxHealth = MaxHealth;
+            
+            if (newMaxHealth > oldMaxHealth)
+            {
+                currentHealth += (newMaxHealth - oldMaxHealth);
+                currentHealth = Mathf.Min(currentHealth, newMaxHealth); 
+        
+                OnHealthChanged?.Invoke(); 
+            }
+            
+            OnStatsRecalculated?.Invoke();
         }
         
         public void ApplyBaseStatUpgrade(float attackIncrease, float healthIncrease)

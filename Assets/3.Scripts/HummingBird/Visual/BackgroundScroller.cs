@@ -24,7 +24,8 @@ namespace Bird.Idle.Visual
         [SerializeField] private AssetReferenceT<Texture2D> graveyardBackgroundRef;
         [SerializeField] private AssetReferenceT<Texture2D> snowBackgroundRef;
         
-        [SerializeField] private MeshRenderer backgroundRenderer; 
+        [SerializeField] private MeshRenderer backgroundRenderer;
+        [SerializeField] private PlayerController playerController;
 
         private static readonly int MainTexOffset = Shader.PropertyToID("_MainTex");
         
@@ -33,7 +34,7 @@ namespace Bird.Idle.Visual
         private AssetReferenceT<Texture2D> currentlyLoadedRef;
         
         private BattleManager battleManager;
-        private bool isMoving = true;
+        
         private float currentOffset = 0f;
         
         private void Awake()
@@ -43,10 +44,6 @@ namespace Bird.Idle.Visual
             if (StageManager.Instance != null)
             {
                 StageManager.Instance.OnStageChanged += HandleStageTransition;
-            }
-            if (battleManager != null)
-            {
-                battleManager.OnBattleStateChanged += SetMovementState; 
             }
         }
 
@@ -59,7 +56,7 @@ namespace Bird.Idle.Visual
         {
             if (battleManager.PlayerBattleMode) return;
             
-            if (isMoving)
+            if (playerController != null && playerController.GetAnimator.GetCurrentAnimatorStateInfo(0).shortNameHash == playerController.GetRunAnimHash)
             {
                 currentOffset += Time.deltaTime * scrollSpeed;
                 
@@ -68,11 +65,6 @@ namespace Bird.Idle.Visual
                     backgroundRenderer.material.SetTextureOffset(MainTexOffset, new Vector2(currentOffset, 0));
                 }
             }
-        }
-
-        public void SetMovementState(bool isBattleActive)
-        {
-            isMoving = !isBattleActive;
         }
         
         /// <summary>
@@ -144,11 +136,6 @@ namespace Bird.Idle.Visual
             if (StageManager.Instance != null)
             {
                 StageManager.Instance.OnStageChanged -= HandleStageTransition;
-            }
-            
-            if (battleManager != null)
-            {
-                battleManager.OnBattleStateChanged -= SetMovementState; 
             }
             
             if (currentBackgroundHandle.IsValid())

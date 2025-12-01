@@ -12,7 +12,7 @@ namespace Bird.Idle.Gameplay
         public static BattleManager Instance { get; private set; }
 
         [Header("Player Attack Settings")]
-        [SerializeField] private float attackInterval = 1f;
+        [SerializeField] private float baseAttackInterval = 3f;
         private float currentAttackCooldown;
 
         private CharacterManager characterManager;
@@ -22,7 +22,6 @@ namespace Bird.Idle.Gameplay
         
         public Action<bool> OnBattleStateChanged;
 
-        public float GetAttackInterval => attackInterval;
         public bool PlayerBattleMode => playerBattleMode;
         
         private void Awake()
@@ -40,19 +39,6 @@ namespace Bird.Idle.Gameplay
 
             currentAttackCooldown = 0f;
         }
-
-        private void Update()
-        {
-            currentAttackCooldown -= Time.deltaTime;
-            
-            if (!playerBattleMode) return;
-            
-            if (currentAttackCooldown <= 0f && CharacterManager.Instance.IsAlive)
-            {
-                TryAutoAttack();
-                currentAttackCooldown = attackInterval;
-            }
-        }
         
         /// <summary>
         /// 전투 상태를 설정
@@ -69,7 +55,7 @@ namespace Bird.Idle.Gameplay
         /// <summary>
         /// 몬스터를 자동으로 공격하는 로직을 수행
         /// </summary>
-        private void TryAutoAttack()
+        public void TryAutoAttack()
         {
             if (characterManager == null || enemyManager == null)
             {
@@ -77,9 +63,15 @@ namespace Bird.Idle.Gameplay
                 return;
             }
 
-            // TODO: 필드의 몬스터 프리팹 리스트를 순회하며 공격하도록 변경(현재는 임시 로직)
             float damage = characterManager.AttackPower;
             enemyManager.ApplyDamageToCurrentMonster(damage);
+        }
+        
+        public float GetAttackInterval()
+        {
+            float attackSpeedMultiplier = CharacterManager.Instance.PlayerStats.FinalAttackSpeed;
+            
+            return baseAttackInterval / attackSpeedMultiplier; 
         }
     }
 }

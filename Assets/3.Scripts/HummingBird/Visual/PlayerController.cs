@@ -21,7 +21,17 @@ namespace Bird.Idle.Visual
 
         private CharacterManager characterManager;
         private BattleManager battleManager;
-
+        
+        private float currentAttackCooldown;
+        private bool isAttacking = false;
+        
+        private int runAnimHash;
+        private int attackAnimHash;
+        private int idleAnimHash;
+        
+        public int GetRunAnimHash => runAnimHash;
+        public Animator GetAnimator => animator;
+        
         private void Awake()
         {
             characterManager = CharacterManager.Instance;
@@ -38,6 +48,25 @@ namespace Bird.Idle.Visual
             if (characterManager != null)
             {
                 characterManager.OnPlayerDied += PlayDeathAnimation;
+            }
+            
+            runAnimHash = Animator.StringToHash(runAnim);
+            attackAnimHash = Animator.StringToHash(attackAnim);
+            idleAnimHash = Animator.StringToHash(idleAnim);
+        }
+        
+        private void Update()
+        {
+            currentAttackCooldown -= Time.deltaTime;
+            
+            if (!battleManager.PlayerBattleMode) return; 
+
+            if (currentAttackCooldown <= 0f && characterManager.IsAlive)
+            {
+                if (animator.GetCurrentAnimatorStateInfo(0).shortNameHash == idleAnimHash)
+                {
+                    TryTriggerAttack();
+                }
             }
         }
         
@@ -69,37 +98,21 @@ namespace Bird.Idle.Visual
 
             if (isFighting)
             {
-                PlayAttackLoop();
+                animator.Play(idleAnimHash);
             }
             else
             {
-                PlayRunAnimation();
+                animator.Play(runAnimHash);
             }
-        }
-
-        private void PlayRunAnimation()
-        {
-            StopCoroutine(AttackLoopCoroutine());
-            animator.Play(runAnim);
         }
         
-        private void PlayAttackLoop()
+        private void TryTriggerAttack()
         {
-            StartCoroutine(AttackLoopCoroutine());
-        }
-
-        private IEnumerator AttackLoopCoroutine()
-        {
-            float attackInterval = battleManager.GetAttackInterval;
+            animator.Play(attackAnimHash);
             
-            while (characterManager.IsAlive)
-            {
-                animator.Play(attackAnim);
-                yield return new WaitForSeconds(1f); 
-                
-                animator.Play(idleAnim);
-                yield return new WaitForSeconds(attackInterval - 0.1f);
-            }
+            battleManager.TryAutoAttack(); 
+            
+            currentAttackCooldown = battleManager.GetAttackInterval();
         }
         
         private void PlayDeathAnimation()

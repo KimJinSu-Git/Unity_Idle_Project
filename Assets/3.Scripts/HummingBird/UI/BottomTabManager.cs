@@ -27,7 +27,7 @@ namespace Bird.Idle.UI
             equipTabButton.onClick.AddListener(() => SetActivePanel(equipPanel));
             inventoryTabButton.onClick.AddListener(() => SetActivePanel(inventoryPanel));
 
-            SetActivePanel(equipPanel);
+            SetActivePanel(statPanel);
         }
 
         private void InitializePanel(GameObject panel)

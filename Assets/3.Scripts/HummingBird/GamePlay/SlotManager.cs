@@ -27,7 +27,7 @@ namespace Bird.Idle.Gameplay
         private Task slotDataLoadTask;
         
         public Action OnSlotEnhanceChanged;
-        public Action OnSlotDataLoaded; // 데이터 로드가 완료되었음을 알리는 이벤트
+        public Action OnSlotDataLoaded;
         
         public Dictionary<EquipmentType, int> GetSlotLevels() => slotLevels;
         

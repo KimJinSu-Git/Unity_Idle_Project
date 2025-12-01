@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Bird.Idle.Core;
@@ -30,8 +31,31 @@ namespace Bird.Idle.Core
             battleManager = BattleManager.Instance;
             
             StartGameFlow();
+            
+            if (CharacterManager.Instance != null)
+            {
+                CharacterManager.Instance.OnRequestStageRestart += HandlePlayerDeathAndRestart;
+            }
         }
-
+        
+        private void OnDestroy()
+        {
+            if (CharacterManager.Instance != null)
+            {
+                CharacterManager.Instance.OnRequestStageRestart -= HandlePlayerDeathAndRestart;
+            }
+        }
+        
+        private void HandlePlayerDeathAndRestart()
+        {
+            if (battleManager != null)
+            {
+                battleManager.SetBattleActive(false); 
+            }
+            
+            // TODO ::: 스테이지 재시작 호출
+        }
+        
         /// <summary>
         /// 게임 시작 시 초기 흐름을 관리
         /// </summary>

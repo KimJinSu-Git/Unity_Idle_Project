@@ -17,6 +17,10 @@ namespace Bird.Idle.UI
         [SerializeField] private Button upgradeButton;
         [SerializeField] private Button closeButton;
         [SerializeField] private Button equipButton;
+        
+        [Header("Stat Comparison Displays")]
+        [SerializeField] private TextMeshProUGUI equipStatComparisonText; 
+        [SerializeField] private TextMeshProUGUI collectionUpgradeStatText;
 
         private CollectionEntry currentEntry;
         private EquipmentData baseItemSO;
@@ -41,9 +45,8 @@ namespace Bird.Idle.UI
                 
                 levelText.text = $"Lv. {entry.collectionLevel} -> Lv. {entry.collectionLevel + 1}";
                 
-                float nextAtk = baseItemSO.attackBonus * 0.05f * (entry.collectionLevel + 1);
-                float nextHp = baseItemSO.healthBonus * 0.05f * (entry.collectionLevel + 1);
-                statBonusText.text = $"ATK: +{nextAtk:F1}\nHP: +{nextHp:F1}";
+                ShowEquipComparison(baseItemSO, entry.collectionLevel);
+                ShowCollectionUpgradeStats(entry.collectionLevel);
 
                 long totalGoldCost = GOLD_COST_PER_LEVEL * (entry.collectionLevel + 1); // 레벨에 따라 비용 증가 가정
                 costText.text = $"Cost: {EquipmentCollectionManager.Instance.UpgradeCostCount} number / {totalGoldCost:N0} Gold";
@@ -61,6 +64,27 @@ namespace Bird.Idle.UI
             equipButton.GetComponentInChildren<TextMeshProUGUI>().text = isEquipped ? "UnEquiped" : "Equiped";
             
             equipButton.interactable = entry.count > 0;
+        }
+        
+        private void ShowCollectionUpgradeStats(int currentLevel)
+        {
+            float upgradeAtk = baseItemSO.attackBonus * 0.05f;
+            float upgradeHp = baseItemSO.healthBonus * 0.05f;
+            
+            collectionUpgradeStatText.text = $"+ATK: {upgradeAtk:F1}\n+HP: {upgradeHp:F1}";
+            // TODO ::: 나중에, 장비 강화를 ATK, HP 말고도 강화시키고자 한다면 여기 추가.
+        }
+        
+        private void ShowEquipComparison(EquipmentData newItem, int collectionLevel)
+        {
+            // EquipmentData equipped = InventoryManager.Instance.GetEquippedItem(newItem.type);
+            // float currentAtk = equipped?.attackBonus ?? 0f; // 장착 장비 확인
+            
+            equipStatComparisonText.text = 
+                $"ATK : {newItem.attackBonus:F1}\n" +
+                $"Health : {newItem.healthBonus:F1}\n"; 
+                
+            // TODO ::: CritChance, ASPD 등의 비교 라인 추가
         }
         
         /// <summary>

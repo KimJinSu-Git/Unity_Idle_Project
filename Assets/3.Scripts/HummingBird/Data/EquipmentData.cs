@@ -19,6 +19,21 @@ namespace Bird.Idle.Data
         
         public float attackBonus;
         public float healthBonus;
+        
+        public float critChanceBonus;
+        public float critDamageBonus;
+        public float attackSpeedBonus;
+        public float defensivePowerBonus;
+        public float magicResistanceBonus;
+        public float healthRegenBonus;
+        public float evasionBonus;
+        public float accuracyBonus;
+        public float skillDamageBonus;
+        public float skillCooldownBonus;
+        public float goldDropBonus;
+        public float itemDropBonus;
+        public float gemDropBonus;
+        
         public long sellPrice;
         
         public string iconAddress; 

@@ -14,11 +14,6 @@ namespace Bird.Idle.UI
     /// </summary>
     public class EquipPanel : MonoBehaviour
     {
-        [Header("Player Level Up")]
-        [SerializeField] private Button levelUpButton;
-        [SerializeField] private TextMeshProUGUI levelUpCostText;
-        [SerializeField] private TextMeshProUGUI currentLevelText;
-        
         [Header("Slot Enhance Displays")]
         [SerializeField] private SlotEnhanceDisplay weaponSlotDisplay;
         [SerializeField] private SlotEnhanceDisplay armorSlotDisplay;
@@ -46,15 +41,6 @@ namespace Bird.Idle.UI
         {
             characterManager = CharacterManager.Instance;
             slotManager = SlotManager.Instance;
-            
-            levelUpButton.onClick.AddListener(OnLevelUpButtonClicked);
-            
-            if (characterManager != null)
-            {
-                characterManager.OnLevelUp += RefreshLevelUI;
-            }
-            
-            RefreshLevelUI(characterManager.CharacterLevel);
         }
         
         public void InitializeAfterDataLoad()
@@ -80,35 +66,6 @@ namespace Bird.Idle.UI
             weaponSlotDisplay.RefreshUI();
             armorSlotDisplay.RefreshUI();
             accessorySlotDisplay.RefreshUI();
-        }
-
-        private void OnLevelUpButtonClicked()
-        {
-            // if (characterManager.TryLevelUp())
-            // {
-            //     // TODO :: 성공 시 추가할 내용
-            // }
-            
-            RefreshLevelUI(characterManager.CharacterLevel); // UI 즉시 갱신
-        }
-        
-        private void RefreshLevelUI(int currentLevel)
-        {
-            // currentLevelText.text = $"Lv. {currentLevel:N0}";
-            //
-            // long goldCost = characterManager.GetLevelUpCost(currentLevel);
-            //
-            // if (goldCost == -1)
-            // {
-            //     levelUpCostText.text = "MAX";
-            //     levelUpButton.interactable = false;
-            //     return;
-            // }
-            //
-            // levelUpCostText.text = $"{goldCost:N0} Gold";
-            //
-            // bool canAfford = CurrencyManager.Instance.CanAfford(CurrencyType.Gold, goldCost);
-            // levelUpButton.interactable = canAfford;
         }
         
         private void OnDisable()
