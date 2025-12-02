@@ -4509,6 +4509,7 @@ MonoBehaviour:
   maxMonsterCount: 15
   spawnPosition: {x: 4.5, y: 0, z: 0}
   spawnRotation: {x: 0, y: 180, z: 0, w: 0}
+  playerController: {fileID: 2146025987}
 --- !u!4 &144986502
 Transform:
   m_ObjectHideFlags: 0
@@ -67000,8 +67001,7 @@ MonoBehaviour:
   attackAnim: Attack
   idleAnim: Idle
   deathAnim: Death
-  damageApplicationTime: 1.5
-  attackAnimationDuration: 0.35
+  damageApplicationTime: 0.5
 --- !u!1 &2146124591
 GameObject:
   m_ObjectHideFlags: 0

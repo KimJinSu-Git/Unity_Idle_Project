@@ -21,8 +21,7 @@ namespace Bird.Idle.Visual
         [SerializeField] private string deathAnim = "Death";
         
         [Header("Animation Settings")]
-        [SerializeField] private float damageApplicationTime = 0.9f; 
-        [SerializeField] private float attackAnimationDuration = 0.35f;
+        [SerializeField] private float damageApplicationTime = 0.5f; 
 
         private CharacterManager characterManager;
         private BattleManager battleManager;
@@ -33,10 +32,12 @@ namespace Bird.Idle.Visual
         private int runAnimHash;
         private int attackAnimHash;
         private int idleAnimHash;
+        private int deathAnimHash;
         
         public int GetRunAnimHash => runAnimHash;
         public int GetAttackAnimHash => attackAnimHash;
         public int GetIdleAnimHash => idleAnimHash;
+        public int GetDeathAnimHash => deathAnimHash;
         public Animator GetAnimator => animator;
         
         private void Awake()
@@ -60,6 +61,7 @@ namespace Bird.Idle.Visual
             runAnimHash = Animator.StringToHash(runAnim);
             attackAnimHash = Animator.StringToHash(attackAnim);
             idleAnimHash = Animator.StringToHash(idleAnim);
+            deathAnimHash = Animator.StringToHash(deathAnim);
         }
 
         private void Start()
@@ -124,13 +126,9 @@ namespace Bird.Idle.Visual
         
         private IEnumerator ApplyDamageAfterDelay()
         {
-            float delayTime = attackAnimationDuration * damageApplicationTime;
-            yield return new WaitForSeconds(delayTime);
+            yield return new WaitForSeconds(damageApplicationTime);
     
             battleManager.TryAutoAttack(); 
-    
-            float remainingTime = attackAnimationDuration - delayTime;
-            yield return new WaitForSeconds(remainingTime);
         }
         
         private void PlayDeathAnimation()

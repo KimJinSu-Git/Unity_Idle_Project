@@ -28,6 +28,8 @@ namespace Bird.Idle.Gameplay
         private bool isMoving = true;
         private bool currentlyAttacking = false;
         
+        private Animator animator;
+        
         public Action OnHealthChanged;
         
         public bool IsAlive => currentHealth > 0;
@@ -51,6 +53,8 @@ namespace Bird.Idle.Gameplay
             gameObject.name = $"{MonsterData.monsterName}_{InstanceID}";
             
             OnHealthChanged?.Invoke();
+            
+            animator = GetComponent<Animator>();
         }
         
         private void Update()

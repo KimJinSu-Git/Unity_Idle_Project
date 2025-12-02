@@ -6,6 +6,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using Bird.Idle.Core;
 using Bird.Idle.Data;
 using Bird.Idle.Visual;
+using Unity.VisualScripting;
 
 namespace Bird.Idle.Gameplay
 {
@@ -24,6 +25,9 @@ namespace Bird.Idle.Gameplay
         [SerializeField] private int maxMonsterCount = 15; // 최대 몬스터 수
         [SerializeField] private Vector3 spawnPosition = new Vector3(4.5f, 0f, 0f);
         [SerializeField] private Quaternion spawnRotation = new Quaternion(0f, 180f, 0f, 0f);
+        
+        [Header("Other Settings")]
+        [SerializeField] private PlayerController playerController; // Player의 Attack 애니메이션 동안은, BattleMode 전환을 잠가놓기 위한 참조.
 
         private float currentSpawnTime;
         private int currentMonsterCount = 0;
@@ -96,6 +100,11 @@ namespace Bird.Idle.Gameplay
         /// </summary>
         private void CheckBattleState()
         {
+            if(playerController.GetAnimator.GetCurrentAnimatorStateInfo(0).shortNameHash == playerController.GetAttackAnimHash)
+            {
+                return;
+            }
+            
             if (frontMonster == null)
             {
                 BattleManager.Instance.SetBattleActive(false);
@@ -112,7 +121,7 @@ namespace Bird.Idle.Gameplay
             }
             else
             {
-                BattleManager.Instance.SetBattleActive(false); // 이동
+                BattleManager.Instance.SetBattleActive(false);
             }
         }
         
@@ -131,6 +140,11 @@ namespace Bird.Idle.Gameplay
             {
                 Debug.LogWarning("[EnemyManager] 몬스터 데이터 또는 스테이지 목록이 없습니다.");
                 return;
+            }
+
+            if (playerController.GetAnimator.GetCurrentAnimatorStateInfo(0).shortNameHash == playerController.GetDeathAnimHash)
+            {
+                return; // Player가 죽은 상태면 스폰을 멈춰요.
             }
             
             int randomIndex = UnityEngine.Random.Range(0, currentStageMonsterIDs.Count);
