@@ -51,6 +51,9 @@ namespace Bird.Idle.UI
         // 데이터 로드 완료 후 모든 슬롯 UI를 초기화하는 메서드
         private void InitializeSlotDisplays()
         {
+            if (slotManager == null) slotManager = SlotManager.Instance;
+            if (characterManager == null) characterManager = CharacterManager.Instance;
+            
             if (slotManager.GetSlotEnhanceData() == null)
             {
                 Debug.Log("[EquipPanel] 데이터 로드가 완료되지 않았습니다.");

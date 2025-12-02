@@ -54,7 +54,7 @@ namespace Bird.Idle.Gameplay
             
             OnHealthChanged?.Invoke();
             
-            animator = GetComponent<Animator>();
+            animator = GetComponentInChildren<Animator>();
         }
         
         private void Update()
@@ -86,6 +86,8 @@ namespace Bird.Idle.Gameplay
             isMoving = false;
             currentlyAttacking = true;
             
+            animator.Play("Idle");
+            
             StartCoroutine(AttackLoop());
         }
         
@@ -109,7 +111,7 @@ namespace Bird.Idle.Gameplay
             if (CharacterManager.Instance != null && monsterDamage > 0)
             {
                 CharacterManager.Instance.ApplyDamage(monsterDamage);
-                // TODO: 공격 애니메이션 트리거
+                animator.Play("Attack1");
             }
         }
         
@@ -132,11 +134,14 @@ namespace Bird.Idle.Gameplay
             currentHealth = 0;
             Debug.Log($"[MonsterController] {MonsterData.monsterName} 처치됨.");
             
-            EnemyManager.Instance.ProcessMonsterDefeat(MonsterData); 
-            
-            Destroy(gameObject);
-        }
+            EnemyManager.Instance.ProcessMonsterDefeat(MonsterData);
 
-        // TODO: Update에 Player를 향해 이동하는 로직 및 애니메이션 추가
+            if (animator != null)
+            {
+                animator.Play("Death");
+            }
+            
+            Destroy(gameObject, 1f); // 임시적으로, 1초 뒤 사라지도록 함. TODO ::: 오브젝트 풀링으로 바꿉시다.
+        }
     }
 }

@@ -31,6 +31,8 @@ namespace Bird.Idle.UI
         
         public void Initialize()
         {
+            if (slotManager == null) slotManager = SlotManager.Instance;
+            
             RefreshUI();
             slotManager.OnSlotEnhanceChanged += RefreshUI;
         }
