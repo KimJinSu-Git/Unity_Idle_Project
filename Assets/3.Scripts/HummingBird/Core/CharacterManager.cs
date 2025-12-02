@@ -244,20 +244,9 @@ namespace Bird.Idle.Core
         /// </summary>
         public void ApplyEquipmentStats()
         {
-            float oldMaxHealth = MaxHealth;
-            
             RecalculateAllFinalStats();
             
-            float newMaxHealth = MaxHealth;
-            
-            if (newMaxHealth > oldMaxHealth)
-            {
-                currentHealth += (newMaxHealth - oldMaxHealth);
-                currentHealth = Mathf.Min(currentHealth, newMaxHealth); 
-        
-                OnHealthChanged?.Invoke(); 
-            }
-            
+            OnHealthChanged?.Invoke(); 
             OnStatsRecalculated?.Invoke();
         }
         

@@ -49476,6 +49476,7 @@ MonoBehaviour:
   stageProgressSlider: {fileID: 804217322}
   stageProgressText: {fileID: 1148689034}
   healthBar: {fileID: 1454372588}
+  healthTextInBar: {fileID: 2142247284}
   expBar: {fileID: 1284580566}
 --- !u!4 &1608816230
 Transform:
@@ -66999,6 +67000,8 @@ MonoBehaviour:
   attackAnim: Attack
   idleAnim: Idle
   deathAnim: Death
+  damageApplicationTime: 1.5
+  attackAnimationDuration: 0.35
 --- !u!1 &2146124591
 GameObject:
   m_ObjectHideFlags: 0

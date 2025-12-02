@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using Bird.Idle.Core;
@@ -18,6 +19,10 @@ namespace Bird.Idle.Visual
         [SerializeField] private string attackAnim = "Attack";
         [SerializeField] private string idleAnim = "Idle";
         [SerializeField] private string deathAnim = "Death";
+        
+        [Header("Animation Settings")]
+        [SerializeField] private float damageApplicationTime = 0.9f; 
+        [SerializeField] private float attackAnimationDuration = 0.35f;
 
         private CharacterManager characterManager;
         private BattleManager battleManager;
@@ -30,6 +35,8 @@ namespace Bird.Idle.Visual
         private int idleAnimHash;
         
         public int GetRunAnimHash => runAnimHash;
+        public int GetAttackAnimHash => attackAnimHash;
+        public int GetIdleAnimHash => idleAnimHash;
         public Animator GetAnimator => animator;
         
         private void Awake()
@@ -54,13 +61,18 @@ namespace Bird.Idle.Visual
             attackAnimHash = Animator.StringToHash(attackAnim);
             idleAnimHash = Animator.StringToHash(idleAnim);
         }
-        
+
+        private void Start()
+        {
+            currentAttackCooldown = 3f;
+        }
+
         private void Update()
         {
-            currentAttackCooldown -= Time.deltaTime;
-            
             if (!battleManager.PlayerBattleMode) return; 
 
+            currentAttackCooldown -= Time.deltaTime;
+            
             if (currentAttackCooldown <= 0f && characterManager.IsAlive)
             {
                 if (animator.GetCurrentAnimatorStateInfo(0).shortNameHash == idleAnimHash)
@@ -92,11 +104,8 @@ namespace Bird.Idle.Visual
         /// </summary>
         public void UpdateVisualState(bool isFighting)
         {
-            Debug.Log("UpdateVisualState: " + isFighting);
-            Debug.Log($"characterManager: {characterManager} ||| charaterManager.IsAlive: {characterManager.IsAlive}");
             if (characterManager != null && !characterManager.IsAlive) return;
-
-            if (isFighting)
+            if(isFighting)
             {
                 animator.Play(idleAnimHash);
             }
@@ -109,10 +118,19 @@ namespace Bird.Idle.Visual
         private void TryTriggerAttack()
         {
             animator.Play(attackAnimHash);
-            
-            battleManager.TryAutoAttack(); 
-            
             currentAttackCooldown = battleManager.GetAttackInterval();
+            StartCoroutine(ApplyDamageAfterDelay());
+        }
+        
+        private IEnumerator ApplyDamageAfterDelay()
+        {
+            float delayTime = attackAnimationDuration * damageApplicationTime;
+            yield return new WaitForSeconds(delayTime);
+    
+            battleManager.TryAutoAttack(); 
+    
+            float remainingTime = attackAnimationDuration - delayTime;
+            yield return new WaitForSeconds(remainingTime);
         }
         
         private void PlayDeathAnimation()

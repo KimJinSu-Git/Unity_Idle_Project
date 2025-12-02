@@ -101,7 +101,6 @@ namespace Bird.Idle.Gameplay
         private void TryAttackPlayer()
         {
             float monsterDamage = MonsterData.baseDamage;
-            Debug.Log($"[MonsterController] {monsterDamage}를 Player에게 입혔습니다.");
             
             if (CharacterManager.Instance != null && monsterDamage > 0)
             {

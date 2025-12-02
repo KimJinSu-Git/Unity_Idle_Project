@@ -40,8 +40,8 @@ namespace Bird.Idle.Gameplay
             (float attack, float health, float critChance, float critDamage, float attackSpeed, float defensivePower, float magicResistance, float healthRegen, float evasion, float accuracy, float luckBonus) equipBonus,
             float permanentAtk, float permanentHp)
         {
-            FinalAttackPower = (7.5f + (Strength * 2.5f)) + permanentAtk + equipBonus.attack;
-            FinalMaxHealth = (95f + (Strength * 5f)) + permanentHp + equipBonus.health;
+            FinalAttackPower = (97.5f + (Strength * 2.5f)) + permanentAtk + equipBonus.attack;
+            FinalMaxHealth = (195f + (Strength * 5f)) + permanentHp + equipBonus.health;
             FinalHealthRegen = (Intelligence * 0.1f) + equipBonus.healthRegen;
 
             FinalCritDamage = 1.0f + (Strength * 0.05f) + (Luck * 0.05f) + equipBonus.critDamage; 

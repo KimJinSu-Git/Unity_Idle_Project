@@ -220,9 +220,7 @@ namespace Bird.Idle.Gameplay
             
             DropEquipment(monsterData.dropTable);
             
-            RemoveDefeatedMonster(monsterData.monsterID); 
-        
-            Debug.Log($"[EnemyManager] 몬스터 처치 완료. EXP: {expReward}");
+            RemoveDefeatedMonster(monsterData.monsterID);
         }
         
         private void RemoveDefeatedMonster(int monsterID)

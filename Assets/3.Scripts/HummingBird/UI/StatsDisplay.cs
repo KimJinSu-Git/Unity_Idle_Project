@@ -39,6 +39,7 @@ namespace Bird.Idle.UI
         
         [Header("Top Bars")]
         [SerializeField] private Slider healthBar;
+        [SerializeField] private TextMeshProUGUI healthTextInBar;
         [SerializeField] private Slider expBar;
 
         private CharacterManager characterManager;
@@ -95,8 +96,13 @@ namespace Bird.Idle.UI
         {
             if (healthBar == null) return;
             
-            healthBar.maxValue = characterManager.MaxHealth;
-            healthBar.value = characterManager.GetCurrentHealth; 
+            float current = characterManager.GetCurrentHealth;
+            float max = characterManager.MaxHealth;
+    
+            healthBar.maxValue = max;
+            healthBar.value = current;
+            
+            healthTextInBar.text = $"{Mathf.CeilToInt(current)} / {Mathf.CeilToInt(max)}";
         }
         
         private void UpdateExpBarOnly()

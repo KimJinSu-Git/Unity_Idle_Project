@@ -49,7 +49,6 @@ namespace Bird.Idle.Gameplay
             
             playerBattleMode = active;
             OnBattleStateChanged?.Invoke(active); 
-            Debug.Log($"[BattleManager] 전투 상태 변경: {active}");
         }
 
         /// <summary>
