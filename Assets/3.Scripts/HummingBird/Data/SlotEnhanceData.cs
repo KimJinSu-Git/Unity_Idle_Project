@@ -23,7 +23,7 @@ namespace Bird.Idle.Data
         public struct SlotEnhanceEntry
         {
             public int EnhanceLevel;        // 강화 레벨
-            public long GoldCost;           // 요구 골드
+            public long MasukCost;           // 요구 마석
             public float AttackIncrease;     // 증가하는 기본 공격력
             public float HealthIncrease;     // 증가하는 최대 체력
             public float SuccessRate;        // 성공 확률

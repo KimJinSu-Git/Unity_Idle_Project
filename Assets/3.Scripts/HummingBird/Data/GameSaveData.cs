@@ -10,10 +10,10 @@ namespace Bird.Idle.Data
         
         public long GoldAmount; // Gold 재화
         public long GemAmount; // Gem(보석) 재화
+        public long MasukAmount; // 마석 (Slot) 강화
+        public long SoulFragmentAmount; // 영혼 조각
         
         public int PlayerLevel; // Player 캐릭터 레벨
-        public float BaseAttackPower; // 기본 공격력
-        public float BaseMaxHealth; // 기본 체력
         public float PermanentAttackBonus; // 추가된 공격력
         public float PermanentHealthBonus; // 추가된 체력
         
@@ -40,8 +40,12 @@ namespace Bird.Idle.Data
         public GameSaveData()
         {
             PlayerLevel = 1; 
-            BaseAttackPower = 10f;  
-            BaseMaxHealth = 100f;
+            
+            GoldAmount = 1;
+            GemAmount = 1;
+            MasukAmount = 1;
+            SoulFragmentAmount = 0;
+            
             CurrentStageID = 1; 
             CurrentKillCount = 0;
             

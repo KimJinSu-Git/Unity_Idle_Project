@@ -13,6 +13,7 @@ namespace Bird.Idle.UI
     {
         [SerializeField] private TextMeshProUGUI goldText; // 골드 표시
         [SerializeField] private TextMeshProUGUI gemText;  // 젬 표시
+        [SerializeField] private TextMeshProUGUI masukText;  // 마석 표시
 
         // 재화 타입별 컴포넌트를 관리
         private Dictionary<CurrencyType, TextMeshProUGUI> currencyUIMap = new Dictionary<CurrencyType, TextMeshProUGUI>();
@@ -25,6 +26,7 @@ namespace Bird.Idle.UI
             
             currencyUIMap.Add(CurrencyType.Gold, goldText);
             currencyUIMap.Add(CurrencyType.Gem, gemText);
+            currencyUIMap.Add(CurrencyType.Masuk, masukText);
             // TODO: 다른 재화 타입이 추가 되면 여기에 추가
         }
 

@@ -149,12 +149,12 @@ namespace Bird.Idle.Gameplay
                 return false;
             }
 
-            if (!CurrencyManager.Instance.CanAfford(CurrencyType.Gold, nextEntry.GoldCost))
+            if (!CurrencyManager.Instance.CanAfford(CurrencyType.Masuk, nextEntry.MasukCost))
             {
-                Debug.LogWarning("[SlotManager] 강화 골드 부족.");
+                Debug.LogWarning("[SlotManager] 강화할 마석 부족.");
                 return false;
             }
-            CurrencyManager.Instance.ChangeCurrency(CurrencyType.Gold, -nextEntry.GoldCost);
+            CurrencyManager.Instance.ChangeCurrency(CurrencyType.Masuk, -(nextEntry.MasukCost));
 
             if (UnityEngine.Random.value <= nextEntry.SuccessRate)
             {
@@ -167,7 +167,7 @@ namespace Bird.Idle.Gameplay
             }
             else
             {
-                Debug.LogWarning("[SlotManager] 슬롯 강화 실패. 골드만 소모됨.");
+                Debug.LogWarning("[SlotManager] 슬롯 강화 실패. 마석만 소모됨.");
                 return false;
             }
         }

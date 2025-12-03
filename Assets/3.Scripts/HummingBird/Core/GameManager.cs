@@ -94,7 +94,7 @@ namespace Bird.Idle.Core
         /// </summary>
         private void ApplyLoadedDataToManagers(GameSaveData data)
         {
-            CurrencyManager.Instance.InitializeGold(data.GoldAmount);
+            CurrencyManager.Instance.InitializeAllCurrencies(data.GoldAmount, data.GemAmount, data.MasukAmount, data.SoulFragmentAmount);
             CharacterManager.Instance.Initialize(data);
             StageManager.Instance.Initialize(data);
             

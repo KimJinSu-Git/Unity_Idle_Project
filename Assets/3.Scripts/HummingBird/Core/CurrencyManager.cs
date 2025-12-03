@@ -26,29 +26,24 @@ namespace Bird.Idle.Core
             }
             Instance = this;
             DontDestroyOnLoad(gameObject);
-
-            InitializeCurrencies();
         }
 
-        private void InitializeCurrencies()
-        {
-            foreach (CurrencyType type in Enum.GetValues(typeof(CurrencyType)))
-            {
-                currencyAmounts[type] = 0; 
-            }
-        }
-        
         /// <summary>
-        /// 데이터 로드 시 골드 데이터를 초기화
+        /// 데이터 로드 시 모든 재화 데이터를 초기화합니다.
         /// </summary>
-        public void InitializeGold(long amount)
+        public void InitializeAllCurrencies(long gold, long gem, long masuk, long soulFragment)
         {
-            amount = 500000;
-            currencyAmounts[CurrencyType.Gold] = amount;
-            Debug.Log($"[CurrencyManager] 골드 로드 완료 및 설정: {amount:N0}");
+            currencyAmounts[CurrencyType.Gold] = gold;
+            currencyAmounts[CurrencyType.Gem] = gem;
+            currencyAmounts[CurrencyType.Masuk] = masuk;
+            currencyAmounts[CurrencyType.SoulFragment] = soulFragment;
             
-            // UI 갱신을 위해 이벤트 호출
-            OnCurrencyChanged?.Invoke(CurrencyType.Gold, amount); 
+            Debug.Log($"[CurrencyManager] 재화 로드 완료. Gold: {gold:N0}, Gem: {gem:N0}, Masuk: {masuk:N0}");
+            
+            OnCurrencyChanged?.Invoke(CurrencyType.Gold, gold);
+            OnCurrencyChanged?.Invoke(CurrencyType.Gem, gem);
+            OnCurrencyChanged?.Invoke(CurrencyType.Masuk, masuk);
+            OnCurrencyChanged?.Invoke(CurrencyType.SoulFragment, soulFragment);
         }
         
         /// <summary>
@@ -58,6 +53,8 @@ namespace Bird.Idle.Core
         {
             data.GoldAmount = GetAmount(CurrencyType.Gold);
             data.GemAmount = GetAmount(CurrencyType.Gem);
+            data.MasukAmount = GetAmount(CurrencyType.Masuk);
+            data.SoulFragmentAmount = GetAmount(CurrencyType.SoulFragment);
         }
 
         
