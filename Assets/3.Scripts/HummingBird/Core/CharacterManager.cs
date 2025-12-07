@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -173,6 +174,13 @@ namespace Bird.Idle.Core
             OnPlayerDied?.Invoke();
             
             OnRequestStageRestart?.Invoke();
+            StartCoroutine(DieDelayTimer());
+        }
+
+        private IEnumerator DieDelayTimer()
+        {
+            yield return new WaitForSeconds(1f);
+            StageManager.Instance.SetCurrentStage(StageManager.Instance.CurrentStageID, 0);
         }
         
         /// <summary>

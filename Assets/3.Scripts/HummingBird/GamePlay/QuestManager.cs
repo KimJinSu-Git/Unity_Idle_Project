@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Bird.Idle.Data;
 using Bird.Idle.Core;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Bird.Idle.Gameplay
 {
@@ -10,40 +13,81 @@ namespace Bird.Idle.Gameplay
     {
         public static QuestManager Instance { get; private set; }
 
+        [Header("Data References")]
+        [SerializeField] private AssetLabelReference questDataLabel;
+        
         private Dictionary<int, QuestData> allQuests = new Dictionary<int, QuestData>();
         private Dictionary<int, QuestProgress> userProgress = new Dictionary<int, QuestProgress>();
-
-        public Action OnQuestProgressUpdated;
         
-        /// <summary>
-        /// GameManager에서 로드된 데이터를 받아 퀘스트 상태를 초기화
-        /// </summary>
+        private List<QuestData> mainQuestSequence = new List<QuestData>();
+        
+        public QuestData CurrentMainQuest { get; private set; }
+
+        public Action OnQuestProgressUpdated; // 전체 갱신
+        public Action OnMainQuestChanged; // 나침반 퀘스트 변경 알림
+
+        public QuestProgress GetQuestProgress(int id)
+        {
+            return userProgress[id];
+        }
+        
         public void Initialize(List<QuestProgress> loadedProgress)
         {
             userProgress.Clear();
-            
-            if (loadedProgress == null) return;
-            
-            foreach (var progress in loadedProgress)
+            if (loadedProgress != null)
             {
-                userProgress.Add(progress.questID, progress);
+                foreach (var p in loadedProgress) userProgress[p.questID] = p;
+            }
+
+            foreach (var kvp in allQuests)
+            {
+                if (kvp.Value.category == QuestCategory.Repeatable)
+                {
+                    GetOrAmountProgress(kvp.Key);
+                }
+            }
+
+            UpdateCurrentMainQuest();
+
+            SubscribeToEvents();
+            
+            OnQuestProgressUpdated?.Invoke();
+            OnMainQuestChanged?.Invoke();
+        }
+        
+        private QuestProgress GetOrAmountProgress(int questID)
+        {
+            if (!userProgress.TryGetValue(questID, out var progress))
+            {
+                progress = new QuestProgress { questID = questID, currentValue = 0, rewardsClaimed = 0 };
+                userProgress.Add(questID, progress);
+            }
+            return progress;
+        }
+        
+        private void UpdateCurrentMainQuest()
+        {
+            CurrentMainQuest = null;
+
+            foreach (var quest in mainQuestSequence)
+            {
+                var progress = GetOrAmountProgress(quest.questID);
+                if (!progress.isCompleted)
+                {
+                    CurrentMainQuest = quest;
+                    break;
+                }
             }
             
-            EnsureAllActiveQuestsExist();
-            
-            SubscribeToEvents();
-
-            Debug.Log($"[QuestManager] 퀘스트 데이터 로드 완료. 복원된 진행 상황: {loadedProgress.Count}개");
-            OnQuestProgressUpdated?.Invoke();
+            // 모든 메인 퀘스트 클리어 시 반복문 빠져나옴.
+            OnMainQuestChanged?.Invoke();
         }
         
         /// <summary>
-        /// 데이터에 저장되지 않은 신규 퀘스트를 userProgress 맵에 추가
+        /// 데이터에 저장되지 않은 신규 퀘스트를 userProgress 딕셔너리에 추가
         /// </summary>
         private void EnsureAllActiveQuestsExist()
         {
-            // TODO: LoadAllQuestDataAsync가 완료되었다고 가정
-            
             foreach (var kvp in allQuests)
             {
                 int questID = kvp.Key;
@@ -69,7 +113,35 @@ namespace Bird.Idle.Gameplay
             Instance = this;
             DontDestroyOnLoad(gameObject);
             
-            // TODO: LoadAllQuestDataAsync(); 호출 필요
+            LoadAllQuestDataAsync();
+        }
+        
+        private async void LoadAllQuestDataAsync()
+        {
+            var handle = Addressables.LoadAssetsAsync<QuestData>(questDataLabel, null);
+            await handle.Task;
+
+            if (handle.Status == AsyncOperationStatus.Succeeded)
+            {
+                foreach (var data in handle.Result)
+                {
+                    if (!allQuests.ContainsKey(data.questID))
+                    {
+                        allQuests.Add(data.questID, data);
+                    }
+                }
+
+                mainQuestSequence = allQuests.Values
+                    .Where(q => q.category == QuestCategory.Main)
+                    .OrderBy(q => q.questID)
+                    .ToList();
+
+                Debug.Log($"[QuestManager] 퀘스트 데이터 로드 완료. (총 {allQuests.Count}개)");
+            }
+            else
+            {
+                Debug.LogError("[QuestManager] 퀘스트 데이터 로드 실패");
+            }
         }
 
         /// <summary>
@@ -78,62 +150,58 @@ namespace Bird.Idle.Gameplay
         private void SubscribeToEvents()
         {
             if (StageManager.Instance != null)
-            {
                 StageManager.Instance.OnMonsterKilledGlobal += HandleMonsterDefeat;
-            }
-            // TODO: CharacterManager.OnLevelUp 등 다른 이벤트 구독
+            
+            if (CharacterManager.Instance != null)
+                CharacterManager.Instance.OnLevelUp += HandleLevelUp;
         }
-
-        public void HandleMonsterDefeat()
-        {
-            UpdateProgressByCondition(QuestType.DefeatMonsterCount, 1);
-        }
+        
+        public void HandleMonsterDefeat() => UpdateProgressByCondition(QuestType.DefeatMonsterCount, 1);
+        public void HandleLevelUp(int level) => UpdateProgressByCondition(QuestType.LevelUpCharacter, level, true);
 
         /// <summary>
         /// 특정 퀘스트 타입의 현재 진행 값을 업데이트
         /// </summary>
-        public void UpdateProgressByCondition(QuestType type, long amount)
+        public void UpdateProgressByCondition(QuestType type, long amount, bool isSet = false)
         {
+            bool changed = false;
+
+            if (CurrentMainQuest != null && CurrentMainQuest.type == type)
+            {
+                var progress = GetOrAmountProgress(CurrentMainQuest.questID);
+                
+                if (!progress.isCompleted && progress.rewardsClaimed == 0)
+                {
+                    if (isSet) progress.currentValue = amount;
+                    else progress.currentValue += amount;
+
+                    changed = true;
+                }
+            }
+
             foreach (var kvp in allQuests)
             {
-                QuestData data = kvp.Value;
-                if (data.type != type) continue;
-
-                if (!userProgress.TryGetValue(data.questID, out QuestProgress progress))
+                var data = kvp.Value;
+                if (data.category == QuestCategory.Repeatable && data.type == type)
                 {
-                    // 진행 데이터가 없으면 새로 생성
-                    progress = new QuestProgress { questID = data.questID };
-                    userProgress.Add(data.questID, progress);
-                }
+                    var progress = GetOrAmountProgress(data.questID);
+                    
+                    if (isSet) progress.currentValue = amount;
+                    else progress.currentValue += amount;
 
-                if (!progress.isCompleted) // 일일/업적 퀘스트는 완료 후 업데이트 중지
-                {
-                    progress.currentValue += amount;
-                    RecalculateRewards(progress, data);
-                    OnQuestProgressUpdated?.Invoke();
+                    RecalculateRepeatableRewards(progress, data);
+                    changed = true;
                 }
             }
+
+            if (changed) OnQuestProgressUpdated?.Invoke();
         }
         
-        /// <summary>
-        /// 반복 퀘스트의 보상 수령 가능 횟수를 계산
-        /// </summary>
-        private void RecalculateRewards(QuestProgress progress, QuestData data)
+        private void RecalculateRepeatableRewards(QuestProgress progress, QuestData data)
         {
-            if (data.isRepeatable)
-            {
-                long timesCompleted = progress.currentValue / data.targetValue;
-                
-                progress.rewardsClaimed = (int)timesCompleted;
-            } 
-            else
-            {
-                if (progress.currentValue >= data.targetValue)
-                {
-                    progress.isCompleted = true;
-                    progress.rewardsClaimed = 1;
-                }
-            }
+            if (data.targetValue <= 0) return;
+            long count = progress.currentValue / data.targetValue;
+            progress.rewardsClaimed = (int)count;
         }
 
         /// <summary>
@@ -141,30 +209,40 @@ namespace Bird.Idle.Gameplay
         /// </summary>
         public void ClaimReward(int questID)
         {
-            if (!allQuests.TryGetValue(questID, out QuestData data) || 
-                !userProgress.TryGetValue(questID, out QuestProgress progress) || 
-                progress.rewardsClaimed <= 0)
-            {
-                Debug.LogWarning("[QuestManager] 보상 수령 불가: 퀘스트 ID가 유효하지 않거나 수령 횟수가 0입니다.");
-                return;
-            }
+            if (!allQuests.TryGetValue(questID, out QuestData data) || !userProgress.TryGetValue(questID, out QuestProgress progress)) return;
 
-            // 재화 지급
-            CurrencyManager.Instance.ChangeCurrency(data.rewardType, data.rewardAmount * progress.rewardsClaimed);
-            
-            // 진행 상태 업데이트
-            if (data.isRepeatable)
+            if (data.category == QuestCategory.Main)
             {
-                progress.currentValue -= progress.rewardsClaimed * data.targetValue;
-                progress.rewardsClaimed = 0;
+                if (progress.currentValue >= data.targetValue && !progress.isCompleted)
+                {
+                    CurrencyManager.Instance.ChangeCurrency(data.rewardType, data.rewardAmount);
+                    
+                    progress.isCompleted = true;
+                    progress.rewardsClaimed = 1;
+                    
+                    Debug.Log($"[Quest] 메인 퀘스트 '{data.questName}' 완료!");
+                    
+                    UpdateCurrentMainQuest();
+                    
+                    OnQuestProgressUpdated?.Invoke();
+                }
             }
-            else
+            // --- 반복 퀘스트 ---
+            else if (data.category == QuestCategory.Repeatable)
             {
-                progress.rewardsClaimed = 0;
-                // 일일 퀘스트의 경우 다음 날 리셋, 업적은 완료 상태 유지
-            }
+                if (progress.rewardsClaimed > 0)
+                {
+                    long totalReward = data.rewardAmount * progress.rewardsClaimed;
+                    CurrencyManager.Instance.ChangeCurrency(data.rewardType, totalReward);
 
-            OnQuestProgressUpdated?.Invoke();
+                    // 잔여량 유지 (465/100 -> 65/100)
+                    progress.currentValue %= data.targetValue;
+                    progress.rewardsClaimed = 0;
+
+                    Debug.Log($"[Quest] 반복 퀘스트 '{data.questName}' 보상 수령. ({totalReward})");
+                    OnQuestProgressUpdated?.Invoke();
+                }
+            }
         }
     }
 }
