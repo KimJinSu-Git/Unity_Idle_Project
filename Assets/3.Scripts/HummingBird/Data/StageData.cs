@@ -15,7 +15,7 @@ namespace Bird.Idle.Data
         
         [Header("몬스터 구성")]
         public List<int> MonsterIDs; // 해당 스테이지에 등장할 몬스터 ID 목록
-        public int MonsterKillCountRequired = 100; // 다음 스테이지로 넘어가기 위해 필요한 몬스터 처치 수
+        public int MonsterKillCountRequired; // 다음 스테이지로 넘어가기 위해 필요한 몬스터 처치 수
         
         [Header("보스전 설정")]
         public bool IsBossStage = false;

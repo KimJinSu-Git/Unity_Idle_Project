@@ -78,23 +78,25 @@ namespace Bird.Idle.Visual
                 backgroundRenderer.material.SetTextureOffset(MainTexOffset, Vector2.zero);
             }
             
-            int mapIndex = (newStageID - 1) / 100;
+            int mapIndex = (newStageID - 1) / 10;
             AssetReferenceT<Texture2D> nextBackgroundRef = mountainBackgroundRef;
             
             switch (mapIndex)
             {
-                case 1: nextBackgroundRef = desertBackgroundRef; break;
-                case 2: nextBackgroundRef = graveyardBackgroundRef; break;
-                case 3: nextBackgroundRef = snowBackgroundRef; break;
-                default: nextBackgroundRef = mountainBackgroundRef; break;
+                case 1: nextBackgroundRef = desertBackgroundRef; Debug.Log($"{mapIndex}"); break;
+                case 2: nextBackgroundRef = graveyardBackgroundRef; Debug.Log($"{mapIndex}"); break;
+                case 3: nextBackgroundRef = snowBackgroundRef; Debug.Log($"{mapIndex}"); break;
+                default: nextBackgroundRef = mountainBackgroundRef; Debug.Log($"{mapIndex}"); break;
             }
+            
+            
             
             LoadNewBackground(nextBackgroundRef);
         }
         
         private async void LoadNewBackground(AssetReferenceT<Texture2D> backgroundRef)
         {
-            if (backgroundRef == null || !backgroundRef.IsValid()) return;
+            if (backgroundRef == null) return;
             
             if (currentlyLoadedRef == backgroundRef)
             {

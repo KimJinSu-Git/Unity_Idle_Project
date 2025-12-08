@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: StageData_11
   m_EditorClassIdentifier: 
   StageID: 11
-  StageName: "[\uD3C9\uC6D0] 11"
-  MonsterIDs: e9030000ea030000
-  MonsterKillCountRequired: 100
+  StageName: "[\uC0AC\uB9C9] 1"
+  MonsterIDs: d1070000d2070000
+  MonsterKillCountRequired: 10
   IsBossStage: 0
   BossMonsterID: -1
   GoldRewardMultiplier: 1

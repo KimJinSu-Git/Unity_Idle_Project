@@ -163,8 +163,6 @@ namespace Bird.Idle.UI
             healthRegenText.text = $"Regen: {characterManager.PlayerStats.FinalHealthRegen:F2}/s";
     
             goldDropText.text = $"Gold%: {((characterManager.PlayerStats.FinalGoldDrop - 1.0f) * 100):F1}%"; // 기본 100%를 제외한 증가분 표시
-            
-            Debug.Log("[StatsDisplay] 장비 변경으로 스탯 텍스트 UI 갱신 완료.");
         }
     }
 }

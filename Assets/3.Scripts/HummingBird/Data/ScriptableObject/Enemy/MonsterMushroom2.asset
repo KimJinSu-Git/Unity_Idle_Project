@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 082a889d283cf514fa6cce7ce171a051, type: 3}
+  m_Name: MonsterMushroom2
+  m_EditorClassIdentifier: 
+  monsterID: 2002
+  monsterName: Mushroom
+  baseHealth: 200
+  baseDamage: 10
+  goldReward: 250
+  expReward: 10
+  dropTable:
+  - itemSO: {fileID: 11400000, guid: ff29673586b5e0f41a4c5a340e3575f5, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: 78f71845e7361ad498348ef64c75f899, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: 32daa7639f285864e858f0805f3e9c92, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: ba322ae61cab306448e9c698b6e2a28e, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: 285f8c08666150f40950de79852864f3, type: 2}
+    dropRate: 0.1
+  prefabAddress: Assets/8.Prefabs/Character/MobMushroom.prefab

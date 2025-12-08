@@ -134,7 +134,6 @@ namespace Bird.Idle.UI
         private void RefreshEquippedUI()
         {
             RefreshInventoryUI();
-            Debug.Log("[InventoryUI] 장착 상태 변경으로 인해 전체 인벤토리 UI 갱신.");
             
             // TODO :: 나중에, 필요한 슬롯(무기/장비/악세사리)만 순회하도록 변경하여, 비용을 줄일 수 있음.
         }

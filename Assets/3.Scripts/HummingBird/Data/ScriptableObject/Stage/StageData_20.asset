@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: StageData_20
   m_EditorClassIdentifier: 
   StageID: 20
-  StageName: "[\uD3C9\uC6D0] 20"
-  MonsterIDs: e9030000ea030000
-  MonsterKillCountRequired: 100
-  IsBossStage: 0
-  BossMonsterID: -1
-  GoldRewardMultiplier: 1
-  ExpRewardMultiplier: 1
+  StageName: "[\uC0AC\uB9C9] Boss"
+  MonsterIDs: 
+  MonsterKillCountRequired: 1
+  IsBossStage: 1
+  BossMonsterID: 8002
+  GoldRewardMultiplier: 1.5
+  ExpRewardMultiplier: 1.5

@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 082a889d283cf514fa6cce7ce171a051, type: 3}
+  m_Name: MonsterFlyingEyeKing
+  m_EditorClassIdentifier: 
+  monsterID: 8004
+  monsterName: FlyingEyeKing
+  baseHealth: 3200
+  baseDamage: 20
+  goldReward: 250
+  expReward: 10
+  dropTable:
+  - itemSO: {fileID: 11400000, guid: 70e8d242bbe78c141896d29958a14606, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: 710a80165b286454ba9bc464a4f1edb2, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: 51a665697ebcba449afb1754c94208c1, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: 3af0da90ede58164a922f6c5174227c2, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: 414b9dae4c7699442af83e30819345eb, type: 2}
+    dropRate: 0.1
+  prefabAddress: Assets/8.Prefabs/Character/MobFlyingEye.prefab

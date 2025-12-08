@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1611da72914e51446875768fc15069c5, type: 3}
-  m_Name: 
+  m_Name: StageData_6
   m_EditorClassIdentifier: 
   StageID: 6
   StageName: "[\uD3C9\uC6D0] 6"
   MonsterIDs: e9030000ea030000
-  MonsterKillCountRequired: 100
+  MonsterKillCountRequired: 10
   IsBossStage: 0
   BossMonsterID: -1
   GoldRewardMultiplier: 1

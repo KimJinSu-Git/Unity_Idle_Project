@@ -25,8 +25,30 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2d4eabeedba552049be720566879c6d6
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Enemy/MonsterFlyingEye1.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Monster
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 359c7098a1b1d4a46a9c18d8037b3804
     m_Address: Assets/8.Prefabs/Character/Warrior.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3ad71bc655c2b5041a93b60567e6d54f
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Enemy/MonsterFlyingEye2.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Monster
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 66dc3de21bce9954d9ff6bd10eae0e72
+    m_Address: Assets/8.Prefabs/Character/MobMushroomKing.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6c1c2ffa860dcd64a961067f231fd1a2
+    m_Address: Assets/8.Prefabs/Character/MobGoblinKing.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -35,8 +57,24 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c655add1176afbc46878de67d35bf14a
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Enemy/MonsterFlyingEyeKing.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Monster
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d6d71de2ce633784a948d8a0123188e4
     m_Address: Assets/8.Prefabs/Character/MobGoblin.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ebacdecdd971cad43b71301f1c95dfcb
+    m_Address: Assets/8.Prefabs/Character/MobSkeletonKing.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fa28847dd7818d349975f9e3086973b0
+    m_Address: Assets/8.Prefabs/Character/MobFlyingEyeKing.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

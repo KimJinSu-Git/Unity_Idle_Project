@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 082a889d283cf514fa6cce7ce171a051, type: 3}
+  m_Name: MonsterSkeletonKing
+  m_EditorClassIdentifier: 
+  monsterID: 8003
+  monsterName: SkeletonKing
+  baseHealth: 800
+  baseDamage: 15
+  goldReward: 250
+  expReward: 10
+  dropTable:
+  - itemSO: {fileID: 11400000, guid: 110d0d0abb02d2242b197221103c1a24, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: 69a8265220db99d428f9ed0d22d07d36, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: 44ba94de8165fd142b9662b366abe14d, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: 665bae6505640af41b90d58c2ec7bb3e, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: 8d8770b9c790dc64fabc042d2bc5eb80, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: 1ab0dae578b3b974f8cd33a85a7990fa, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: e94d5319796debd4281a92f033392ac1, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: be3348eb60c64a540ac4fd1a7e3636e4, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: e28d3033c77a7b14e9365d182ceeeddd, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: dc23bc9c05325154a8fdd8c1c772ee90, type: 2}
+    dropRate: 0.1
+  prefabAddress: Assets/8.Prefabs/Character/MobSkeletonKing.prefab

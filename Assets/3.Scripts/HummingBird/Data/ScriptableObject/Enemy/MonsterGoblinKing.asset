@@ -16,7 +16,27 @@ MonoBehaviour:
   monsterName: GoblinKing
   baseHealth: 100
   baseDamage: 50
-  goldReward: 250
+  goldReward: 1000
   expReward: 250
-  dropTable: []
-  prefabAddress: Assets/8.Prefabs/Character/MobGoblin.prefab
+  dropTable:
+  - itemSO: {fileID: 11400000, guid: e469d4189dbaaf54fa1d6796b93908e1, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: b54ea5e36d96ea84386c60b30dba305f, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: 76165ff5af6c7c4418067ab4231aff0f, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: 542063e3ce44b144092cf4d75af61474, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: 7e045a4a2343f5e408968946940f04b0, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: 4a424c992d58e8a44a5ff62f6537d523, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: f40e8d46421d8e84abf5e7c35dbff673, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: 0e62b460a2cfef7469e5ec76e2a6de8d, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: 68ae640dd2cdd8b44ab484e462af144a, type: 2}
+    dropRate: 0.1
+  - itemSO: {fileID: 11400000, guid: 9aa72c1b77905a845b4243ca03234020, type: 2}
+    dropRate: 0.1
+  prefabAddress: Assets/8.Prefabs/Character/MobGoblinKing.prefab
