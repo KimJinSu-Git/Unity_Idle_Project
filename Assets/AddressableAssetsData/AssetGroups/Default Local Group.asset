@@ -15,8 +15,23 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: 876d73a1f56770d47afe4359d0d038ab
   m_SerializeEntries:
+  - m_GUID: 0a95f960e87fa76499d1d96e29811ef0
+    m_Address: Assets/8.Prefabs/Character/MobSkeleton.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 18b96c204bac30f42990c04a17292e24
+    m_Address: Assets/8.Prefabs/Character/MobFlyingEye.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 359c7098a1b1d4a46a9c18d8037b3804
     m_Address: Assets/8.Prefabs/Character/Warrior.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 74bfcd1c1133c054baf8692ef79085c8
+    m_Address: Assets/8.Prefabs/Character/MobMushroom.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
