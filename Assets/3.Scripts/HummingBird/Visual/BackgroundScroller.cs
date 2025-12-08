@@ -83,10 +83,10 @@ namespace Bird.Idle.Visual
             
             switch (mapIndex)
             {
-                case 1: nextBackgroundRef = desertBackgroundRef; Debug.Log($"{mapIndex}"); break;
-                case 2: nextBackgroundRef = graveyardBackgroundRef; Debug.Log($"{mapIndex}"); break;
-                case 3: nextBackgroundRef = snowBackgroundRef; Debug.Log($"{mapIndex}"); break;
-                default: nextBackgroundRef = mountainBackgroundRef; Debug.Log($"{mapIndex}"); break;
+                case 1: nextBackgroundRef = desertBackgroundRef; break;
+                case 2: nextBackgroundRef = graveyardBackgroundRef; break;
+                case 3: nextBackgroundRef = snowBackgroundRef; break;
+                default: nextBackgroundRef = mountainBackgroundRef; break;
             }
             
             
@@ -124,11 +124,11 @@ namespace Bird.Idle.Visual
             if (currentBackgroundHandle.Status == AsyncOperationStatus.Succeeded)
             {
                 backgroundRenderer.material.mainTexture = currentBackgroundHandle.Result;
-                Debug.Log($"[Scroller] 배경 로드 성공: {backgroundRef.AssetGUID}");
+                Debug.Log($"[Scroller] 배경 로드 성공");
             }
             else
             {
-                Debug.LogError($"[Scroller] 배경 로드 실패: {currentBackgroundHandle.OperationException}");
+                Debug.LogError($"[Scroller] 배경 로드 실패");
                 currentlyLoadedRef = null;
             }
         }

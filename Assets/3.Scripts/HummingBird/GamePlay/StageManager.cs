@@ -23,6 +23,8 @@ namespace Bird.Idle.Gameplay
         [SerializeField] private int currentStageID = 1;
         [SerializeField] private int currentKillCount = 0;
 
+        private bool initialStart = true;
+
         private Dictionary<int, StageData> stageDataDictionary = new Dictionary<int, StageData>();
         private StageData currentStageData;
         
@@ -86,7 +88,7 @@ namespace Bird.Idle.Gameplay
                 }
                 Debug.Log($"[StageManager] StageData 로드 완료! (총 {stageDataDictionary.Count}개 스테이지)");
                 
-                SetCurrentStage(currentStageID, currentKillCount);
+                // SetCurrentStage(currentStageID, currentKillCount);
                 dataLoadTCS.SetResult(true);
             }
             else
@@ -109,8 +111,9 @@ namespace Bird.Idle.Gameplay
                 currentStageData = newStageData;
                 currentKillCount = killCount;
                 
-                if (stageActuallyChanged)
+                if (stageActuallyChanged || initialStart)
                 {
+                    initialStart = false;
                     OnStageChanged?.Invoke(stageID);
                 }
                 

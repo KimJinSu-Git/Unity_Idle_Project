@@ -63,6 +63,7 @@ namespace Bird.Idle.Core
         public Action OnHealthChanged; // 체력 변경 이벤트 (UI 갱신용)
         public Action OnEXPChanged; // 경험치 변경 이벤트
         public Action OnRequestStageRestart; // 재시작 요청 이벤트
+        public Action OnPlayerRevived; // Player 부활 이벤트
 
         private void Awake()
         {
@@ -174,13 +175,13 @@ namespace Bird.Idle.Core
             OnPlayerDied?.Invoke();
             
             OnRequestStageRestart?.Invoke();
-            StartCoroutine(DieDelayTimer());
         }
-
-        private IEnumerator DieDelayTimer()
+        
+        public void Revive()
         {
-            yield return new WaitForSeconds(1f);
-            StageManager.Instance.SetCurrentStage(StageManager.Instance.CurrentStageID, 0);
+            currentHealth = MaxHealth;
+            OnHealthChanged?.Invoke();
+            OnPlayerRevived?.Invoke();
         }
         
         /// <summary>

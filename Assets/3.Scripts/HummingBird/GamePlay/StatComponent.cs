@@ -41,7 +41,7 @@ namespace Bird.Idle.Gameplay
             float permanentAtk, float permanentHp)
         {
             FinalAttackPower = (97.5f + (Strength * 2.5f)) + permanentAtk + equipBonus.attack;
-            FinalMaxHealth = (195f + (Strength * 5f)) + permanentHp + equipBonus.health;
+            FinalMaxHealth = (395f + (Strength * 5f)) + permanentHp + equipBonus.health;
             FinalHealthRegen = (Intelligence * 0.1f) + equipBonus.healthRegen;
 
             FinalCritDamage = 1.0f + (Strength * 0.05f) + (Luck * 0.05f) + equipBonus.critDamage; 

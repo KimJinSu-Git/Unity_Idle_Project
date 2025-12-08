@@ -25,3 +25,31 @@ MonoBehaviour:
     RequiredEXP: 80
   - Level: 6
     RequiredEXP: 100
+  - Level: 7
+    RequiredEXP: 120
+  - Level: 8
+    RequiredEXP: 140
+  - Level: 9
+    RequiredEXP: 160
+  - Level: 10
+    RequiredEXP: 180
+  - Level: 11
+    RequiredEXP: 200
+  - Level: 12
+    RequiredEXP: 220
+  - Level: 13
+    RequiredEXP: 240
+  - Level: 14
+    RequiredEXP: 260
+  - Level: 15
+    RequiredEXP: 280
+  - Level: 16
+    RequiredEXP: 300
+  - Level: 17
+    RequiredEXP: 320
+  - Level: 18
+    RequiredEXP: 340
+  - Level: 19
+    RequiredEXP: 360
+  - Level: 20
+    RequiredEXP: 380

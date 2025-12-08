@@ -54,6 +54,31 @@ namespace Bird.Idle.Core
             }
             
             // TODO ::: 스테이지 재시작 호출
+            StartCoroutine(RestartStageAfterDelay(2f));
+        }
+        
+        private IEnumerator RestartStageAfterDelay(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+
+            Debug.Log("[GameManager] 스테이지 재시작 로직 실행.");
+            
+            if (EnemyManager.Instance != null)
+            {
+                EnemyManager.Instance.ClearAllMonsters();
+            }
+            
+            if (CharacterManager.Instance != null)
+            {
+                CharacterManager.Instance.Revive();
+            }
+            
+            if (battleManager != null)
+            {
+                battleManager.SetBattleActive(true); 
+            }
+            
+            StageManager.Instance.SetCurrentStage(StageManager.Instance.CurrentStageID, 0);
         }
         
         /// <summary>

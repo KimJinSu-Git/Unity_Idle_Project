@@ -31,6 +31,7 @@ namespace Bird.Idle.Gameplay
 
         private float currentSpawnTime;
         private int currentMonsterCount = 0;
+        private int totalSpawnedInCurrentStage = 0;
         
         private Dictionary<int, MonsterData> loadedMonsterDictionary = new Dictionary<int, MonsterData>();
         
@@ -85,8 +86,10 @@ namespace Bird.Idle.Gameplay
             if (!isDataLoaded) return;
             
             currentSpawnTime += Time.deltaTime;
+            
+            bool canSpawnMore = currentStageData != null && totalSpawnedInCurrentStage < currentStageData.MonsterKillCountRequired;
 
-            if (currentMonsterCount < maxMonsterCount && currentSpawnTime >= spawnInterval)
+            if (canSpawnMore && currentMonsterCount < maxMonsterCount && currentSpawnTime >= spawnInterval)
             {
                 SpawnMonster();
                 currentSpawnTime = 0f;
@@ -132,6 +135,8 @@ namespace Bird.Idle.Gameplay
         {
             currentStageData = data;
             currentStageMonsterIDs = data.MonsterIDs;
+            
+            totalSpawnedInCurrentStage = 0;
         }
 
         private void SpawnMonster()
@@ -194,6 +199,8 @@ namespace Bird.Idle.Gameplay
             monsterInstanceCounter++;
             controller.Initialize(monsterData, 1.0f, monsterInstanceCounter);
         
+            totalSpawnedInCurrentStage++;
+            
             activeMonsters.Add(controller);
             currentMonsterCount = activeMonsters.Count;
         
@@ -249,6 +256,32 @@ namespace Bird.Idle.Gameplay
                 
                 CheckBattleState();
             }
+        }
+        
+        /// <summary>
+        /// 필드에 있는 모든 몬스터를 삭제
+        /// </summary>
+        public void ClearAllMonsters()
+        {
+            if (activeMonsters == null) return;
+
+            foreach (var monster in activeMonsters)
+            {
+                if (monster != null)
+                {
+                    Destroy(monster.gameObject); // TODO ::: 나중에 오브젝트 풀링으로 바꿔야 해요.
+                }
+            }
+            
+            activeMonsters.Clear();
+            currentMonsterCount = 0;
+            frontMonster = null;
+            
+            totalSpawnedInCurrentStage = 0;
+            
+            CheckBattleState();
+            
+            Debug.Log("[EnemyManager] 모든 몬스터 삭제 완료.");
         }
         
         /// <summary>

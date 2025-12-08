@@ -56,6 +56,7 @@ namespace Bird.Idle.Visual
             if (characterManager != null)
             {
                 characterManager.OnPlayerDied += PlayDeathAnimation;
+                characterManager.OnPlayerRevived += HandlePlayerRevive;
             }
             
             runAnimHash = Animator.StringToHash(runAnim);
@@ -98,6 +99,7 @@ namespace Bird.Idle.Visual
             if (characterManager != null)
             {
                 characterManager.OnPlayerDied -= PlayDeathAnimation;
+                characterManager.OnPlayerRevived -= HandlePlayerRevive;
             }
         }
 
@@ -131,12 +133,20 @@ namespace Bird.Idle.Visual
             battleManager.TryAutoAttack(); 
         }
         
+        /// <summary>
+        /// 플레이어 부활 시 호출되어 애니메이션과 상태를 초기화
+        /// </summary>
+        private void HandlePlayerRevive()
+        {
+            StopAllCoroutines();
+            animator.Play(runAnimHash);
+        }
+        
         private void PlayDeathAnimation()
         {
             animator.Play(deathAnim);
             
             StopAllCoroutines(); 
-            // TODO: GameManager에 게임 오버 상태를 알림
         }
     }
 }
