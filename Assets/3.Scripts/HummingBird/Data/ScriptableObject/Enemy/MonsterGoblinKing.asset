@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsterID: 8001
   monsterName: GoblinKing
-  baseHealth: 100
-  baseDamage: 50
+  baseHealth: 1000
+  baseDamage: 5
   goldReward: 1000
   expReward: 250
   dropTable:

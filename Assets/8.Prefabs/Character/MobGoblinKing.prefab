@@ -299,7 +299,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7647797803932705888}
-  - component: {fileID: 1816388320201733957}
+  - component: {fileID: 6946683898604365518}
   m_Layer: 0
   m_Name: MobGoblinKing
   m_TagString: Untagged
@@ -324,7 +324,7 @@ Transform:
   - {fileID: 7225618967689629224}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!114 &1816388320201733957
+--- !u!114 &6946683898604365518
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -333,7 +333,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5029595298710896208}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b7c9505314c29941b47b34c5d6c0831, type: 3}
+  m_Script: {fileID: 11500000, guid: f2a21a4ede44d2f458f03757b54cec47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   MonsterData: {fileID: 0}
@@ -438,7 +438,7 @@ Animator:
   m_GameObject: {fileID: 5651306071692926375}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 4f230fa6acf87ff4aa55a06a9691101d, type: 2}
+  m_Controller: {fileID: 9100000, guid: 88f9cb5cb4694db42a789bbdf1d6b0a1, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

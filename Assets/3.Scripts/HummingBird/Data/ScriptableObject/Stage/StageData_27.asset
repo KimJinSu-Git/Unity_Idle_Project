@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StageID: 27
   StageName: "[\uD3D0\uD5C8] 7"
-  MonsterIDs: e9030000ea030000
+  MonsterIDs: b90b0000ba0b0000
   MonsterKillCountRequired: 10
   IsBossStage: 0
   BossMonsterID: -1

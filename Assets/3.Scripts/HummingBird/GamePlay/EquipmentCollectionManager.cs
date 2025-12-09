@@ -137,7 +137,6 @@ namespace Bird.Idle.Gameplay
             else if (collectionMap.TryGetValue(item.equipID, out CollectionEntry entry))
             {
                 entry.count++;
-                Debug.Log($"[Collection] ID {item.equipID} 수량 증가 ({entry.count}개).");
                 OnCollectionChanged?.Invoke(); 
             }
             else

@@ -186,7 +186,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7835888930987471085}
-  - component: {fileID: 8616892067348978433}
+  - component: {fileID: 5245729077620572985}
   m_Layer: 0
   m_Name: MobMushroomKing
   m_TagString: Untagged
@@ -211,7 +211,7 @@ Transform:
   - {fileID: 8586393582277319017}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!114 &8616892067348978433
+--- !u!114 &5245729077620572985
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -220,7 +220,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2866213319369023250}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b7c9505314c29941b47b34c5d6c0831, type: 3}
+  m_Script: {fileID: 11500000, guid: f2a21a4ede44d2f458f03757b54cec47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   MonsterData: {fileID: 0}
@@ -436,7 +436,7 @@ Animator:
   m_GameObject: {fileID: 5713774505418362303}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 6fb5b38e817110b4c8b17f29f2c7700f, type: 2}
+  m_Controller: {fileID: 9100000, guid: 43f873dbf0a51f94c9e7ab1ad9348c60, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

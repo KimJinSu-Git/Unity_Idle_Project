@@ -186,7 +186,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2945996292090656802}
-  - component: {fileID: 592991932269677151}
+  - component: {fileID: 8828503923001973087}
   m_Layer: 0
   m_Name: MobSkeletonKing
   m_TagString: Untagged
@@ -211,7 +211,7 @@ Transform:
   - {fileID: 7121466023643505257}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!114 &592991932269677151
+--- !u!114 &8828503923001973087
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -220,7 +220,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3096278560785962049}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b7c9505314c29941b47b34c5d6c0831, type: 3}
+  m_Script: {fileID: 11500000, guid: f2a21a4ede44d2f458f03757b54cec47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   MonsterData: {fileID: 0}
@@ -651,7 +651,7 @@ Animator:
   m_GameObject: {fileID: 9188337749973569594}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f0bfd68127ad7e24fb56308b503716b9, type: 2}
+  m_Controller: {fileID: 9100000, guid: 7bd320275138fac478581304722473bd, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

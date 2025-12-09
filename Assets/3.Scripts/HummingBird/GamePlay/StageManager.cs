@@ -121,7 +121,7 @@ namespace Bird.Idle.Gameplay
 
                 Debug.Log($"[StageManager] 현재 스테이지: {newStageData.StageName} (ID: {stageID})");
 
-                EnemyManager.Instance.UpdateStageData(currentStageData);
+                EnemyManager.Instance.UpdateStageData(currentStageData, currentKillCount);
             }
             else
             {

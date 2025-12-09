@@ -17,6 +17,6 @@ MonoBehaviour:
   MonsterIDs: 
   MonsterKillCountRequired: 1
   IsBossStage: 1
-  BossMonsterID: 8001
+  BossMonsterID: 8004
   GoldRewardMultiplier: 1.5
   ExpRewardMultiplier: 1.5

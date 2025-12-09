@@ -13,7 +13,8 @@ namespace Bird.Idle.Gameplay
     /// </summary>
     public class MonsterController : MonoBehaviour, IDamageable
     {
-        // 몬스터 프리팹에 인스펙터로 할당됩니다.
+        protected readonly int Attack1Hash = Animator.StringToHash("Attack1");
+        
         public MonsterData MonsterData; 
         
         [Header("Movement")]
@@ -28,7 +29,7 @@ namespace Bird.Idle.Gameplay
         private bool isMoving = true;
         private bool currentlyAttacking = false;
         
-        private Animator animator;
+        protected Animator Animator;
         
         public Action OnHealthChanged;
         
@@ -54,14 +55,15 @@ namespace Bird.Idle.Gameplay
             
             OnHealthChanged?.Invoke();
             
-            animator = GetComponentInChildren<Animator>();
+            Animator = GetComponentInChildren<Animator>();
         }
         
         private void Update()
         {
             if (PlayerController.PlayerTransform == null) return;
             
-            Vector3 targetPosition = PlayerController.PlayerTransform.position;
+            Vector3 playerPos = PlayerController.PlayerTransform.position;
+            Vector3 targetPosition = new Vector3(playerPos.x, transform.position.y, transform.position.z);
             
             if (isMoving)
             {
@@ -86,7 +88,7 @@ namespace Bird.Idle.Gameplay
             isMoving = false;
             currentlyAttacking = true;
             
-            animator.Play("Idle");
+            Animator.Play("Idle");
             
             StartCoroutine(AttackLoop());
         }
@@ -104,14 +106,14 @@ namespace Bird.Idle.Gameplay
             }
         }
         
-        private void TryAttackPlayer()
+        protected virtual void TryAttackPlayer()
         {
             float monsterDamage = MonsterData.baseDamage;
             
             if (CharacterManager.Instance != null && monsterDamage > 0)
             {
                 CharacterManager.Instance.ApplyDamage(monsterDamage);
-                animator.Play("Attack1");
+                Animator.Play(Attack1Hash);
             }
         }
         
@@ -136,9 +138,9 @@ namespace Bird.Idle.Gameplay
             
             EnemyManager.Instance.ProcessMonsterDefeat(MonsterData);
 
-            if (animator != null)
+            if (Animator != null)
             {
-                animator.Play("Death");
+                Animator.Play("Death");
             }
             
             Destroy(gameObject, 1f); // 임시적으로, 1초 뒤 사라지도록 함. TODO ::: 오브젝트 풀링으로 바꿉시다.

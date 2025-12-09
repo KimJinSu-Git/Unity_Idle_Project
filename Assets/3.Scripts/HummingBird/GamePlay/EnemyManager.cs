@@ -131,19 +131,19 @@ namespace Bird.Idle.Gameplay
         /// <summary>
         /// StageManager로부터 현재 스테이지 정보를 업데이트
         /// </summary>
-        public void UpdateStageData(StageData data)
+        public void UpdateStageData(StageData data, int currentProgress = 0)
         {
             currentStageData = data;
             currentStageMonsterIDs = data.MonsterIDs;
             
-            totalSpawnedInCurrentStage = 0;
+            totalSpawnedInCurrentStage = currentProgress;
         }
 
         private void SpawnMonster()
         {
-            if (loadedMonsterDictionary.Count == 0 || currentStageMonsterIDs == null || currentStageMonsterIDs.Count == 0)
+            if (loadedMonsterDictionary.Count == 0 || currentStageData == null)
             {
-                Debug.LogWarning("[EnemyManager] 몬스터 데이터 또는 스테이지 목록이 없습니다.");
+                Debug.LogWarning("[EnemyManager] 데이터가 없습니다.");
                 return;
             }
 
@@ -152,8 +152,20 @@ namespace Bird.Idle.Gameplay
                 return; // Player가 죽은 상태면 스폰을 멈춰요.
             }
             
-            int randomIndex = UnityEngine.Random.Range(0, currentStageMonsterIDs.Count);
-            int monsterIdToSpawn = currentStageMonsterIDs[randomIndex];
+            int monsterIdToSpawn = -1;
+            
+            if (currentStageData.IsBossStage)
+            {
+                monsterIdToSpawn = currentStageData.BossMonsterID;
+                
+                if (currentMonsterCount > 0) return; 
+            }
+            else
+            {
+                if (currentStageMonsterIDs == null || currentStageMonsterIDs.Count == 0) return;
+                int randomIndex = UnityEngine.Random.Range(0, currentStageMonsterIDs.Count);
+                monsterIdToSpawn = currentStageMonsterIDs[randomIndex];
+            }
             
             if (loadedMonsterDictionary.TryGetValue(monsterIdToSpawn, out MonsterData monsterData))
             {
@@ -176,7 +188,7 @@ namespace Bird.Idle.Gameplay
                 return;
             }
             
-            AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(monsterData.prefabAddress, spawnPosition, spawnRotation);
+            AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(monsterData.prefabAddress);
         
             await handle.Task;
         
@@ -195,11 +207,18 @@ namespace Bird.Idle.Gameplay
                 Addressables.ReleaseInstance(handle); 
                 return;
             }
+            
+            float prefabOriginalY = monsterGO.transform.position.y;
+            float prefabOriginalZ = monsterGO.transform.position.z;
+            
+            monsterGO.transform.position = new Vector3(spawnPosition.x, prefabOriginalY, prefabOriginalZ);
+            monsterGO.transform.rotation = spawnRotation;
 
             monsterInstanceCounter++;
             controller.Initialize(monsterData, 1.0f, monsterInstanceCounter);
         
             totalSpawnedInCurrentStage++;
+            Debug.Log($"totalSpawnedInCurrentStage::: {totalSpawnedInCurrentStage}");
             
             activeMonsters.Add(controller);
             currentMonsterCount = activeMonsters.Count;
@@ -208,8 +227,6 @@ namespace Bird.Idle.Gameplay
             {
                 frontMonster = controller;
             }
-        
-            // TODO: 로드된 핸들을 관리하는 리스트에 추가하여 OnDestroy 시 해제 로직 구현 필요
         }
         
         public void ApplyDamageToCurrentMonster(float damage)

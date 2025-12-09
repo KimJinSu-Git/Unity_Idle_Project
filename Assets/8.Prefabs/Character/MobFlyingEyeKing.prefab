@@ -234,7 +234,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3261337315398867168}
-  - component: {fileID: 8323134451068149227}
+  - component: {fileID: -3088733208425923837}
   m_Layer: 0
   m_Name: MobFlyingEyeKing
   m_TagString: Untagged
@@ -259,7 +259,7 @@ Transform:
   - {fileID: 6557858723947330096}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!114 &8323134451068149227
+--- !u!114 &-3088733208425923837
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -268,7 +268,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3337620570399666477}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b7c9505314c29941b47b34c5d6c0831, type: 3}
+  m_Script: {fileID: 11500000, guid: f2a21a4ede44d2f458f03757b54cec47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   MonsterData: {fileID: 0}
@@ -445,7 +445,7 @@ Animator:
   m_GameObject: {fileID: 5478788202055013870}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d15e538e0eec0714fba20e1341ffbadd, type: 2}
+  m_Controller: {fileID: 9100000, guid: 34a79a67de4dadb45a74e0746fa8945c, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
