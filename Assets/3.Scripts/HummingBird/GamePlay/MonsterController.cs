@@ -123,6 +123,8 @@ namespace Bird.Idle.Gameplay
             
             currentHealth -= damage;
 
+            DamagePopupManager.Instance.CreatePopup(transform.position, damage, false);
+            
             OnHealthChanged?.Invoke();
             
             if (currentHealth <= 0)

@@ -1,12 +1,10 @@
 using UnityEngine;
 using System;
-using System.Collections;
-using System.Linq;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Bird.Idle.Data;
 using Bird.Idle.Gameplay;
-using UnityEngine.Serialization;
+using Bird.Idle.Visual;
 
 namespace Bird.Idle.Core
 {
@@ -40,6 +38,7 @@ namespace Bird.Idle.Core
         private float permanentHealthBonus = 0f;
         
         private LevelUpCostData loadedLevelUpCostData;
+        private Vector3 spawnPosition;
         
         public StatComponent PlayerStats { get; private set; } = new StatComponent();
         
@@ -78,6 +77,11 @@ namespace Bird.Idle.Core
             currentHealth = MaxHealth;
             
             LoadLevelUpCostDataAsync();
+        }
+
+        private void Start()
+        {
+            spawnPosition = PlayerController.PlayerTransform.position - new Vector3(0.25f, 0f, 0f);
         }
 
         /// <summary>
@@ -159,6 +163,8 @@ namespace Bird.Idle.Core
             if (!IsAlive) return;
 
             currentHealth -= damage;
+            
+            DamagePopupManager.Instance.CreatePopup(spawnPosition, damage, false);
             
             OnHealthChanged?.Invoke(); 
 
