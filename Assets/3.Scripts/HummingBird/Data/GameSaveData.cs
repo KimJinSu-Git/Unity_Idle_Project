@@ -29,6 +29,8 @@ namespace Bird.Idle.Data
         public int CurrentStageID; 
         public int CurrentKillCount;
         
+        public int MaxReachedStageID;
+        
         public List<QuestProgress> QuestProgressList;
         
         public List<CollectionEntry> CollectionEntries;
@@ -48,6 +50,7 @@ namespace Bird.Idle.Data
             
             CurrentStageID = 1; 
             CurrentKillCount = 0;
+            MaxReachedStageID = 1;
             
             CurrentEXP = 0;
             AvailableStatPoints = 0;

@@ -24,6 +24,8 @@ namespace Bird.Idle.Gameplay
         [SerializeField] private int currentKillCount = 0;
 
         private bool initialStart = true;
+        
+        private int maxReachedStageID;
 
         private Dictionary<int, StageData> stageDataDictionary = new Dictionary<int, StageData>();
         private StageData currentStageData;
@@ -35,7 +37,10 @@ namespace Bird.Idle.Gameplay
         public Action OnMonsterKilledGlobal;
         
         public Task WaitForDataLoad() => dataLoadTCS.Task;
+        public int MaxReachedStageID => maxReachedStageID;
         public int CurrentStageID => currentStageID;
+        
+        public Action<bool> OnFarmingModeChanged;
 
         private void Awake()
         {
@@ -58,6 +63,9 @@ namespace Bird.Idle.Gameplay
             currentStageID = data.CurrentStageID;
             currentKillCount = data.CurrentKillCount;
             
+            maxReachedStageID = data.MaxReachedStageID;
+            if (maxReachedStageID == 0) maxReachedStageID = 1;
+            
             SetCurrentStage(currentStageID, currentKillCount);
             
             OnStageProgressChanged?.Invoke(currentKillCount, currentStageData.MonsterKillCountRequired, currentStageID);
@@ -72,6 +80,7 @@ namespace Bird.Idle.Gameplay
         {
             data.CurrentStageID = currentStageID;
             data.CurrentKillCount = currentKillCount;
+            data.MaxReachedStageID = maxReachedStageID;
         }
 
         private async void LoadStageDataAsync()
@@ -105,23 +114,38 @@ namespace Bird.Idle.Gameplay
         {
             if (stageDataDictionary.TryGetValue(stageID, out StageData newStageData))
             {
+                EnemyManager.Instance.ClearAllMonsters();
+                
                 bool stageActuallyChanged = (currentStageID != stageID);
                 
                 currentStageID = stageID;
                 currentStageData = newStageData;
-                currentKillCount = killCount;
+                
+                bool isFarmingMode = currentStageID < maxReachedStageID;
+                
+                if (isFarmingMode)
+                {
+                    currentKillCount = currentStageData.MonsterKillCountRequired;
+                }
+                else
+                {
+                    currentKillCount = killCount;
+                    if (currentStageID > maxReachedStageID) maxReachedStageID = currentStageID;
+                }
                 
                 if (stageActuallyChanged || initialStart)
                 {
                     initialStart = false;
-                    OnStageChanged?.Invoke(stageID);
                 }
                 
+                OnStageChanged?.Invoke(stageID);
                 OnStageProgressChanged?.Invoke(currentKillCount, newStageData.MonsterKillCountRequired, stageID);
+                
+                OnFarmingModeChanged?.Invoke(isFarmingMode);
 
                 Debug.Log($"[StageManager] 현재 스테이지: {newStageData.StageName} (ID: {stageID})");
 
-                EnemyManager.Instance.UpdateStageData(currentStageData, currentKillCount);
+                EnemyManager.Instance.UpdateStageData(currentStageData, currentKillCount, isFarmingMode);
             }
             else
             {
@@ -134,7 +158,10 @@ namespace Bird.Idle.Gameplay
         /// </summary>
         public void OnMonsterKilled()
         {
-            if (currentStageData == null) return;
+            if (currentStageID < maxReachedStageID)
+            {
+                return;
+            }
 
             currentKillCount++;
             OnMonsterKilledGlobal?.Invoke();
@@ -151,15 +178,19 @@ namespace Bird.Idle.Gameplay
         /// </summary>
         private void AdvanceToNextStage()
         {
-            if (currentStageData.IsBossStage)
+            int nextStageID = currentStageID + 1;
+            
+            maxReachedStageID = nextStageID;
+            
+            SetCurrentStage(nextStageID, 0);
+        }
+        
+        // 최고 Stage로 돌아오기에 사용할 기능
+        public void ReturnToMaxStage()
+        {
+            if (currentStageID != maxReachedStageID)
             {
-                Debug.Log("[StageManager] 보스 스테이지 클리어! 다음 챕터 해금.");
-                SetCurrentStage(currentStageID + 1, 0);
-            }
-            else
-            {
-                Debug.Log("[StageManager] 스테이지 클리어. 다음 스테이지로 자동 진행.");
-                SetCurrentStage(currentStageID + 1, 0);
+                SetCurrentStage(maxReachedStageID, 0);
             }
         }
     }

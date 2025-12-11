@@ -33,6 +33,8 @@ namespace Bird.Idle.Gameplay
         private int currentMonsterCount = 0;
         private int totalSpawnedInCurrentStage = 0;
         
+        private bool isInfiniteSpawnMode = false; // 몬스터 스폰 무한 모드
+        
         private Dictionary<int, MonsterData> loadedMonsterDictionary = new Dictionary<int, MonsterData>();
         
         private StageData currentStageData;
@@ -86,9 +88,9 @@ namespace Bird.Idle.Gameplay
             if (!isDataLoaded) return;
             
             currentSpawnTime += Time.deltaTime;
-            
-            bool canSpawnMore = currentStageData != null && totalSpawnedInCurrentStage < currentStageData.MonsterKillCountRequired;
 
+            bool canSpawnMore = currentStageData != null && (isInfiniteSpawnMode || totalSpawnedInCurrentStage < currentStageData.MonsterKillCountRequired);
+            
             if (canSpawnMore && currentMonsterCount < maxMonsterCount && currentSpawnTime >= spawnInterval)
             {
                 SpawnMonster();
@@ -131,10 +133,13 @@ namespace Bird.Idle.Gameplay
         /// <summary>
         /// StageManager로부터 현재 스테이지 정보를 업데이트
         /// </summary>
-        public void UpdateStageData(StageData data, int currentProgress = 0)
+        public void UpdateStageData(StageData data, int currentProgress = 0, bool isFarmingMode = false)
         {
             currentStageData = data;
             currentStageMonsterIDs = data.MonsterIDs;
+            
+            // 파밍 모드면 무한 모드 활성화
+            isInfiniteSpawnMode = isFarmingMode;
             
             totalSpawnedInCurrentStage = currentProgress;
         }
