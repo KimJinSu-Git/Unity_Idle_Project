@@ -37,6 +37,7 @@ namespace Bird.Idle.UI
 
         private void SetActivePanel(GameObject activePanel)
         {
+            statPanel.SetActive(false);
             equipPanel.SetActive(false);
             inventoryPanel.SetActive(false);
             
