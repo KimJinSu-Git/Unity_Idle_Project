@@ -36,6 +36,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 36db9ee643f53b94aa06db0381d171f4
+    m_Address: Assets/4.Sprites/StageBackground/Snow.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3ad71bc655c2b5041a93b60567e6d54f
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Enemy/MonsterFlyingEye2.asset
     m_ReadOnly: 0
@@ -57,6 +62,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a34aad9e90b412843b6d1451a4a581bd
+    m_Address: Assets/4.Sprites/StageBackground/Mountain.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c655add1176afbc46878de67d35bf14a
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Enemy/MonsterFlyingEyeKing.asset
     m_ReadOnly: 0
@@ -65,6 +75,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d6d71de2ce633784a948d8a0123188e4
     m_Address: Assets/8.Prefabs/Character/MobGoblin.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d7d801aa2649b1b488ea99d4a26ed06f
+    m_Address: Assets/4.Sprites/StageBackground/Graveyard.jpg
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

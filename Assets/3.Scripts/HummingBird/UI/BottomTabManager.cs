@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Bird.Idle.Core;
@@ -20,31 +21,43 @@ namespace Bird.Idle.UI
         [SerializeField] private GameObject equipPanel;
         [SerializeField] private GameObject inventoryPanel;
         // TODO :: (추가 콘텐츠 패널)
+        
+        private GameObject currentActivePanel = null;
+        public event Action<bool> OnPanelStateChanged;
 
         private void Awake()
         {
-            statTabButton.onClick.AddListener(() => SetActivePanel(statPanel));
-            equipTabButton.onClick.AddListener(() => SetActivePanel(equipPanel));
-            inventoryTabButton.onClick.AddListener(() => SetActivePanel(inventoryPanel));
+            statTabButton.onClick.AddListener(() => TogglePanel(statPanel));
+            equipTabButton.onClick.AddListener(() => TogglePanel(equipPanel));
+            inventoryTabButton.onClick.AddListener(() => TogglePanel(inventoryPanel));
 
-            SetActivePanel(statPanel);
+            TogglePanel(statPanel);
         }
 
-        private void InitializePanel(GameObject panel)
+        private void TogglePanel(GameObject targetPanel)
         {
-            
+            if (currentActivePanel == targetPanel)
+            {
+                CloseAllPanels();
+                currentActivePanel = null;
+                
+                OnPanelStateChanged?.Invoke(false); 
+            }
+            else
+            {
+                CloseAllPanels();
+                targetPanel.SetActive(true);
+                currentActivePanel = targetPanel;
+
+                OnPanelStateChanged?.Invoke(true);
+            }
         }
 
-        private void SetActivePanel(GameObject activePanel)
+        private void CloseAllPanels()
         {
             statPanel.SetActive(false);
             equipPanel.SetActive(false);
             inventoryPanel.SetActive(false);
-            
-            if (activePanel != null)
-            {
-                activePanel.SetActive(true);
-            }
         }
     }
 }

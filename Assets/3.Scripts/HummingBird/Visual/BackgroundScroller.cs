@@ -16,7 +16,6 @@ namespace Bird.Idle.Visual
     {
         [Header("Scroll Settings")]
         [SerializeField] private float scrollSpeed = 0.5f; // 배경 이동 속도
-        [SerializeField] private float stopDuration = 0.1f; // 공격 시 멈추는 시간
         
         [Header("Data References")]
         [SerializeField] private AssetReferenceT<Texture2D> mountainBackgroundRef;
@@ -24,22 +23,31 @@ namespace Bird.Idle.Visual
         [SerializeField] private AssetReferenceT<Texture2D> graveyardBackgroundRef;
         [SerializeField] private AssetReferenceT<Texture2D> snowBackgroundRef;
         
+        [Header("Height Offsets")]
+        [Tooltip("기본 위치보다 얼마나 위/아래로 움직일지 설정(이미지의 발판 위치랑 Player의 위치가 맞게 할려고 추가하였습니다)")]
+        [SerializeField] private float mountainYOffset = 0f;
+        [SerializeField] private float desertYOffset = 0.3f;
+        [SerializeField] private float graveyardYOffset = 0f;
+        [SerializeField] private float snowYOffset = 0.6f;
+        
         [SerializeField] private MeshRenderer backgroundRenderer;
         [SerializeField] private PlayerController playerController;
 
         private static readonly int MainTexOffset = Shader.PropertyToID("_MainTex");
         
         private AsyncOperationHandle<Texture2D> currentBackgroundHandle;
-        
         private AssetReferenceT<Texture2D> currentlyLoadedRef;
         
         private BattleManager battleManager;
         
         private float currentOffset = 0f;
+        private float initialYPosition;
         
         private void Awake()
         {
             battleManager = BattleManager.Instance;
+            
+            initialYPosition = transform.position.y;
             
             if (StageManager.Instance != null)
             {
@@ -80,27 +88,39 @@ namespace Bird.Idle.Visual
             
             int mapIndex = (newStageID - 1) / 10;
             AssetReferenceT<Texture2D> nextBackgroundRef = mountainBackgroundRef;
+            float targetYOffset = mountainYOffset;
             
             switch (mapIndex)
             {
-                case 1: nextBackgroundRef = desertBackgroundRef; break;
-                case 2: nextBackgroundRef = graveyardBackgroundRef; break;
-                case 3: nextBackgroundRef = snowBackgroundRef; break;
-                default: nextBackgroundRef = mountainBackgroundRef; break;
+                case 1: 
+                    nextBackgroundRef = desertBackgroundRef; 
+                    targetYOffset = desertYOffset;
+                    break;
+                case 2: 
+                    nextBackgroundRef = graveyardBackgroundRef; 
+                    targetYOffset = graveyardYOffset;
+                    break;
+                case 3: 
+                    nextBackgroundRef = snowBackgroundRef; 
+                    targetYOffset = snowYOffset;
+                    break;
+                default: 
+                    nextBackgroundRef = mountainBackgroundRef;
+                    targetYOffset = mountainYOffset;
+                    break;
             }
             
-            
-            
-            LoadNewBackground(nextBackgroundRef);
+            LoadNewBackground(nextBackgroundRef, targetYOffset);
         }
         
-        private async void LoadNewBackground(AssetReferenceT<Texture2D> backgroundRef)
+        private async void LoadNewBackground(AssetReferenceT<Texture2D> backgroundRef, float yOffset)
         {
             if (backgroundRef == null) return;
             
             if (currentlyLoadedRef == backgroundRef)
             {
                 Debug.Log($"[Scroller] 배경 {backgroundRef.AssetGUID}는 이미 로드되어 있습니다. 스킵.");
+                ApplyHeightOffset(yOffset);
                 return;
             }
             
@@ -124,6 +144,9 @@ namespace Bird.Idle.Visual
             if (currentBackgroundHandle.Status == AsyncOperationStatus.Succeeded)
             {
                 backgroundRenderer.material.mainTexture = currentBackgroundHandle.Result;
+                
+                ApplyHeightOffset(yOffset);
+                
                 Debug.Log($"[Scroller] 배경 로드 성공");
             }
             else
@@ -131,6 +154,13 @@ namespace Bird.Idle.Visual
                 Debug.LogError($"[Scroller] 배경 로드 실패");
                 currentlyLoadedRef = null;
             }
+        }
+        
+        private void ApplyHeightOffset(float yOffset)
+        {
+            Vector3 newPos = transform.position;
+            newPos.y = initialYPosition + yOffset;
+            transform.position = newPos;
         }
         
         private void OnDestroy()

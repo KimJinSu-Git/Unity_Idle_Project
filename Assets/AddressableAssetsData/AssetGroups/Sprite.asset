@@ -70,11 +70,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 367fef7c7a0cf8b4e8fc2020259965e9
-    m_Address: Assets/4.Sprites/StageBackground/3_Graveyard.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3789900a707f54d7fa43a49fbb898bfc
     m_Address: Assets/4.Sprites/Weapons/Sword_Common1.png
     m_ReadOnly: 0
@@ -102,11 +97,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 406c543cc52bb4f8494f7203c3bd7a25
     m_Address: Assets/4.Sprites/Armors/Armor_Epic3.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 429517ea1b1287a47952cd5cd8261d74
-    m_Address: Assets/4.Sprites/StageBackground/4_Snow.png
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -215,8 +205,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9d1a3e0bc36dfc9468a738d92b6e92d4
-    m_Address: Assets/4.Sprites/StageBackground/2_Desert.png
+  - m_GUID: 95c1e9361c6f2a14f9798169c1942fe5
+    m_Address: Assets/4.Sprites/StageBackground/Desert.jpg
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -322,11 +312,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fc1ad6c9a638848888ea3abe42d11557
     m_Address: Assets/4.Sprites/Arcessorys/Accessory_Legendary2.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: fd00b29c3d9553d4c8e0ab3b572af409
-    m_Address: Assets/4.Sprites/StageBackground/1_Mountain.png
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
