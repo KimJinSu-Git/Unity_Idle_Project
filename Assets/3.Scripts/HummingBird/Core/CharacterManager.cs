@@ -270,7 +270,8 @@ namespace Bird.Idle.Core
             permanentAttackBonus += attackIncrease;
             permanentHealthBonus += healthIncrease;
     
-            OnStatsRecalculated?.Invoke(); 
+            RecalculateAllFinalStats();
+            // OnStatsRecalculated?.Invoke(); 
         }
     }
 }

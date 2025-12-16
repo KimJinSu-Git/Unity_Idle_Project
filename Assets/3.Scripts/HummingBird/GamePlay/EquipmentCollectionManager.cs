@@ -21,10 +21,6 @@ namespace Bird.Idle.Gameplay
         [Header("Data References")]
         [SerializeField] private AssetLabelReference allEquipmentLabel;
         
-        [Header("Collection Settings")]
-        [SerializeField] private int upgradeCostCount = 5;
-        [SerializeField] private EquipmentGrade autoSellGradeThreshold = EquipmentGrade.Rare;
-        
         [Header("UI References")]
         [SerializeField] private UpgradePopup upgradePopupPrefab;
         [SerializeField] private Transform upgradePopupTransform;
@@ -35,11 +31,17 @@ namespace Bird.Idle.Gameplay
 
         private Dictionary<int, CollectionEntry> collectionMap = new Dictionary<int, CollectionEntry>();
         private Dictionary<int, EquipmentData> allEquipmentSO = new Dictionary<int, EquipmentData>();
+        private Dictionary<EquipmentGrade, int> masukRewardTable = new Dictionary<EquipmentGrade, int>()
+        {
+            { EquipmentGrade.Common, 10 },
+            { EquipmentGrade.Rare, 150 },
+            { EquipmentGrade.Epic, 500 },
+            { EquipmentGrade.Legendary, 2000 }
+        };
         
         public Action OnCollectionChanged;
         
         public Dictionary<int, EquipmentData> AllEquipmentSO { get; private set; } = new Dictionary<int, EquipmentData>();
-        public int UpgradeCostCount => upgradeCostCount;
         public Task WaitForDataLoad() => equipmentDataLoadTask;
 
         private void Awake()
@@ -122,28 +124,47 @@ namespace Bird.Idle.Gameplay
         public void AddItem(EquipmentData item)
         {
             if (item == null) return;
-
-            if (item.equipID <= 0)
-            {
-                Debug.LogError($"[Collection] 획득 장비의 ID가 유효하지 않습니다! ID: {item.equipID}. SO 파일을 확인하세요.");
-                SellItem(item); 
-                return;
-            }
+            if (item.equipID <= 0) return;
             
-            if (item.grade < autoSellGradeThreshold)
+            if (collectionMap.TryGetValue(item.equipID, out CollectionEntry entry))
             {
-                SellItem(item);
-            }
-            else if (collectionMap.TryGetValue(item.equipID, out CollectionEntry entry))
-            {
-                entry.count++;
-                OnCollectionChanged?.Invoke(); 
+                if (entry.count > 0)
+                {
+                    int rewardAmount = GetMasukAmount(item.grade);
+
+                    if (CurrencyManager.Instance != null)
+                    {
+                        CurrencyManager.Instance.ChangeCurrency(CurrencyType.Masuk, rewardAmount);
+                    }
+
+                    Debug.Log($"[Collection] 중복 장비 {item.equipName} 획득 (현재 {entry.count}개 보유 중) -> 마석 {rewardAmount}개 변환");
+                }
+                else
+                {
+                    entry.count = 1;
+
+                    Debug.Log($"[Collection] 신규 장비 {item.equipName} 최초 획득! (Count: 0 -> 1)");
+                    OnCollectionChanged?.Invoke();
+                }
             }
             else
             {
-                Debug.LogWarning($"[Collection] ID {item.equipID}는 정의되지 않은 아이템이므로 판매합니다.");
-                SellItem(item);
+                CollectionEntry newEntry = new CollectionEntry(item.equipID);
+                newEntry.count = 1;
+                newEntry.collectionLevel = 1;
+
+                collectionMap.Add(item.equipID, newEntry);
+
+                Debug.Log($"[Collection] 미등록 장비 {item.equipName} 신규 등록 완료!");
+                OnCollectionChanged?.Invoke();
             }
+        }
+        
+        private int GetMasukAmount(EquipmentGrade grade)
+        {
+            if (masukRewardTable.TryGetValue(grade, out int amount))
+                return amount;
+            return 10;
         }
         
         private void SellItem(EquipmentData item)
@@ -173,27 +194,21 @@ namespace Bird.Idle.Gameplay
         /// <param name="equipID">업그레이드할 장비의 ID</param>
         /// <param name="goldCost">업그레이드에 필요한 골드 비용</param>
         /// <returns>업그레이드 성공 여부</returns>
-        public bool TryUpgradeCollection(int equipID, long goldCost)
+        public bool TryUpgradeCollection(int equipID)
         {
-            if (!collectionMap.TryGetValue(equipID, out CollectionEntry entry))
-            {
-                Debug.LogError($"[CollectionManager] ID {equipID} 컬렉션 항목이 맵에 없습니다.");
-                return false;
-            }
+            if (!collectionMap.TryGetValue(equipID, out CollectionEntry entry)) return false;
     
-            if (!CanUpgrade(entry, goldCost))
+            long goldCost = CalculateGoldCost(entry.collectionLevel);
+            long masukCost = CalculateMasukCost(entry.collectionLevel);
+
+            if (!CanUpgrade(goldCost, masukCost))
             {
-                Debug.LogWarning("[CollectionManager] 업그레이드 재료(수량 또는 골드)가 부족합니다.");
+                Debug.LogWarning("업그레이드 재화 부족 (골드 or 마석)");
                 return false;
             }
 
-            entry.count -= upgradeCostCount; 
-    
-            if (!CurrencyManager.Instance.ChangeCurrency(CurrencyType.Gold, -goldCost))
-            {
-                Debug.LogError("[CollectionManager] 골드 소모 실패. 비상 상황!");
-                return false; 
-            }
+            CurrencyManager.Instance.ChangeCurrency(CurrencyType.Gold, -goldCost);
+            CurrencyManager.Instance.ChangeCurrency(CurrencyType.Masuk, -masukCost);
 
             entry.collectionLevel++;
     
@@ -204,21 +219,22 @@ namespace Bird.Idle.Gameplay
                 CharacterManager.Instance.ApplyBaseStatUpgrade(upgradeAtk, upgradeHp);
             }
     
-            Debug.Log($"[Collection] ID {equipID} 컬렉션 업그레이드 성공! Lv.{entry.collectionLevel}");
-    
             OnCollectionChanged?.Invoke(); 
     
             return true;
         }
         
+        public long CalculateGoldCost(int currentLevel) => 1000 * (currentLevel + 1); 
+        public long CalculateMasukCost(int currentLevel) => 50 * (currentLevel + 1);
+        
         /// <summary>
         /// 업그레이드 가능 여부를 검사
         /// </summary>
-        public bool CanUpgrade(CollectionEntry entry, long goldCost)
+        private bool CanUpgrade(long goldNeeded, long masukNeeded)
         {
             long currentGold = CurrencyManager.Instance.GetAmount(CurrencyType.Gold);
-    
-            return (entry.count >= upgradeCostCount) && (currentGold >= goldCost);
+            long currentMasuk = CurrencyManager.Instance.GetAmount(CurrencyType.Masuk);
+            return currentGold >= goldNeeded && currentMasuk >= masukNeeded;
         }
         
         // UI가 모든 컬렉션 항목을 가져갈 수 있도록 메서드 제공

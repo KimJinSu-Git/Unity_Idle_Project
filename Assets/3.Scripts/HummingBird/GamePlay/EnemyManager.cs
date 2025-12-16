@@ -333,5 +333,14 @@ namespace Bird.Idle.Gameplay
                 }
             }
         }
+        
+        /// <summary>
+        /// 몬스터 ID로 MonsterData를 반환 (방치 보상 계산용)
+        /// </summary>
+        public MonsterData GetMonsterData(int monsterID)
+        {
+            if (loadedMonsterDictionary.TryGetValue(monsterID, out MonsterData data)) return data;
+            return null;
+        }
     }
 }

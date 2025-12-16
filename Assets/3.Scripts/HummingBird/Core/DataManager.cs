@@ -1,9 +1,12 @@
 using UnityEngine;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 using Bird.Idle.Data;
+using Bird.Idle.Gameplay;
 using Bird.Idle.UI;
 
 namespace Bird.Idle.Core
@@ -35,6 +38,16 @@ namespace Bird.Idle.Core
             savePath = Application.persistentDataPath + "/gameData.dat";
 
             LoadGameData(); 
+        }
+        
+        private IEnumerator Start()
+        {
+            if (StageManager.Instance != null) yield return new WaitUntil(() => StageManager.Instance.WaitForDataLoad().IsCompleted);
+
+            // 임시로 시간 대기 (안전한 호출을 위해서)
+            yield return new WaitForSeconds(1.0f);
+
+            CalculateIdleReward();
         }
 
         /// <summary>
@@ -111,24 +124,70 @@ namespace Bird.Idle.Core
             TimeSpan idleDuration = DateTime.UtcNow - lastExitTime;
             double totalSeconds = idleDuration.TotalSeconds;
 
-            // 최대 보상 시간 제한
-            const double MAX_IDLE_SECONDS = 43200; 
-            double effectiveSeconds = Math.Min(totalSeconds, MAX_IDLE_SECONDS);
+            double effectiveSeconds = Math.Min(totalSeconds, 43200); // 12시간 제한
 
-            if (effectiveSeconds > 60) // 최소 1분 이상 방치했을 때만 보상 계산
+            if (effectiveSeconds < 60)
             {
-                const int GOLD_PER_SECOND = 10;
-                long rewardedGold = (long)(effectiveSeconds * GOLD_PER_SECOND);
-                
-                CurrencyManager.Instance.ChangeCurrency(Data.CurrencyType.Gold, rewardedGold);
-                
-                AFKRewardPopup popup = FindObjectOfType<AFKRewardPopup>(true); 
-                if (popup != null)
+                lastExitTime = DateTime.UtcNow;
+                return;
+            }
+            
+            int currentStageID = StageManager.Instance.CurrentStageID;
+            StageData stageData = StageManager.Instance.GetStageData(currentStageID);
+
+            if (stageData == null) return;
+            long totalGold = 0;
+            long totalExp = 0;
+            Dictionary<EquipmentData, int> acquiredItems = new Dictionary<EquipmentData, int>();
+            
+            float secondsPerKill = 3.0f; // TODO ::: 평균 사냥 속도 => 나중에 Player의 스탯에 맞춰야 할듯, 안 그러면 Player 스탯이 딸린데도 3초마다 원콤내는 방치 계산이 되어버림.
+            int totalKills = (int)(effectiveSeconds / secondsPerKill);
+            
+            for (int i = 0; i < totalKills; i++)
+            {
+                if (stageData.MonsterIDs.Count == 0) break;
+            
+                int randomIdx = UnityEngine.Random.Range(0, stageData.MonsterIDs.Count);
+                int monsterID = stageData.MonsterIDs[randomIdx];
+            
+                MonsterData mobData = EnemyManager.Instance.GetMonsterData(monsterID);
+            
+                if (mobData != null)
                 {
-                    popup.Show(idleDuration, rewardedGold);
+                    totalGold += (long)(mobData.goldReward * stageData.GoldRewardMultiplier);
+                    totalExp += (long)(mobData.expReward * stageData.ExpRewardMultiplier);
+
+                    foreach (var drop in mobData.dropTable)
+                    {
+                        if (UnityEngine.Random.value <= drop.dropRate)
+                        {
+                            if (drop.itemSO != null)
+                            {
+                                if (acquiredItems.ContainsKey(drop.itemSO)) acquiredItems[drop.itemSO]++;
+                                else acquiredItems.Add(drop.itemSO, 1);
+                            }
+                        }
+                    }
                 }
             }
             
+            CurrencyManager.Instance.ChangeCurrency(CurrencyType.Gold, totalGold);
+            if (CharacterManager.Instance != null) CharacterManager.Instance.GainExperience(totalExp);
+
+            foreach (var itemKvp in acquiredItems)
+            {
+                for(int k=0; k < itemKvp.Value; k++)
+                {
+                    EquipmentCollectionManager.Instance.AddItem(itemKvp.Key);
+                }
+            }
+
+            AFKRewardPopup popup = FindObjectOfType<AFKRewardPopup>(true);
+            if (popup != null)
+            {
+                popup.Show(idleDuration, totalGold, acquiredItems); 
+            }
+
             lastExitTime = DateTime.UtcNow;
         }
         

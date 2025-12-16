@@ -109,7 +109,7 @@ namespace Bird.Idle.Core
                 equipPanel.InitializeAfterDataLoad(); 
             }
             
-            CalculateIdleReward(loadedData);
+            // CalculateIdleReward(loadedData);
             
             // SetBattleState(false);
         }

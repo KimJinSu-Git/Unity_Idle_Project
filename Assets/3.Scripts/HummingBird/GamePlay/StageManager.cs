@@ -193,5 +193,14 @@ namespace Bird.Idle.Gameplay
                 SetCurrentStage(maxReachedStageID, 0);
             }
         }
+        
+        /// <summary>
+        /// 스테이지 ID로 StageData를 반환 (방치 보상 계산용)
+        /// </summary>
+        public StageData GetStageData(int stageID)
+        {
+            if (stageDataDictionary.TryGetValue(stageID, out StageData data)) return data;
+            return null;
+        }
     }
 }
