@@ -45,6 +45,8 @@ namespace Bird.Idle.Gameplay
         private MonsterController frontMonster;
         
         private bool isDataLoaded = false;
+        
+        public bool IsDataLoaded => isDataLoaded;
 
         private void Awake()
         {

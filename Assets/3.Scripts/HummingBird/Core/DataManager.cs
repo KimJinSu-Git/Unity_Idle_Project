@@ -43,9 +43,7 @@ namespace Bird.Idle.Core
         private IEnumerator Start()
         {
             if (StageManager.Instance != null) yield return new WaitUntil(() => StageManager.Instance.WaitForDataLoad().IsCompleted);
-
-            // 임시로 시간 대기 (안전한 호출을 위해서)
-            yield return new WaitForSeconds(1.0f);
+            if (EnemyManager.Instance != null) yield return new WaitUntil(() => EnemyManager.Instance.IsDataLoaded);
 
             CalculateIdleReward();
         }
@@ -140,7 +138,7 @@ namespace Bird.Idle.Core
             long totalExp = 0;
             Dictionary<EquipmentData, int> acquiredItems = new Dictionary<EquipmentData, int>();
             
-            float secondsPerKill = 3.0f; // TODO ::: 평균 사냥 속도 => 나중에 Player의 스탯에 맞춰야 할듯, 안 그러면 Player 스탯이 딸린데도 3초마다 원콤내는 방치 계산이 되어버림.
+            float secondsPerKill = 10.0f; // TODO ::: 평균 사냥 속도 => 나중에 Player의 스탯에 맞춰야 할듯, 안 그러면 Player 스탯이 딸린데도 10초마다 원콤내는 방치 계산이 되어버림.
             int totalKills = (int)(effectiveSeconds / secondsPerKill);
             
             for (int i = 0; i < totalKills; i++)
@@ -173,19 +171,21 @@ namespace Bird.Idle.Core
             
             CurrencyManager.Instance.ChangeCurrency(CurrencyType.Gold, totalGold);
             if (CharacterManager.Instance != null) CharacterManager.Instance.GainExperience(totalExp);
+            
+            long totalMasuk = 0;
 
             foreach (var itemKvp in acquiredItems)
             {
                 for(int k=0; k < itemKvp.Value; k++)
                 {
-                    EquipmentCollectionManager.Instance.AddItem(itemKvp.Key);
+                    totalMasuk += EquipmentCollectionManager.Instance.AddItem(itemKvp.Key);
                 }
             }
 
             AFKRewardPopup popup = FindObjectOfType<AFKRewardPopup>(true);
             if (popup != null)
             {
-                popup.Show(idleDuration, totalGold, acquiredItems); 
+                popup.Show(idleDuration, totalGold, totalMasuk, acquiredItems); 
             }
 
             lastExitTime = DateTime.UtcNow;

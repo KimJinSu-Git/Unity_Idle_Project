@@ -15,6 +15,7 @@ namespace Bird.Idle.UI
         [Header("UI References")]
         [SerializeField] private TextMeshProUGUI durationText;
         [SerializeField] private TextMeshProUGUI goldRewardText;
+        [SerializeField] private TextMeshProUGUI masukRewardText;
         [SerializeField] private Button confirmButton;
         
         [Header("Item List Settings")]
@@ -36,13 +37,14 @@ namespace Bird.Idle.UI
         /// <param name="duration"> 계산된 방치 시간 </param>
         /// <param name="gold"> 지급될 골드 보상 </param>
         /// <param name="items"> 방치시간동안 획득한 장비 </param><example> 이미 획득한 장비라면 마석으로 자동 분해, count 표시는 방치 시간동안 그냥 몇 개를 획득했는지 보여주기 위한 용도 </example>
-        public void Show(TimeSpan duration, long gold, Dictionary<EquipmentData, int> items)
+        public void Show(TimeSpan duration, long gold, long masuk, Dictionary<EquipmentData, int> items)
         {
             idleDuration = duration;
             rewardedGold = gold;
 
             durationText.text = $"AFK Time\n{duration.Hours}h {duration.Minutes}m {duration.Seconds}s";
             goldRewardText.text = $"Gold: {gold.ToString("N0")}";
+            masukRewardText.text = $"Masuk Change : {masuk:N0}";
 
             if (itemContentParent != null)
             {

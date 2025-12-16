@@ -13,6 +13,7 @@ namespace Bird.Idle.UI
     {
         [Header("UI References")]
         [SerializeField] private Image itemIconImage;
+        [SerializeField] private Image gradeBackgroundImage; 
         [SerializeField] private TextMeshProUGUI itemNameText;
         [SerializeField] private TextMeshProUGUI levelText;
         [SerializeField] private TextMeshProUGUI statBonusText;
@@ -43,15 +44,23 @@ namespace Bird.Idle.UI
             {
                 Addressables.Release(currentIconHandle);
             }
+            
+            baseItemSO = null;
         }
         
         public void Show(CollectionEntry entry)
         {
             currentEntry = entry;
             
-            if (EquipmentCollectionManager.Instance.AllEquipmentSO.TryGetValue(entry.equipID, out baseItemSO))
+            if (EquipmentCollectionManager.Instance.AllEquipmentSO.TryGetValue(entry.equipID, out EquipmentData newItemSO))
             {
-                LoadItemIcon(baseItemSO.iconAddress);
+                if (baseItemSO == null || baseItemSO.equipID != newItemSO.equipID)
+                {
+                    LoadItemIcon(newItemSO.iconAddress);
+                    gradeBackgroundImage.color = GetColorByGrade(newItemSO.grade);
+                }
+                
+                baseItemSO = newItemSO;
                 
                 itemNameText.text = $"{baseItemSO.equipName}";
                 
@@ -69,7 +78,9 @@ namespace Bird.Idle.UI
                 long currentMasuk = CurrencyManager.Instance.GetAmount(CurrencyType.Masuk);
                 
                 bool canAfford = (currentMasuk >= masukCost) && (currentGold >= goldCost);
-                upgradeButton.interactable = canAfford;
+                bool isOwned = entry.count > 0;
+                
+                upgradeButton.interactable = canAfford && isOwned;
                 
                 gameObject.SetActive(true);
             }
@@ -91,8 +102,12 @@ namespace Bird.Idle.UI
 
             if (itemIconImage != null)
             {
-                itemIconImage.sprite = null; 
-                itemIconImage.enabled = false;
+                if (string.IsNullOrEmpty(address))
+                {
+                    itemIconImage.sprite = null;
+                    itemIconImage.enabled = false;
+                    return;
+                }
             }
 
             if (!string.IsNullOrEmpty(address))
@@ -159,6 +174,18 @@ namespace Bird.Idle.UI
             if (success)
             {
                 Show(currentEntry);
+            }
+        }
+        
+        private Color GetColorByGrade(EquipmentGrade grade)
+        {
+            switch (grade)
+            {
+                case EquipmentGrade.Common: return Color.gray;
+                case EquipmentGrade.Rare: return Color.cyan;
+                case EquipmentGrade.Epic: return Color.magenta;
+                case EquipmentGrade.Legendary: return Color.yellow;
+                default: return Color.white;
             }
         }
     }

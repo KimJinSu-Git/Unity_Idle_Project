@@ -121,10 +121,9 @@ namespace Bird.Idle.Gameplay
         /// <summary>
         /// 몬스터 처치 등으로 장비를 획득
         /// </summary>
-        public void AddItem(EquipmentData item)
+        public int AddItem(EquipmentData item)
         {
-            if (item == null) return;
-            if (item.equipID <= 0) return;
+            if (item == null || item.equipID <= 0) return 0;
             
             if (collectionMap.TryGetValue(item.equipID, out CollectionEntry entry))
             {
@@ -136,15 +135,14 @@ namespace Bird.Idle.Gameplay
                     {
                         CurrencyManager.Instance.ChangeCurrency(CurrencyType.Masuk, rewardAmount);
                     }
-
-                    Debug.Log($"[Collection] 중복 장비 {item.equipName} 획득 (현재 {entry.count}개 보유 중) -> 마석 {rewardAmount}개 변환");
+                    
+                    return rewardAmount;
                 }
                 else
                 {
                     entry.count = 1;
-
-                    Debug.Log($"[Collection] 신규 장비 {item.equipName} 최초 획득! (Count: 0 -> 1)");
                     OnCollectionChanged?.Invoke();
+                    return 0;
                 }
             }
             else
@@ -154,9 +152,8 @@ namespace Bird.Idle.Gameplay
                 newEntry.collectionLevel = 1;
 
                 collectionMap.Add(item.equipID, newEntry);
-
-                Debug.Log($"[Collection] 미등록 장비 {item.equipName} 신규 등록 완료!");
                 OnCollectionChanged?.Invoke();
+                return 0;
             }
         }
         
