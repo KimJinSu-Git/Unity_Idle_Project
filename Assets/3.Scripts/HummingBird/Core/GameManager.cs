@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
-using Bird.Idle.Core;
 using Bird.Idle.Data;
 using Bird.Idle.Gameplay;
 using Bird.Idle.UI;
+using UnityEngine.InputSystem;
 
 namespace Bird.Idle.Core
 {
@@ -17,6 +18,8 @@ namespace Bird.Idle.Core
         public static GameManager Instance { get; private set; }
 
         private BattleManager battleManager;
+        
+        [SerializeField] private GameExitPopup exitPopup;
 
         private void Awake()
         {
@@ -28,13 +31,36 @@ namespace Bird.Idle.Core
             Instance = this;
             DontDestroyOnLoad(gameObject);
             
-            battleManager = BattleManager.Instance;
+            Application.targetFrameRate = 60;
             
+            battleManager = BattleManager.Instance;
             StartGameFlow();
             
             if (CharacterManager.Instance != null)
             {
                 CharacterManager.Instance.OnRequestStageRestart += HandlePlayerDeathAndRestart;
+            }
+        }
+        
+        private void Update()
+        {
+            if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+            {
+                if (exitPopup != null)
+                {
+                    if (exitPopup.gameObject.activeSelf)
+                        exitPopup.gameObject.SetActive(false);
+                    else
+                        exitPopup.Show();
+                }
+            }
+        }
+        
+        private void OnApplicationPause(bool pauseStatus)
+        {
+            if (pauseStatus)
+            {
+                _ = SaveGameOnExitAsync();
             }
         }
         
@@ -60,8 +86,6 @@ namespace Bird.Idle.Core
         private IEnumerator RestartStageAfterDelay(float delay)
         {
             yield return new WaitForSeconds(delay);
-
-            Debug.Log("[GameManager] 스테이지 재시작 로직 실행.");
             
             if (EnemyManager.Instance != null)
             {
@@ -132,6 +156,26 @@ namespace Bird.Idle.Core
             Debug.Log("[GameManager] 로드된 데이터로 모든 관리자 초기화 완료.");
         }
         
+        public async Task SaveGameOnExitAsync()
+        {
+            GameSaveData data = new GameSaveData();
+        
+            if (CharacterManager.Instance != null) CharacterManager.Instance.CollectSaveData(data);
+            if (CurrencyManager.Instance != null) CurrencyManager.Instance.CollectSaveData(data);
+            if (EquipmentCollectionManager.Instance != null) EquipmentCollectionManager.Instance.CollectSaveData(data);
+            if (InventoryManager.Instance != null) InventoryManager.Instance.CollectSaveData(data);
+            if (SlotManager.Instance != null) SlotManager.Instance.CollectSaveData(data);
+            if (StageManager.Instance != null) StageManager.Instance.CollectSaveData(data);
+
+            data.LastExitTimeTicks = DateTime.UtcNow.Ticks;
+
+            // DataManager 저장 대기
+            await DataManager.Instance.SaveGameData(data);
+            
+            // DataManager.Instance.OnResetButtonClicked();
+        }
+        
+        /*
         public async void SaveGameOnExit()
         {
             GameSaveData data = new GameSaveData();
@@ -167,6 +211,7 @@ namespace Bird.Idle.Core
 
             // DataManager.Instance.OnResetButtonClicked(); // Data 삭제후 테스트할거면 해제하면 됌
         }
+        */
         
         /// <summary>
         /// 방치 보상을 계산하고 지급합니다.
@@ -178,7 +223,7 @@ namespace Bird.Idle.Core
 
         private void OnApplicationQuit()
         {
-            SaveGameOnExit();
+            _ = SaveGameOnExitAsync();
         }
     }
 }
