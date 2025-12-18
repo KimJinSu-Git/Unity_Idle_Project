@@ -14,12 +14,14 @@ namespace Bird.Idle.UI
         [SerializeField] private Button statTabButton;
         [SerializeField] private Button equipTabButton;
         [SerializeField] private Button inventoryTabButton;
+        [SerializeField] private Button machineTabButton;
         // TODO :: (추가 탭 버튼)
 
         [Header("Content Panels")]
         [SerializeField] private GameObject statPanel;
         [SerializeField] private GameObject equipPanel;
         [SerializeField] private GameObject inventoryPanel;
+        [SerializeField] private GameObject machinePanel;
         // TODO :: (추가 콘텐츠 패널)
         
         private GameObject currentActivePanel = null;
@@ -30,6 +32,7 @@ namespace Bird.Idle.UI
             statTabButton.onClick.AddListener(() => TogglePanel(statPanel));
             equipTabButton.onClick.AddListener(() => TogglePanel(equipPanel));
             inventoryTabButton.onClick.AddListener(() => TogglePanel(inventoryPanel));
+            machineTabButton.onClick.AddListener(() => TogglePanel(machinePanel));
 
             TogglePanel(statPanel);
         }
@@ -58,6 +61,7 @@ namespace Bird.Idle.UI
             statPanel.SetActive(false);
             equipPanel.SetActive(false);
             inventoryPanel.SetActive(false);
+            machinePanel.SetActive(false);
         }
     }
 }

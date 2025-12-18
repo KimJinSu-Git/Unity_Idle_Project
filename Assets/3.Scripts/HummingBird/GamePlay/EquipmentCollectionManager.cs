@@ -72,8 +72,6 @@ namespace Bird.Idle.Gameplay
                     Debug.LogWarning($"[CollectionManager] 로드된 ID {entry.equipID}는 현재 정의되지 않은 아이템입니다. 무시합니다.");
                 }
             }
-            
-            Debug.Log($"[CollectionManager] 컬렉션 데이터 로드 완료. 로드된 항목 수: {loadedEntries.Count}");
             OnCollectionChanged?.Invoke();
         }
         

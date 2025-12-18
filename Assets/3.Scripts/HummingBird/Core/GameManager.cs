@@ -152,8 +152,7 @@ namespace Bird.Idle.Core
             EquipmentCollectionManager.Instance.Initialize(data.CollectionEntries);
             InventoryManager.Instance.Initialize(data.EquippedItems, allEquipmentMap);
             SlotManager.Instance.Initialize(data.SlotLevels);
-        
-            Debug.Log("[GameManager] 로드된 데이터로 모든 관리자 초기화 완료.");
+            GachaManager.Instance.Initialize(data);
         }
         
         public async Task SaveGameOnExitAsync()
@@ -166,6 +165,7 @@ namespace Bird.Idle.Core
             if (InventoryManager.Instance != null) InventoryManager.Instance.CollectSaveData(data);
             if (SlotManager.Instance != null) SlotManager.Instance.CollectSaveData(data);
             if (StageManager.Instance != null) StageManager.Instance.CollectSaveData(data);
+            if (GachaManager.Instance != null) GachaManager.Instance.CollectSaveData(data);
 
             data.LastExitTimeTicks = DateTime.UtcNow.Ticks;
 

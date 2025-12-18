@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f30f60373f346b54787cd404e99cd4a8, type: 3}
+  m_Name: AccGachaLevelData
+  m_EditorClassIdentifier: 
+  LevelTable:
+  - Level: 1
+    MaxExp: 30
+    CommonProb: 100
+    RareProb: 0
+    EpicProb: 0
+    LegendaryProb: 0
+  - Level: 2
+    MaxExp: 60
+    CommonProb: 60
+    RareProb: 40
+    EpicProb: 0
+    LegendaryProb: 0
+  - Level: 3
+    MaxExp: 100
+    CommonProb: 35
+    RareProb: 50
+    EpicProb: 15
+    LegendaryProb: 0
+  - Level: 4
+    MaxExp: 200
+    CommonProb: 20
+    RareProb: 45
+    EpicProb: 30
+    LegendaryProb: 5
+  - Level: 5
+    MaxExp: 300
+    CommonProb: 10
+    RareProb: 40
+    EpicProb: 40
+    LegendaryProb: 10
+  - Level: 5
+    MaxExp: 300
+    CommonProb: 0
+    RareProb: 30
+    EpicProb: 50
+    LegendaryProb: 20

@@ -31,6 +31,9 @@ namespace Bird.Idle.Data
         
         public int MaxReachedStageID;
         
+        public int GachaLevel;
+        public int GachaCurrentExp;
+        
         public List<QuestProgress> QuestProgressList;
         
         public List<CollectionEntry> CollectionEntries;
@@ -44,7 +47,7 @@ namespace Bird.Idle.Data
             PlayerLevel = 1; 
             
             GoldAmount = 1;
-            GemAmount = 1;
+            GemAmount = 10000;
             MasukAmount = 1;
             SoulFragmentAmount = 0;
             
@@ -58,6 +61,9 @@ namespace Bird.Idle.Data
             Dexterity = 1;
             Intelligence = 1;
             Luck = 1;
+            
+            GachaLevel = 1;
+            GachaCurrentExp = 0;
             
             QuestProgressList = new List<QuestProgress>();
             CollectionEntries = new List<CollectionEntry>();
