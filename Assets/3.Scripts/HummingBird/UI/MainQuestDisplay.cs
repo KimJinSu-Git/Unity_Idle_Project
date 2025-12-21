@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using Bird.Idle.Gameplay;
 using Bird.Idle.Data;
+using JetBrains.Annotations;
 
 namespace Bird.Idle.UI
 {
@@ -11,9 +12,8 @@ namespace Bird.Idle.UI
         [Header("UI Components")]
         [SerializeField] private TextMeshProUGUI questDescriptionText;
         [SerializeField] private TextMeshProUGUI progressText;
-        [SerializeField] private Slider progressSlider;
         [SerializeField] private Button claimButton; // 전체를 감싸는 투명 버튼(메인 퀘스트 버튼? 느낌)
-        [SerializeField] private GameObject clearEffectObject; // 클리어 가능할 때 이펙트 효과를 넣을까 ?
+        [CanBeNull] [SerializeField] private GameObject clearEffectObject; // 클리어 가능할 때 이펙트 효과를 넣을까 ?
 
         private QuestManager questManager;
         private QuestData currentQuest;
@@ -50,10 +50,9 @@ namespace Bird.Idle.UI
             // 모든 퀘스트 완료 시
             if (currentQuest == null)
             {
-                questDescriptionText.text = "모든 메인 퀘스트 완료!";
+                questDescriptionText.text = "All Quest Complete!";
                 progressText.text = "";
-                progressSlider.value = 1;
-                clearEffectObject.SetActive(false);
+                if (clearEffectObject != null) clearEffectObject.SetActive(false);
                 claimButton.interactable = false;
                 return;
             }
@@ -67,11 +66,6 @@ namespace Bird.Idle.UI
 
             questDescriptionText.text = currentQuest.description;
             progressText.text = $"{currentVal} / {targetVal}";
-
-            if (targetVal > 0)
-                progressSlider.value = (float)currentVal / targetVal;
-            else
-                progressSlider.value = 0;
 
             bool isClearable = currentVal >= targetVal;
             if (clearEffectObject != null) clearEffectObject.SetActive(isClearable);

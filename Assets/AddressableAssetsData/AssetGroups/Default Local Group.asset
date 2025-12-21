@@ -52,6 +52,12 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6ab7789655dec6f46ba230d444a71400
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Quest/Repeatable/RepeatableQuest1.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Quest
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6c1c2ffa860dcd64a961067f231fd1a2
     m_Address: Assets/8.Prefabs/Character/MobGoblinKing.prefab
     m_ReadOnly: 0

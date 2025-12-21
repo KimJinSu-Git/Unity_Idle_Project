@@ -111,6 +111,18 @@ MonoBehaviour:
     m_SerializedLabels:
     - Monster
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1fbcae1f14303964eb8a06c769877b41
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Quest/Main/MainQuest1.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Quest
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 22769bffc7cb52a489a18e69b69df2d1
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Quest/Main/MainQuest2.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Quest
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 232df9e2d04f1ac4a9c52ec28183fa95
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Equipment/Weapon/Sword_Rare3.asset
     m_ReadOnly: 0

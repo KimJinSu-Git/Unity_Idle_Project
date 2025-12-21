@@ -1,4 +1,4 @@
 ﻿QuestID,QuestName,Description,Type,Category,IsRepeatable,TargetValue,RewardType,RewardAmount
-1001,초보자 훈련,몬스터 10마리를 처치하세요.,DefeatMonsterCount,Main,FALSE,10,Gold,500
+1001,초보자 훈련,Kill 10 Monster.,DefeatMonsterCount,Main,FALSE,10,Gold,500
 1002,레벨업의 시작,레벨 2를 달성하세요.,ReachPlayerLevel,Main,FALSE,2,Gem,100
 2001,반복 사냥,몬스터 100마리 처치 (반복),DefeatMonsterCount,Repeatable,TRUE,100,Gold,1000

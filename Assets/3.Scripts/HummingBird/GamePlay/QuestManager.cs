@@ -6,6 +6,7 @@ using Bird.Idle.Data;
 using Bird.Idle.Core;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using System.Threading.Tasks;
 
 namespace Bird.Idle.Gameplay
 {
@@ -25,6 +26,9 @@ namespace Bird.Idle.Gameplay
 
         public Action OnQuestProgressUpdated; // 전체 갱신
         public Action OnMainQuestChanged; // 나침반 퀘스트 변경 알림
+        
+        private TaskCompletionSource<bool> dataLoadTCS = new TaskCompletionSource<bool>();
+        public Task WaitForDataLoad() => dataLoadTCS.Task;
 
         public QuestProgress GetQuestProgress(int id)
         {
@@ -39,13 +43,7 @@ namespace Bird.Idle.Gameplay
                 foreach (var p in loadedProgress) userProgress[p.questID] = p;
             }
 
-            foreach (var kvp in allQuests)
-            {
-                if (kvp.Value.category == QuestCategory.Repeatable)
-                {
-                    GetOrAmountProgress(kvp.Key);
-                }
-            }
+            EnsureAllActiveQuestsExist();
 
             UpdateCurrentMainQuest();
 
@@ -93,7 +91,6 @@ namespace Bird.Idle.Gameplay
                 int questID = kvp.Key;
                 if (!userProgress.ContainsKey(questID))
                 {
-                    // 신규 퀘스트 => 기본값
                     userProgress.Add(questID, new QuestProgress { questID = questID, currentValue = 0, rewardsClaimed = 0 });
                 }
             }
@@ -137,10 +134,13 @@ namespace Bird.Idle.Gameplay
                     .ToList();
 
                 Debug.Log($"[QuestManager] 퀘스트 데이터 로드 완료. (총 {allQuests.Count}개)");
+                
+                dataLoadTCS.SetResult(true);
             }
             else
             {
                 Debug.LogError("[QuestManager] 퀘스트 데이터 로드 실패");
+                dataLoadTCS.SetResult(false);
             }
         }
 
@@ -154,10 +154,21 @@ namespace Bird.Idle.Gameplay
             
             if (CharacterManager.Instance != null)
                 CharacterManager.Instance.OnLevelUp += HandleLevelUp;
+            
+            if (GachaManager.Instance != null)
+                GachaManager.Instance.OnGachaFinished += HandleGachaPerformed;
+            
         }
         
-        public void HandleMonsterDefeat() => UpdateProgressByCondition(QuestType.DefeatMonsterCount, 1);
-        public void HandleLevelUp(int level) => UpdateProgressByCondition(QuestType.LevelUpCharacter, level, true);
+        private void HandleMonsterDefeat() => UpdateProgressByCondition(QuestType.DefeatMonsterCount, 1);
+        private void HandleLevelUp(int level) => UpdateProgressByCondition(QuestType.LevelUpCharacter, level, true);
+        private void HandleGachaPerformed(List<EquipmentData> items)
+        {
+            if (items != null && items.Count > 0)
+            {
+                UpdateProgressByCondition(QuestType.PerformGacha, items.Count);
+            }
+        }
 
         /// <summary>
         /// 특정 퀘스트 타입의 현재 진행 값을 업데이트
@@ -243,6 +254,14 @@ namespace Bird.Idle.Gameplay
                     OnQuestProgressUpdated?.Invoke();
                 }
             }
+        }
+        
+        public List<QuestData> GetRepeatableQuests()
+        {
+            return allQuests.Values
+                .Where(q => q.category == QuestCategory.Repeatable)
+                .OrderBy(q => q.questID)
+                .ToList();
         }
     }
 }

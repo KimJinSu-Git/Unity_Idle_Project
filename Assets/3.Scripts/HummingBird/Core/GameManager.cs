@@ -124,6 +124,10 @@ namespace Bird.Idle.Core
             {
                 await StageManager.Instance.WaitForDataLoad();
             }
+            if (QuestManager.Instance != null)
+            {
+                await QuestManager.Instance.WaitForDataLoad();
+            }
             
             ApplyLoadedDataToManagers(loadedData);
             
@@ -152,6 +156,7 @@ namespace Bird.Idle.Core
             EquipmentCollectionManager.Instance.Initialize(data.CollectionEntries);
             InventoryManager.Instance.Initialize(data.EquippedItems, allEquipmentMap);
             SlotManager.Instance.Initialize(data.SlotLevels);
+            QuestManager.Instance.Initialize(data.QuestProgressList ?? new List<QuestProgress>());
             GachaManager.Instance.Initialize(data);
         }
         
@@ -165,7 +170,9 @@ namespace Bird.Idle.Core
             if (InventoryManager.Instance != null) InventoryManager.Instance.CollectSaveData(data);
             if (SlotManager.Instance != null) SlotManager.Instance.CollectSaveData(data);
             if (StageManager.Instance != null) StageManager.Instance.CollectSaveData(data);
+            if (QuestManager.Instance != null) QuestManager.Instance.CollectSaveData(data);
             if (GachaManager.Instance != null) GachaManager.Instance.CollectSaveData(data);
+            
 
             data.LastExitTimeTicks = DateTime.UtcNow.Ticks;
 

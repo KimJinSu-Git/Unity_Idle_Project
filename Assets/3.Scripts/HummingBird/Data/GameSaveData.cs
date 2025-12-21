@@ -47,7 +47,7 @@ namespace Bird.Idle.Data
             PlayerLevel = 1; 
             
             GoldAmount = 1;
-            GemAmount = 10000;
+            GemAmount = 40000;
             MasukAmount = 1;
             SoulFragmentAmount = 0;
             
