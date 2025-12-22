@@ -98,8 +98,6 @@ namespace Bird.Idle.UI
             RefreshCollectionSlotsInternal(allWeaponSlots, allEquipmentSO, EquipmentType.Weapon);
             RefreshCollectionSlotsInternal(allArmorSlots, allEquipmentSO, EquipmentType.Armor);
             RefreshCollectionSlotsInternal(allAccessorySlots, allEquipmentSO, EquipmentType.Accessory);
-        
-            Debug.Log("[InventoryUI] 정적 컬렉션 슬롯 UI 갱신 완료.");
         }
         
         /// <summary>
@@ -134,8 +132,6 @@ namespace Bird.Idle.UI
         private void RefreshEquippedUI()
         {
             RefreshInventoryUI();
-            
-            // TODO :: 나중에, 필요한 슬롯(무기/장비/악세사리)만 순회하도록 변경하여, 비용을 줄일 수 있음.
         }
     }
 }

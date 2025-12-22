@@ -87,8 +87,10 @@ namespace Bird.Idle.UI
         {
             switch (grade)
             {
-                case EquipmentGrade.Legendary: return "<color=#FFA500>L</color>";
+                case EquipmentGrade.Common:    return "<color=#808080>C</color>";
+                case EquipmentGrade.Rare:      return "<color=#00FFFF>R</color>";
                 case EquipmentGrade.Epic: return "<color=#FF00FF>E</color>";
+                case EquipmentGrade.Legendary: return "<color=#FFA500>L</color>";
                 default: return "";
             }
         }
