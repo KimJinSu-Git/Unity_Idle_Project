@@ -64,6 +64,8 @@ namespace Bird.Idle.Core
         public Action OnRequestStageRestart; // 재시작 요청 이벤트
         public Action OnPlayerRevived; // Player 부활 이벤트
 
+        public Action<float> OnGameSpeedUnlock;
+
         private void Awake()
         {
             if (Instance != null && Instance != this)
@@ -114,6 +116,8 @@ namespace Bird.Idle.Core
             OnLevelUp?.Invoke(characterLevel);
             OnHealthChanged?.Invoke();
             OnStatsRecalculated?.Invoke();
+            
+            CheckUnlockGameSpeed(characterLevel);
         }
         
         public void GainExperience(long expAmount)
@@ -132,8 +136,21 @@ namespace Bird.Idle.Core
                 availableStatPoints++; // 레벨업 당 1포인트 지급
                 
                 OnLevelUp?.Invoke(characterLevel);
-                Debug.Log($"[CharacterManager] 레벨 업! Lv.{characterLevel}. 스탯 포인트 획득.");
+                
+                CheckUnlockGameSpeed(characterLevel);
             }
+        }
+        
+        private void CheckUnlockGameSpeed(int level)
+        {
+            float unlockedSpeed = 1.0f;
+
+            if (level >= 10) 
+                unlockedSpeed = 2.0f;
+            else if (level >= 5) 
+                unlockedSpeed = 1.5f;
+
+            OnGameSpeedUnlock?.Invoke(unlockedSpeed);
         }
         
         private bool CheckForLevelUp()
@@ -233,13 +250,13 @@ namespace Bird.Idle.Core
             if (handle.Status == AsyncOperationStatus.Succeeded)
             {
                 loadedLevelUpCostData = handle.Result;
-                Debug.Log("[CharacterManager] LevelUpCostData Addressables 로드 완료!");
-            
                 OnLevelUp?.Invoke(characterLevel);
+                
+                CheckUnlockGameSpeed(characterLevel);
             }
             else
             {
-                Debug.LogError($"[CharacterManager] LevelUpCostData Addressables 로드 실패: {handle.OperationException}");
+                
             }
         
             // TODO: 사용이 끝난 시점에 handle.Release()를 호출하여 메모리를 해제 추가

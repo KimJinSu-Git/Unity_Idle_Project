@@ -159,6 +159,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Equipment
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 38bf7a8b978e1fb4aa957f4db8254605
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Quest/Repeatable/RepeatableQuest2.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Quest
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3ab4b162b31bcf94b94d737b7f6020e1
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Equipment/Acessory/Accessory_Legendary3.asset
     m_ReadOnly: 0
@@ -242,6 +248,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Monster
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4fc9c8198681e7d44bebe56eb4e953ac
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Quest/Main/MainQuest5.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Quest
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 51a665697ebcba449afb1754c94208c1
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Equipment/Armor/Armor_Legendary3.asset
     m_ReadOnly: 0
@@ -277,6 +289,12 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Equipment
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5e84818525d5a6a4daca78c8aaaab75c
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Quest/Main/MainQuest4.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Quest
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 642da367a23f58c42addaba5c4c26dda
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Stage/StageData_39.asset
@@ -552,6 +570,12 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Equipment
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d03547730c9821e42b229d3955a63c3c
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Quest/Main/MainQuest3.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Quest
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d765cc34a330c9f4cb5f708bd7a676ff
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Stage/StageData_37.asset

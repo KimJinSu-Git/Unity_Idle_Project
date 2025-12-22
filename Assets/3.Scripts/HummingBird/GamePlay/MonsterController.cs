@@ -31,6 +31,8 @@ namespace Bird.Idle.Gameplay
         
         protected Animator Animator;
         
+        protected float currentGameSpeed = 1.0f;
+        
         public Action OnHealthChanged;
         
         public bool IsAlive => currentHealth > 0;
@@ -58,6 +60,20 @@ namespace Bird.Idle.Gameplay
             Animator = GetComponentInChildren<Animator>();
         }
         
+        private void Start()
+        {
+            if (BattleManager.Instance != null)
+            {
+                currentGameSpeed = BattleManager.Instance.GameSpeed;
+                BattleManager.Instance.OnGameSpeedChanged += HandleGameSpeedChanged;
+
+                if (Animator != null)
+                {
+                    Animator.speed = currentGameSpeed;
+                }
+            }
+        }
+        
         private void Update()
         {
             if (PlayerController.PlayerTransform == null) return;
@@ -67,7 +83,8 @@ namespace Bird.Idle.Gameplay
             
             if (isMoving)
             {
-                transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime * currentGameSpeed);
+                // transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
             }
 
             if (isMoving)
@@ -78,6 +95,23 @@ namespace Bird.Idle.Gameplay
                 {
                     EnterCombatState();
                 }
+            }
+        }
+        
+        private void OnDestroy()
+        {
+            if (BattleManager.Instance != null)
+            {
+                BattleManager.Instance.OnGameSpeedChanged -= HandleGameSpeedChanged;
+            }
+        }
+        
+        private void HandleGameSpeedChanged(float newSpeed)
+        {
+            currentGameSpeed = newSpeed;
+            if (Animator != null)
+            {
+                Animator.speed = currentGameSpeed;
             }
         }
         
@@ -97,7 +131,8 @@ namespace Bird.Idle.Gameplay
         {
             while (IsAlive)
             {
-                yield return new WaitForSeconds(attackInterval); 
+                float waitTime = attackInterval / currentGameSpeed;
+                yield return new WaitForSeconds(waitTime); 
                 
                 if (IsAlive && CharacterManager.Instance.IsAlive)
                 {

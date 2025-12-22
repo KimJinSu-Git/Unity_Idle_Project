@@ -23,6 +23,9 @@ namespace Bird.Idle.Gameplay
         public Action<bool> OnBattleStateChanged;
 
         public bool PlayerBattleMode => playerBattleMode;
+        public float GameSpeed { get; private set; } = 1.0f;
+        
+        public event Action<float> OnGameSpeedChanged;
         
         private void Awake()
         {
@@ -49,6 +52,17 @@ namespace Bird.Idle.Gameplay
             
             playerBattleMode = active;
             OnBattleStateChanged?.Invoke(active); 
+        }
+        
+        public void SetGameSpeed(float speed)
+        {
+            if (Mathf.Abs(GameSpeed - speed) < 0.01f) return;
+
+            GameSpeed = speed;
+            
+            OnGameSpeedChanged?.Invoke(GameSpeed);
+            
+            Debug.Log($"[BattleManager] 게임 속도 변경: {GameSpeed}x");
         }
 
         /// <summary>

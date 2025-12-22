@@ -46,6 +46,8 @@ namespace Bird.Idle.Gameplay
         
         private bool isDataLoaded = false;
         
+        private float currentGameSpeed = 1.0f;
+        
         public bool IsDataLoaded => isDataLoaded;
 
         private void Awake()
@@ -59,6 +61,15 @@ namespace Bird.Idle.Gameplay
             DontDestroyOnLoad(gameObject);
             
             LoadMonsterDataAsync();
+        }
+        
+        private void Start()
+        {
+            if (BattleManager.Instance != null)
+            {
+                currentGameSpeed = BattleManager.Instance.GameSpeed;
+                BattleManager.Instance.OnGameSpeedChanged += HandleGameSpeedChanged;
+            }
         }
         
         /// <summary>
@@ -76,12 +87,11 @@ namespace Bird.Idle.Gameplay
                 {
                     loadedMonsterDictionary.Add(monsterData.monsterID, monsterData);
                 }
-                Debug.Log($"[EnemyManager] MonsterData Addressables 로드 완료! (총 {loadedMonsterDictionary.Count}종)");
                 isDataLoaded = true;
             }
             else
             {
-                Debug.LogError($"[EnemyManager] MonsterData 로드 실패: {handle.OperationException}");
+                Debug.LogError($"[EnemyManager] MonsterData 로드 실패");
             }
         }
 
@@ -89,7 +99,7 @@ namespace Bird.Idle.Gameplay
         {
             if (!isDataLoaded) return;
             
-            currentSpawnTime += Time.deltaTime;
+            currentSpawnTime += Time.deltaTime * currentGameSpeed;
 
             bool canSpawnMore = currentStageData != null && (isInfiniteSpawnMode || totalSpawnedInCurrentStage < currentStageData.MonsterKillCountRequired);
             
@@ -100,6 +110,19 @@ namespace Bird.Idle.Gameplay
             }
             
             CheckBattleState();
+        }
+        
+        private void OnDestroy()
+        {
+            if (BattleManager.Instance != null)
+            {
+                BattleManager.Instance.OnGameSpeedChanged -= HandleGameSpeedChanged;
+            }
+        }
+        
+        private void HandleGameSpeedChanged(float newSpeed)
+        {
+            currentGameSpeed = newSpeed;
         }
         
         /// <summary>

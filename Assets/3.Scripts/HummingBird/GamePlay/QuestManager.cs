@@ -73,12 +73,49 @@ namespace Bird.Idle.Gameplay
                 if (!progress.isCompleted)
                 {
                     CurrentMainQuest = quest;
+                    
+                    SyncQuestState(quest, progress);
+                    
                     break;
                 }
             }
             
-            // 모든 메인 퀘스트 클리어 시 반복문 빠져나옴.
             OnMainQuestChanged?.Invoke();
+        }
+        
+        private void SyncQuestState(QuestData quest, QuestProgress progress)
+        {
+            long currentValue = 0;
+            bool needUpdate = false;
+
+            switch (quest.type)
+            {
+                case QuestType.LevelUpCharacter:
+                    if (CharacterManager.Instance != null)
+                    {
+                        currentValue = CharacterManager.Instance.CharacterLevel; 
+                        needUpdate = true;
+                    }
+                    break;
+                case QuestType.ReachStage:
+                    if (StageManager.Instance != null)
+                    {
+                        currentValue = StageManager.Instance.CurrentStageID;
+                        needUpdate = true;
+                    }
+                    break;
+                // TODO :: 슬롯 강화 레벨 등
+            }
+
+            if (needUpdate)
+            {
+                if (currentValue > progress.currentValue)
+                {
+                    progress.currentValue = currentValue;
+            
+                    OnQuestProgressUpdated?.Invoke(); 
+                }
+            }
         }
         
         /// <summary>
@@ -132,14 +169,11 @@ namespace Bird.Idle.Gameplay
                     .Where(q => q.category == QuestCategory.Main)
                     .OrderBy(q => q.questID)
                     .ToList();
-
-                Debug.Log($"[QuestManager] 퀘스트 데이터 로드 완료. (총 {allQuests.Count}개)");
                 
                 dataLoadTCS.SetResult(true);
             }
             else
             {
-                Debug.LogError("[QuestManager] 퀘스트 데이터 로드 실패");
                 dataLoadTCS.SetResult(false);
             }
         }
@@ -231,8 +265,6 @@ namespace Bird.Idle.Gameplay
                     progress.isCompleted = true;
                     progress.rewardsClaimed = 1;
                     
-                    Debug.Log($"[Quest] 메인 퀘스트 '{data.questName}' 완료!");
-                    
                     UpdateCurrentMainQuest();
                     
                     OnQuestProgressUpdated?.Invoke();
@@ -250,7 +282,6 @@ namespace Bird.Idle.Gameplay
                     progress.currentValue %= data.targetValue;
                     progress.rewardsClaimed = 0;
 
-                    Debug.Log($"[Quest] 반복 퀘스트 '{data.questName}' 보상 수령. ({totalReward})");
                     OnQuestProgressUpdated?.Invoke();
                 }
             }

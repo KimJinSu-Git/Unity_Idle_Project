@@ -43,6 +43,8 @@ namespace Bird.Idle.Visual
         private float currentOffset = 0f;
         private float initialYPosition;
         
+        private float currentGameSpeed = 1.0f;
+        
         private void Awake()
         {
             battleManager = BattleManager.Instance;
@@ -58,6 +60,12 @@ namespace Bird.Idle.Visual
         private void Start()
         {
             backgroundRenderer = GetComponent<MeshRenderer>();
+            
+            if (battleManager != null)
+            {
+                currentGameSpeed = battleManager.GameSpeed;
+                battleManager.OnGameSpeedChanged += HandleGameSpeedChanged;
+            }
         }
 
         private void Update()
@@ -66,13 +74,18 @@ namespace Bird.Idle.Visual
             
             if (playerController != null && playerController.GetAnimator.GetCurrentAnimatorStateInfo(0).shortNameHash == playerController.GetRunAnimHash)
             {
-                currentOffset += Time.deltaTime * scrollSpeed;
+                currentOffset += Time.deltaTime * scrollSpeed * currentGameSpeed;
                 
                 if (backgroundRenderer != null && backgroundRenderer.material != null)
                 {
                     backgroundRenderer.material.SetTextureOffset(MainTexOffset, new Vector2(currentOffset, 0));
                 }
             }
+        }
+        
+        private void HandleGameSpeedChanged(float newSpeed)
+        {
+            currentGameSpeed = newSpeed;
         }
         
         /// <summary>
@@ -119,7 +132,6 @@ namespace Bird.Idle.Visual
             
             if (currentlyLoadedRef == backgroundRef)
             {
-                Debug.Log($"[Scroller] 배경 {backgroundRef.AssetGUID}는 이미 로드되어 있습니다. 스킵.");
                 ApplyHeightOffset(yOffset);
                 return;
             }
@@ -135,7 +147,6 @@ namespace Bird.Idle.Visual
             
             if (!currentBackgroundHandle.IsValid())
             {
-                Debug.LogError("[Scroller] 로딩 핸들이 유효하지 않습니다.");
                 return;
             }
             
@@ -146,8 +157,6 @@ namespace Bird.Idle.Visual
                 backgroundRenderer.material.mainTexture = currentBackgroundHandle.Result;
                 
                 ApplyHeightOffset(yOffset);
-                
-                Debug.Log($"[Scroller] 배경 로드 성공");
             }
             else
             {
@@ -168,6 +177,11 @@ namespace Bird.Idle.Visual
             if (StageManager.Instance != null)
             {
                 StageManager.Instance.OnStageChanged -= HandleStageTransition;
+            }
+            
+            if (battleManager != null)
+            {
+                battleManager.OnGameSpeedChanged -= HandleGameSpeedChanged;
             }
             
             if (currentBackgroundHandle.IsValid())

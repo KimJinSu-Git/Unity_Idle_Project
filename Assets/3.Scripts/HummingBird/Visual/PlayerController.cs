@@ -26,6 +26,8 @@ namespace Bird.Idle.Visual
         private CharacterManager characterManager;
         private BattleManager battleManager;
         
+        private float currentGameSpeed = 1.0f;
+        
         private float currentAttackCooldown;
         private bool isAttacking = false;
         
@@ -52,6 +54,7 @@ namespace Bird.Idle.Visual
             if (battleManager != null)
             {
                 battleManager.OnBattleStateChanged += UpdateVisualState;
+                battleManager.OnGameSpeedChanged += HandleGameSpeedChanged;
             }
             if (characterManager != null)
             {
@@ -68,13 +71,15 @@ namespace Bird.Idle.Visual
         private void Start()
         {
             currentAttackCooldown = 3f;
+            
+            HandleGameSpeedChanged(battleManager.GameSpeed);
         }
 
         private void Update()
         {
             if (!battleManager.PlayerBattleMode) return; 
 
-            currentAttackCooldown -= Time.deltaTime;
+            currentAttackCooldown -= Time.deltaTime * currentGameSpeed;
             
             if (currentAttackCooldown <= 0f && characterManager.IsAlive)
             {
@@ -95,11 +100,22 @@ namespace Bird.Idle.Visual
             if (battleManager != null)
             {
                 battleManager.OnBattleStateChanged -= UpdateVisualState;
+                battleManager.OnGameSpeedChanged -= HandleGameSpeedChanged;
             }
             if (characterManager != null)
             {
                 characterManager.OnPlayerDied -= PlayDeathAnimation;
                 characterManager.OnPlayerRevived -= HandlePlayerRevive;
+            }
+        }
+        
+        private void HandleGameSpeedChanged(float newSpeed)
+        {
+            currentGameSpeed = newSpeed;
+            
+            if (animator != null)
+            {
+                animator.speed = currentGameSpeed;
             }
         }
 
@@ -128,7 +144,9 @@ namespace Bird.Idle.Visual
         
         private IEnumerator ApplyDamageAfterDelay()
         {
-            yield return new WaitForSeconds(damageApplicationTime);
+            float waitTime = damageApplicationTime / currentGameSpeed;
+            
+            yield return new WaitForSeconds(waitTime);
     
             battleManager.TryAutoAttack(); 
         }

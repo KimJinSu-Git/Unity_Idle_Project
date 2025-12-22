@@ -13,6 +13,8 @@ namespace Bird.Idle.UI
         {
             yesButton.onClick.AddListener(OnYesClicked);
             noButton.onClick.AddListener(OnNoClicked);
+            
+            OnNoClicked();
         }
 
         private async void OnYesClicked()
