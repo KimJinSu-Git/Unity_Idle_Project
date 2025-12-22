@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using Bird.Idle.Gameplay;
 using System.Collections.Generic;
+using System.Text;
 using Bird.Idle.Data;
 
 namespace Bird.Idle.UI
@@ -67,7 +68,23 @@ namespace Bird.Idle.UI
                 expText.text = "MAX";
             }
 
-            // TODO ::: 현재 레벨의 확률 정보 표기
+            UpdateProbabilityText();
+        }
+        
+        private void UpdateProbabilityText()
+        {
+            if (GachaManager.Instance == null) return;
+
+            GachaLevelInfo info = GachaManager.Instance.GetCurrentLevelInfo();
+
+            StringBuilder sb = new StringBuilder();
+            
+            sb.AppendLine($"Common : {info.CommonProb} %");
+            sb.AppendLine($"Rare : {info.RareProb} %");
+            sb.AppendLine($"Epic : {info.EpicProb} %");
+            sb.AppendLine($"Legendary : {info.LegendaryProb} %");
+
+            probabilityInfoText.text = sb.ToString();
         }
 
         private void ShowResult(List<EquipmentData> items)

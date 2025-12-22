@@ -168,5 +168,11 @@ namespace Bird.Idle.Gameplay
             GachaLevelInfo info = gachaLevelData.GetLevelInfo(currentLevel);
             return (currentLevel, currentExp, info.MaxExp);
         }
+        
+        public GachaLevelInfo GetCurrentLevelInfo()
+        {
+            if (gachaLevelData == null) return new GachaLevelInfo();
+            return gachaLevelData.GetLevelInfo(currentLevel);
+        }
     }
 }
