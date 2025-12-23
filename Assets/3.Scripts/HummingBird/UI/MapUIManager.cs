@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Bird.Idle.Gameplay;
 
 namespace Bird.Idle.UI
 {
@@ -62,7 +63,7 @@ namespace Bird.Idle.UI
 
         private void MoveToStage(int stageID)
         {
-            Gameplay.StageManager.Instance.SetCurrentStage(stageID, 0);
+            StageManager.Instance.RequestStageChange(stageID);
             
             CloseAll();
         }

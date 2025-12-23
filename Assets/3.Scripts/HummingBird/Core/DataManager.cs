@@ -194,12 +194,16 @@ namespace Bird.Idle.Core
         /// <summary>
         /// 저장된 게임 데이터를 완전히 삭제합니다. (테스트/초기화 용도)
         /// </summary>
-        private void ResetGameData()
+        public void ResetGameData()
         {
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.IsResetting = true;
+            }
+            
             if (File.Exists(savePath))
             {
                 File.Delete(savePath);
-                Debug.LogWarning($"[DataManager] 저장된 게임 데이터 파일 삭제 완료: {savePath}");
                 Application.Quit();
             }
             else

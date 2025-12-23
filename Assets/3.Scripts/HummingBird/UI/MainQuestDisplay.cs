@@ -12,7 +12,7 @@ namespace Bird.Idle.UI
         [Header("UI Components")]
         [SerializeField] private TextMeshProUGUI questDescriptionText;
         [SerializeField] private TextMeshProUGUI progressText;
-        [SerializeField] private Button claimButton; // 전체를 감싸는 투명 버튼(메인 퀘스트 버튼? 느낌)
+        [SerializeField] private Button claimButton;
         [CanBeNull] [SerializeField] private GameObject clearEffectObject; // 클리어 가능할 때 이펙트 효과를 넣을까 ?
 
         private QuestManager questManager;
@@ -26,7 +26,6 @@ namespace Bird.Idle.UI
                 questManager.OnQuestProgressUpdated += UpdateUI;
                 questManager.OnMainQuestChanged += UpdateUI;
                 
-                // 최초 1회 갱신
                 UpdateUI();
             }
             
@@ -57,7 +56,6 @@ namespace Bird.Idle.UI
                 return;
             }
 
-            // QuestManager에 GetProgress(int id) 메서드를 추가
             long currentVal = 0;
             var progressObj = questManager.GetQuestProgress(currentQuest.questID); 
             if (progressObj != null) currentVal = progressObj.currentValue;
@@ -65,7 +63,10 @@ namespace Bird.Idle.UI
             long targetVal = currentQuest.targetValue;
 
             questDescriptionText.text = currentQuest.description;
-            progressText.text = $"{currentVal} / {targetVal}";
+            
+            long displayVal = (currentVal > targetVal) ? targetVal : currentVal;
+            
+            progressText.text = $"{displayVal} / {targetVal}";
 
             bool isClearable = currentVal >= targetVal;
             if (clearEffectObject != null) clearEffectObject.SetActive(isClearable);

@@ -9,9 +9,9 @@ namespace Bird.Idle.UI
     public class UI_RepeatableQuestPopup : MonoBehaviour
     {
         [Header("References")]
-        [SerializeField] private Transform contentParent; // ScrollView의 Content
-        [SerializeField] private GameObject slotPrefab;   // UI_QuestSlot 프리팹
-        [SerializeField] private Button backgroundCloseButton; // 배경 터치 닫기용
+        [SerializeField] private Transform contentParent;
+        [SerializeField] private GameObject slotPrefab;
+        [SerializeField] private Button backgroundCloseButton; 
 
         private List<UI_QuestSlot> createdSlots = new List<UI_QuestSlot>();
 

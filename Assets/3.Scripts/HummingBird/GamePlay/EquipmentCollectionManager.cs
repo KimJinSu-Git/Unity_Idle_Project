@@ -106,7 +106,6 @@ namespace Bird.Idle.Gameplay
                 }
                 
                 AllEquipmentSO = loadedMap;
-                Debug.Log($"[CollectionManager] 모든 장비 데이터 로드 및 컬렉션 맵 초기화 완료. (총 {AllEquipmentSO.Count}종)");
                 tcs.SetResult(true);
             }
             else
@@ -160,15 +159,6 @@ namespace Bird.Idle.Gameplay
             if (masukRewardTable.TryGetValue(grade, out int amount))
                 return amount;
             return 10;
-        }
-        
-        private void SellItem(EquipmentData item)
-        {
-            if (CurrencyManager.Instance != null)
-            {
-                CurrencyManager.Instance.ChangeCurrency(CurrencyType.Gold, item.sellPrice);
-            }
-            Debug.Log($"[Collection] {item.equipName} (Grade:{item.grade}) 자동 판매됨.");
         }
         
         public void ShowUpgradePopup(int equipID)

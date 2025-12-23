@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using Bird.Idle.Gameplay;
 
 namespace Bird.Idle.Visual
 {
@@ -22,10 +23,21 @@ namespace Bird.Idle.Visual
         private Color textColor;
         private Vector3 moveVector;
         private float timer;
+        
+        private float currentGameSpeed = 1.0f;
 
         private void Awake()
         {
             if (textMesh == null) textMesh = GetComponent<TextMeshPro>();
+        }
+        
+        private void Start()
+        {
+            if (BattleManager.Instance != null)
+            {
+                currentGameSpeed = BattleManager.Instance.GameSpeed;
+                BattleManager.Instance.OnGameSpeedChanged += HandleGameSpeedChanged;
+            }
         }
 
         public void Setup(float damageAmount, bool isCritical)
@@ -51,21 +63,36 @@ namespace Bird.Idle.Visual
 
         private void Update()
         {
-            transform.position += moveVector * Time.deltaTime;
+            float scaledDeltaTime = Time.deltaTime * currentGameSpeed;
             
-            moveVector -= moveVector * (2f * Time.deltaTime);
+            transform.position += moveVector * scaledDeltaTime;
+            
+            moveVector -= moveVector * (2f * scaledDeltaTime);
 
-            timer -= Time.deltaTime;
+            timer -= scaledDeltaTime;
             
             if (timer < 0)
             {
-                textColor.a -= fadeOutSpeed * Time.deltaTime;
+                textColor.a -= fadeOutSpeed * scaledDeltaTime;
                 textMesh.color = textColor;
 
                 if (textColor.a < 0)
                 {
                     Destroy(gameObject); // TODO ::: 추후 Object Pooling으로 변경 예정
                 }
+            }
+        }
+        
+        private void HandleGameSpeedChanged(float newSpeed)
+        {
+            currentGameSpeed = newSpeed;
+        }
+        
+        private void OnDestroy()
+        {
+            if (BattleManager.Instance != null)
+            {
+                BattleManager.Instance.OnGameSpeedChanged -= HandleGameSpeedChanged;
             }
         }
     }

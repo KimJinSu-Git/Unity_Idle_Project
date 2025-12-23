@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Bird.Idle.Data;
 using Bird.Idle.Core;
+using Bird.Idle.UI;
 
 namespace Bird.Idle.Gameplay
 {
@@ -22,8 +24,12 @@ namespace Bird.Idle.Gameplay
         [Header("Runtime State")]
         [SerializeField] private int currentStageID = 1;
         [SerializeField] private int currentKillCount = 0;
+        
+        [Header("Other References")]
+        [SerializeField] private UI_ScreenFader uiScreenFader;
 
         private bool initialStart = true;
+        private bool isTransitioning = false;
         
         private int maxReachedStageID;
 
@@ -69,8 +75,6 @@ namespace Bird.Idle.Gameplay
             SetCurrentStage(currentStageID, currentKillCount);
             
             OnStageProgressChanged?.Invoke(currentKillCount, currentStageData.MonsterKillCountRequired, currentStageID);
-            
-            Debug.Log($"[StageManager] 스테이지 데이터 로드 완료. Stage ID: {currentStageID}, Kill Count: {currentKillCount}");
         }
         
         /// <summary>
@@ -95,7 +99,6 @@ namespace Bird.Idle.Gameplay
                 {
                     stageDataDictionary.Add(data.StageID, data);
                 }
-                Debug.Log($"[StageManager] StageData 로드 완료! (총 {stageDataDictionary.Count}개 스테이지)");
                 
                 // SetCurrentStage(currentStageID, currentKillCount);
                 dataLoadTCS.SetResult(true);
@@ -143,8 +146,6 @@ namespace Bird.Idle.Gameplay
                 
                 OnFarmingModeChanged?.Invoke(isFarmingMode);
 
-                Debug.Log($"[StageManager] 현재 스테이지: {newStageData.StageName} (ID: {stageID})");
-
                 EnemyManager.Instance.UpdateStageData(currentStageData, currentKillCount, isFarmingMode);
             }
             else
@@ -169,20 +170,56 @@ namespace Bird.Idle.Gameplay
             
             if (currentKillCount >= currentStageData.MonsterKillCountRequired)
             {
-                AdvanceToNextStage();
+                StartCoroutine(AdvanceToNextStageCo());
             }
         }
 
-        /// <summary>
-        /// 다음 스테이지 또는 보스전으로 진입
-        /// </summary>
-        private void AdvanceToNextStage()
+        private IEnumerator AdvanceToNextStageCo()
         {
+            yield return new WaitForSeconds(1.5f);
+            
             int nextStageID = currentStageID + 1;
-            
-            maxReachedStageID = nextStageID;
-            
-            SetCurrentStage(nextStageID, 0);
+            maxReachedStageID = nextStageID; // 최고 기록 갱신
+
+            yield return StartCoroutine(ChangeStageWithEffect(nextStageID, 0f));
+        }
+        
+        public void RequestStageChange(int targetStageID)
+        {
+            if (isTransitioning) return;
+            if (currentStageID == targetStageID) return; 
+
+            if (targetStageID <= maxReachedStageID)
+            {
+                StartCoroutine(ChangeStageWithEffect(targetStageID));
+            }
+            else
+            {
+                if (UI_ToastMessage.Instance != null) 
+                    UI_ToastMessage.Instance.Show("Lock Stage..");
+            }
+        }
+        
+        private IEnumerator ChangeStageWithEffect(int targetStageID, float startDelay = 0f)
+        {
+            isTransitioning = true;
+            if (startDelay > 0) yield return new WaitForSeconds(startDelay);
+
+            if (uiScreenFader != null)
+            {
+                yield return uiScreenFader.FadeOut(0.5f);
+            }
+
+            SetCurrentStage(targetStageID, 0);
+
+            yield return new WaitForSeconds(0.2f);
+
+            if (uiScreenFader != null)
+            {
+                yield return uiScreenFader.FadeIn(0.5f);
+            }
+
+            isTransitioning = false;
         }
         
         // 최고 Stage로 돌아오기에 사용할 기능

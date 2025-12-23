@@ -84,7 +84,6 @@ namespace Bird.Idle.Gameplay
             if (isMoving)
             {
                 transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime * currentGameSpeed);
-                // transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
             }
 
             if (isMoving)
@@ -171,16 +170,32 @@ namespace Bird.Idle.Gameplay
         private void Die()
         {
             currentHealth = 0;
-            Debug.Log($"[MonsterController] {MonsterData.monsterName} 처치됨.");
+            
+            StopAllCoroutines();
             
             EnemyManager.Instance.ProcessMonsterDefeat(MonsterData);
 
             if (Animator != null)
             {
                 Animator.Play("Death");
+                StartCoroutine(WaitDeathAnimationComplete());
             }
-            
-            Destroy(gameObject, 1f); // 임시적으로, 1초 뒤 사라지도록 함. TODO ::: 오브젝트 풀링으로 바꿉시다.
+            else
+            {
+                Destroy(gameObject, 0.7f);
+            }
+        }
+        
+        private IEnumerator WaitDeathAnimationComplete()
+        {
+            yield return null;
+
+            while (Animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+            {
+                yield return null;
+            }
+
+            Destroy(gameObject);
         }
     }
 }

@@ -20,6 +20,8 @@ namespace Bird.Idle.Core
         private BattleManager battleManager;
         
         [SerializeField] private GameExitPopup exitPopup;
+        
+        public bool IsResetting { get; set; } = false;
 
         private void Awake()
         {
@@ -60,7 +62,10 @@ namespace Bird.Idle.Core
         {
             if (pauseStatus)
             {
-                _ = SaveGameOnExitAsync();
+                if (!IsResetting) 
+                {
+                    _ = SaveGameOnExitAsync();
+                }
             }
         }
         
@@ -162,6 +167,12 @@ namespace Bird.Idle.Core
         
         public async Task SaveGameOnExitAsync()
         {
+            if (IsResetting) 
+            {
+                Debug.Log("[GameManager] 리셋 중이므로 저장을 건너뜁니다.");
+                return;
+            }
+            
             GameSaveData data = new GameSaveData();
         
             if (CharacterManager.Instance != null) CharacterManager.Instance.CollectSaveData(data);
@@ -176,61 +187,17 @@ namespace Bird.Idle.Core
 
             data.LastExitTimeTicks = DateTime.UtcNow.Ticks;
 
-            // DataManager 저장 대기
             await DataManager.Instance.SaveGameData(data);
             
             // DataManager.Instance.OnResetButtonClicked();
         }
-        
-        /*
-        public async void SaveGameOnExit()
-        {
-            GameSaveData data = new GameSaveData();
-        
-            if (CharacterManager.Instance != null)
-            {
-                CharacterManager.Instance.CollectSaveData(data);
-            }
-            if (CurrencyManager.Instance != null)
-            {
-                CurrencyManager.Instance.CollectSaveData(data);
-            }
-            if (EquipmentCollectionManager.Instance != null)
-            {
-                EquipmentCollectionManager.Instance.CollectSaveData(data);
-            }
-            if (InventoryManager.Instance != null)
-            {
-                InventoryManager.Instance.CollectSaveData(data);
-            }
-            if (SlotManager.Instance != null)
-            {
-                SlotManager.Instance.CollectSaveData(data);
-            }
-            if (StageManager.Instance != null)
-            {
-                StageManager.Instance.CollectSaveData(data);
-            }
-
-            data.LastExitTimeTicks = DateTime.UtcNow.Ticks;
-
-            await DataManager.Instance.SaveGameData(data);
-
-            // DataManager.Instance.OnResetButtonClicked(); // Data 삭제후 테스트할거면 해제하면 됌
-        }
-        */
-        
-        /// <summary>
-        /// 방치 보상을 계산하고 지급합니다.
-        /// </summary>
-        private void CalculateIdleReward(GameSaveData data)
-        {
-            DataManager.Instance.CalculateIdleReward();
-        }
 
         private void OnApplicationQuit()
         {
-            _ = SaveGameOnExitAsync();
+            if (!IsResetting)
+            {
+                _ = SaveGameOnExitAsync();
+            }
         }
     }
 }

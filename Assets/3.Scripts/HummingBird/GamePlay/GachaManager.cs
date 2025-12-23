@@ -60,8 +60,6 @@ namespace Bird.Idle.Gameplay
                 }
                 accessoryPool[item.grade].Add(item);
             }
-            
-            Debug.Log($"[GachaManager] 악세사리 풀 초기화 완료.");
         }
 
         public void CollectSaveData(GameSaveData data)
@@ -146,7 +144,6 @@ namespace Bird.Idle.Gameplay
             {
                 currentExp -= info.MaxExp;
                 currentLevel++;
-                Debug.Log($"[Gacha] 뽑기 레벨 업! Lv.{currentLevel}");
                 
                 if(currentLevel < gachaLevelData.GetMaxLevel())
                 {
