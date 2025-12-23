@@ -272,6 +272,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Stage
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 574abd1437b603e45a7353445049aaab
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Quest/Repeatable/RepeatableQuest3.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Quest
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5800a216d19a0d6468eb473f450444ae
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Enemy/MonsterGoblin1.asset
     m_ReadOnly: 0
@@ -541,6 +547,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Stage
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b8a263d55a023f64b9009d1f474f6827
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Quest/Repeatable/RepeatableQuest5.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Quest
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ba322ae61cab306448e9c698b6e2a28e
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Equipment/Armor/Armor_Rare4.asset
     m_ReadOnly: 0
@@ -642,6 +654,12 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Stage
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ee2ef2ce75912854b9d50e1f8e4ff669
+    m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Quest/Repeatable/RepeatableQuest4.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Quest
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f008d152ef3cafc4d9a3812133ebf99a
     m_Address: Assets/3.Scripts/HummingBird/Data/ScriptableObject/Equipment/Acessory/Accessory_Rare5.asset

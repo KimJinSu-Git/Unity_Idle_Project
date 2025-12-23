@@ -94,6 +94,11 @@ MonoBehaviour:
   iconImage: {fileID: 5992322911173818410}
   gradeText: {fileID: 5216152454703172203}
   slotButton: {fileID: 7800100904537944288}
+  countText: {fileID: 0}
+  levelText: {fileID: 0}
+  equipIndicator: {fileID: 0}
+  lockIconObject: {fileID: 0}
+  imageLoader: {fileID: 0}
 --- !u!1 &4803719646982413204
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,6 +6,7 @@ using Bird.Idle.Core;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using System.Threading.Tasks;
+using Bird.Idle.UI;
 
 namespace Bird.Idle.Gameplay
 {
@@ -28,6 +29,8 @@ namespace Bird.Idle.Gameplay
         
         public Action OnSlotEnhanceChanged;
         public Action OnSlotDataLoaded;
+        
+        public Action<EquipmentType> OnSlotEnhanced;
         
         public Dictionary<EquipmentType, int> GetSlotLevels() => slotLevels;
         
@@ -70,7 +73,6 @@ namespace Bird.Idle.Gameplay
                 slotLevels[equipType] = levelToRestore;
             }
 
-            Debug.Log($"[SlotManager] 슬롯 레벨 데이터 로드 완료. 무기 슬롯 레벨: {GetSlotLevel(EquipmentType.Weapon)}");
             OnSlotEnhanceChanged?.Invoke();
         }
         
@@ -145,13 +147,13 @@ namespace Bird.Idle.Gameplay
 
             if (nextEntry.EnhanceLevel == -1)
             {
-                Debug.Log($"[SlotManager] {type} 슬롯이 최대 강화 레벨입니다.");
+                UI_ToastMessage.Instance.Show("Max Level Reached!");
                 return false;
             }
 
             if (!CurrencyManager.Instance.CanAfford(CurrencyType.Masuk, nextEntry.MasukCost))
             {
-                Debug.LogWarning("[SlotManager] 강화할 마석 부족.");
+                UI_ToastMessage.Instance.Show("Required Add Masuk.");
                 return false;
             }
             CurrencyManager.Instance.ChangeCurrency(CurrencyType.Masuk, -(nextEntry.MasukCost));
@@ -162,12 +164,13 @@ namespace Bird.Idle.Gameplay
                 CharacterManager.Instance.ApplyBaseStatUpgrade(nextEntry.AttackIncrease, nextEntry.HealthIncrease);
                 
                 OnSlotEnhanceChanged?.Invoke();
-                Debug.Log($"[SlotManager] {type} 슬롯 강화 성공! Lv.{slotLevels[type]}");
+                OnSlotEnhanced?.Invoke(type);
+                UI_ToastMessage.Instance.Show("Reinforce Success!");
                 return true;
             }
             else
             {
-                Debug.LogWarning("[SlotManager] 슬롯 강화 실패. 마석만 소모됨.");
+                UI_ToastMessage.Instance.Show("Reinforce Failed!");
                 return false;
             }
         }

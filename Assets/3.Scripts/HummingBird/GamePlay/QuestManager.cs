@@ -150,6 +150,15 @@ namespace Bird.Idle.Gameplay
             LoadAllQuestDataAsync();
         }
         
+        
+        private void OnDestroy()
+        {
+            if (SlotManager.Instance != null)
+            {
+                SlotManager.Instance.OnSlotEnhanced -= HandleSlotEnhance;
+            }
+        }
+        
         private async void LoadAllQuestDataAsync()
         {
             var handle = Addressables.LoadAssetsAsync<QuestData>(questDataLabel, null);
@@ -192,6 +201,8 @@ namespace Bird.Idle.Gameplay
             if (GachaManager.Instance != null)
                 GachaManager.Instance.OnGachaFinished += HandleGachaPerformed;
             
+            if (SlotManager.Instance != null)
+                SlotManager.Instance.OnSlotEnhanced += HandleSlotEnhance;
         }
         
         private void HandleMonsterDefeat() => UpdateProgressByCondition(QuestType.DefeatMonsterCount, 1);
@@ -201,6 +212,21 @@ namespace Bird.Idle.Gameplay
             if (items != null && items.Count > 0)
             {
                 UpdateProgressByCondition(QuestType.PerformGacha, items.Count);
+            }
+        }
+        private void HandleSlotEnhance(EquipmentType type)
+        {
+            switch (type)
+            {
+                case EquipmentType.Weapon:
+                    UpdateProgressByCondition(QuestType.EnhanceSlot_Weapon, 1);
+                    break;
+                case EquipmentType.Armor:
+                    UpdateProgressByCondition(QuestType.EnhanceSlot_Armor, 1);
+                    break;
+                case EquipmentType.Accessory:
+                    UpdateProgressByCondition(QuestType.EnhanceSlot_Accessory, 1);
+                    break;
             }
         }
 

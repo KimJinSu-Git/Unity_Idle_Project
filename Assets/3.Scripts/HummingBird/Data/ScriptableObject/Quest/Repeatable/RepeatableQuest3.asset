@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce9011643f9bb4c429822adde98e1d1b, type: 3}
-  m_Name: MainQuest3
+  m_Name: RepeatableQuest3
   m_EditorClassIdentifier: 
-  questID: 3
-  questName: MainQuest_3
-  description: Monster Kill
-  type: 1
-  category: 0
-  isRepeatable: 0
-  targetValue: 10
+  questID: 10003
+  questName: Enhance_Weapon
+  description: Weapon Reinforce
+  type: 3
+  category: 1
+  isRepeatable: 1
+  targetValue: 1
   rewardType: 3
-  rewardAmount: 100
+  rewardAmount: 50

@@ -19,5 +19,5 @@ MonoBehaviour:
   category: 0
   isRepeatable: 0
   targetValue: 10
-  rewardType: 1
+  rewardType: 3
   rewardAmount: 100

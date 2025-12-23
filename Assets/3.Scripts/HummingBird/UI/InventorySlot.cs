@@ -14,6 +14,7 @@ namespace Bird.Idle.UI
     /// </summary>
     public class InventorySlot : MonoBehaviour
     {
+        [Header("UI Components")]
         [SerializeField] private Image iconImage;
         [SerializeField] private TextMeshProUGUI gradeText;
         [SerializeField] private Button slotButton;
@@ -22,9 +23,13 @@ namespace Bird.Idle.UI
         [SerializeField] private TextMeshProUGUI levelText;
         [SerializeField] private TextMeshProUGUI equipIndicator;
         
+        [Header("Lock UI")]
+        [CanBeNull] [SerializeField] private GameObject lockIconObject;
+        
         [SerializeField][CanBeNull] private ImageLoader imageLoader;
         
         private EquipmentData itemSO;
+        private bool isLocked = false;
         
         /// <summary>
         /// 슬롯에 SO 데이터를 바인딩하고, 수량/레벨 등 변동 데이터를 갱신
@@ -39,12 +44,28 @@ namespace Bird.Idle.UI
             }
             
             gradeText.text = GetGradeString(itemSO.grade);
-    
-            countText.text = $"x{count}";
-            levelText.text = $"+{level}";
             
-            bool isEquipped = InventoryManager.Instance.IsItemEquipped(itemSO.type, itemSO.equipID);
-            SetEquippedStatus(isEquipped);
+            isLocked = (count <= 0);
+    
+            if (isLocked)
+            {
+                if (lockIconObject != null) lockIconObject.SetActive(true);
+                
+                countText.text = "";
+                levelText.text = "";
+                
+                SetEquippedStatus(false);
+            }
+            else
+            {
+                if (lockIconObject != null) lockIconObject.SetActive(false);
+                
+                countText.text = $"x{count}";
+                levelText.text = $"+{level}";
+                
+                bool isEquipped = InventoryManager.Instance.IsItemEquipped(itemSO.type, itemSO.equipID);
+                SetEquippedStatus(isEquipped);
+            }
 
             if (slotButton.interactable == false)
             {
@@ -72,13 +93,23 @@ namespace Bird.Idle.UI
             gradeText.text = "";
             countText.text = "";
             levelText.text = "";
+            lockIconObject.SetActive(false);
             slotButton.interactable = false;
+            isLocked = false;
         }
         
-        // 클릭 시 인벤토리 매니저에 장착/사용 요청
         public void OnSlotClicked()
         {
             if (itemSO == null) return;
+            
+            if (isLocked)
+            {
+                if (UI_ToastMessage.Instance != null)
+                {
+                    UI_ToastMessage.Instance.Show("Get Item Please.");
+                }
+                return;
+            }
             
             EquipmentCollectionManager.Instance.ShowUpgradePopup(itemSO.equipID);
         }

@@ -6,12 +6,14 @@ namespace Bird.Idle.Data
 {
     public enum QuestType
     {
-        ReachStage,         // 도달 스테이지
-        DefeatMonsterCount, // 몬스터 처치 수
-        LevelUpCharacter,   // 캐릭터 레벨
-        EnhanceSlot,        // 슬롯 강화 레벨
-        UpgradeCollection,  // 장비 컬렉션 강화 레벨
-        PerformGacha        // 뽑기 진행 횟수
+        ReachStage,             // 도달 스테이지
+        DefeatMonsterCount,     // 몬스터 처치 수
+        LevelUpCharacter,       // 캐릭터 레벨
+        EnhanceSlot_Weapon,     // 무기 슬롯 강화 레벨
+        EnhanceSlot_Armor,      // 갑옷 슬롯 강화 레벨
+        EnhanceSlot_Accessory,  // 장신구 슬롯 강화 레벨
+        UpgradeCollection,      // 장비 컬렉션 강화 레벨
+        PerformGacha            // 뽑기 진행 횟수
     }
     
     public enum QuestCategory

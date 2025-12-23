@@ -34,9 +34,9 @@ namespace Bird.Idle.Gameplay
         private Dictionary<EquipmentGrade, int> masukRewardTable = new Dictionary<EquipmentGrade, int>()
         {
             { EquipmentGrade.Common, 10 },
-            { EquipmentGrade.Rare, 150 },
-            { EquipmentGrade.Epic, 500 },
-            { EquipmentGrade.Legendary, 2000 }
+            { EquipmentGrade.Rare, 50 },
+            { EquipmentGrade.Epic, 200 },
+            { EquipmentGrade.Legendary, 1000 }
         };
         
         public Action OnCollectionChanged;
@@ -209,8 +209,8 @@ namespace Bird.Idle.Gameplay
             return true;
         }
         
-        public long CalculateGoldCost(int currentLevel) => 1000 * (currentLevel + 1); 
-        public long CalculateMasukCost(int currentLevel) => 50 * (currentLevel + 1);
+        public long CalculateGoldCost(int currentLevel) => 1000 * (currentLevel * 3); 
+        public long CalculateMasukCost(int currentLevel) => 100 * (currentLevel * 3);
         
         /// <summary>
         /// 업그레이드 가능 여부를 검사

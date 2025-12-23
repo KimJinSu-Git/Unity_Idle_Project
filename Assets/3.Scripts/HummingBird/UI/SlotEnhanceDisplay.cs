@@ -63,17 +63,14 @@ namespace Bird.Idle.UI
             {
                 // 다음 스탯 및 비용 표시
                 statText.text = $"+ATK: {nextEntry.AttackIncrease:F1} | +HP: {nextEntry.HealthIncrease:F1}";
-                costText.text = $"{nextEntry.MasukCost:N0} Gold ({nextEntry.SuccessRate * 100}%)";
+                costText.text = $"{nextEntry.MasukCost:N0} Masuk ({nextEntry.SuccessRate * 100}%)";
                 
-                // 버튼 활성화
-                bool canAfford = CurrencyManager.Instance.CanAfford(CurrencyType.Gold, nextEntry.MasukCost);
-                enhanceButton.interactable = canAfford;
+                enhanceButton.interactable = true;
             }
             else
             {
                 statText.text = "Max Level";
                 costText.text = "MAX";
-                enhanceButton.interactable = false;
             }
         }
 
