@@ -248,7 +248,6 @@ namespace Bird.Idle.Gameplay
             controller.Initialize(monsterData, 1.0f, monsterInstanceCounter);
         
             totalSpawnedInCurrentStage++;
-            Debug.Log($"totalSpawnedInCurrentStage::: {totalSpawnedInCurrentStage}");
             
             activeMonsters.Add(controller);
             currentMonsterCount = activeMonsters.Count;
@@ -327,8 +326,6 @@ namespace Bird.Idle.Gameplay
             totalSpawnedInCurrentStage = 0;
             
             CheckBattleState();
-            
-            Debug.Log("[EnemyManager] 모든 몬스터 삭제 완료.");
         }
         
         /// <summary>
@@ -353,7 +350,6 @@ namespace Bird.Idle.Gameplay
                 if (randomValue <= cumulative)
                 {
                     EquipmentCollectionManager.Instance.AddItem(dropItem.itemSO);
-                    Debug.Log($"[EnemyManager] 장비 드롭 성공: {dropItem.itemSO.equipName}");
                     return; 
                 }
             }

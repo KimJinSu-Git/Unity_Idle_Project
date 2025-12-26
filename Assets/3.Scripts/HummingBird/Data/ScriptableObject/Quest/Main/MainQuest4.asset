@@ -15,7 +15,7 @@ MonoBehaviour:
   questID: 4
   questName: MainQuest_4
   description: GachaTry
-  type: 5
+  type: 7
   category: 0
   isRepeatable: 0
   targetValue: 1

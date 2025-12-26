@@ -15,7 +15,7 @@ MonoBehaviour:
   questID: 10002
   questName: Repeat_Gacha
   description: Perform Gacha
-  type: 5
+  type: 7
   category: 1
   isRepeatable: 1
   targetValue: 10
