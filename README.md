@@ -8,8 +8,8 @@ Idle Slayer는 자동 전투와 오프라인 보상을 기반으로 한 모바�
 ___
 📸 **인게임 이미지**
 <p align="center">
-  <img src="https://github.com/KimJinSu-Git/3D_Personal_Project/blob/main/3D_Project_RPG/Assets/Screenshots/Image1.PNG" width="390"/> &nbsp; &nbsp;
-  <img src="https://github.com/KimJinSu-Git/3D_Personal_Project/blob/main/3D_Project_RPG/Assets/Screenshots/Image2.PNG" width="390"/>
+  <img src="" width="390"/> &nbsp; &nbsp;
+  <img src="" width="390"/>
 </p>
 ___
 
