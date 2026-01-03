@@ -8,8 +8,9 @@ Idle Slayer는 자동 전투와 오프라인 보상을 기반으로 한 모바�
 ___
 📸 **인게임 이미지**
 <p align="center">
-  <img src="" width="390"/> &nbsp; &nbsp;
-  <img src="" width="390"/>
+  <img src="https://github.com/KimJinSu-Git/Unity_Idle_Project/blob/main/Assets/Screenshots/Capture1.png" width="220"/> &nbsp; &nbsp; &nbsp; &nbsp;
+  <img src="https://github.com/KimJinSu-Git/Unity_Idle_Project/blob/main/Assets/Screenshots/Capture2.png" width="220"/> &nbsp; &nbsp; &nbsp; &nbsp;
+  <img src="https://github.com/KimJinSu-Git/Unity_Idle_Project/blob/main/Assets/Screenshots/Capture3.png" width="220"/>
 </p>
 
 ___
@@ -17,7 +18,7 @@ ___
 🧩 **전체 시스템 구조**
 * **GameManager**
   * 게임 전체 흐름 오케스트레이션
-  * 앱 생명주기 기반 자동 저장 👉 [스크립트 이름](스크립트 주소)
+  * 앱 생명주기 기반 자동 저장 👉 []()
   * 데이터 리셋 시 예외 처리
 * **DataManager**
   * 비동기 저장 / 로드
@@ -57,7 +58,7 @@ ___
 🛡️ **장비 & 강화 시스템**
 * 장착 슬롯 강화 방식
   * 장비 교체 후에도 강화 수치 유지
-* 중복 장비 자동 환전 → 강화 재료로 재사용
+* 중복 장비 자동 환전 → 강화 재료로 재사용 
 * [파밍 → 중복 획득 → 환전 → 강화 → 성장] 순환 구조 설계
 ___
 🎰 **가중치 확률 기반 뽑기 시스템**
@@ -75,10 +76,10 @@ ___
 * 반복 퀘스트 초과 달성 보상 처리
 ___
 📱 **반응형 UI & 카메라 시스템**
-* SafeArea 대응 (노치 / 펀치홀)
-* 기기 해상도에 따른 GridLayout 자동 계산
+* SafeArea 대응 (노치 / 펀치홀) 👉 [SafeArea.cs](https://github.com/KimJinSu-Git/Unity_Idle_Project/blob/main/Assets/3.Scripts/HummingBird/Camera/SafeArea.cs#L30)
+* 기기 해상도에 따른 GridLayout 자동 계산 👉 [UI_ResponsiveGrid.cs](https://github.com/KimJinSu-Git/Unity_Idle_Project/blob/main/Assets/3.Scripts/HummingBird/UI/UI_ResponsiveGrid.cs#L39)
 * Viewport 기반 카메라 추적
-* UI 상태에 따른 Camera Offset 보정
+* UI 상태에 따른 Camera Offset 보정 👉 [PlayerTargetCamera.cs](https://github.com/KimJinSu-Git/Unity_Idle_Project/blob/main/Assets/3.Scripts/HummingBird/Visual/PlayerTargetCamera.cs#L50)
 ___
 💤 **오프라인 방치 보상**
 * 종료 시점과 재접속 시간 차 계산
