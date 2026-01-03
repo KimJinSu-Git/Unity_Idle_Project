@@ -97,6 +97,18 @@ namespace Bird.Idle.Gameplay
             }
         }
         
+        private void EnterCombatState()
+        {
+            if (currentlyAttacking) return;
+            
+            isMoving = false;
+            currentlyAttacking = true;
+            
+            Animator.Play("Idle");
+            
+            StartCoroutine(AttackLoop());
+        }
+        
         private void OnDestroy()
         {
             if (BattleManager.Instance != null)
@@ -112,18 +124,6 @@ namespace Bird.Idle.Gameplay
             {
                 Animator.speed = currentGameSpeed;
             }
-        }
-        
-        private void EnterCombatState()
-        {
-            if (currentlyAttacking) return;
-            
-            isMoving = false;
-            currentlyAttacking = true;
-            
-            Animator.Play("Idle");
-            
-            StartCoroutine(AttackLoop());
         }
         
         private IEnumerator AttackLoop()

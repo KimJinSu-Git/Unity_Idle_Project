@@ -161,6 +161,7 @@ namespace Bird.Idle.Gameplay
         {
             if (currentStageID < maxReachedStageID)
             {
+                OnMonsterKilledGlobal?.Invoke(); // 파밍 모드라면 잡았다는 이벤트 업뎃만
                 return;
             }
 

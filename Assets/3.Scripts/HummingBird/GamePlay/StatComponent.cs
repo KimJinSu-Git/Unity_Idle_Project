@@ -13,9 +13,6 @@ namespace Bird.Idle.Gameplay
         public int Dexterity { get; private set; } = 1; // AttackSpeed / CritChance / Accuracy / Evasion => 빠른 공격 + 회피 + 명중
         public int Intelligence { get; private set; } = 1; // MagicResistance / HealthRegen / SkillDamage / SkillCooldown => 스킬 기반 성장
         public int Luck { get; private set; } = 1; // GoldDrop / ItemDrop / CritDamage / GemDrop => 보상 및 크리데미지 증가
-
-        // BASE MODIFIERS (장비, 영구 강화 등)
-        // 장비/영구 보너스는 StatComponent 외부에서 제공
         
         // COMBAT STATS (최종 스탯)
         public float FinalAttackPower { get; private set; }
@@ -37,8 +34,8 @@ namespace Bird.Idle.Gameplay
         /// 모든 Core Stat과 외부 보너스를 합산하여 최종 전투 스탯을 계산
         /// </summary>
         public void CalculateFinalStats(
-            (float attack, float health, float critChance, float critDamage, float attackSpeed, float defensivePower, float magicResistance, float healthRegen, float evasion, float accuracy, float luckBonus) equipBonus,
-            float permanentAtk, float permanentHp)
+            (float attack, float health, float critChance, float critDamage, float attackSpeed, float defensivePower, 
+                float magicResistance, float healthRegen, float evasion, float accuracy, float luckBonus) equipBonus, float permanentAtk, float permanentHp)
         {
             FinalAttackPower = (97.5f + (Strength * 2.5f)) + permanentAtk + equipBonus.attack;
             FinalMaxHealth = (395f + (Strength * 5f)) + permanentHp + equipBonus.health;
@@ -57,7 +54,6 @@ namespace Bird.Idle.Gameplay
             FinalGoldDrop = 1.0f + (Luck * 0.01f) + equipBonus.luckBonus; // 기본 100% (1.0) + LCK 기여
             // FinalItemDrop = 0.01f + (Luck * 0.0005f) + equipBonus.itemDrop;
             // FinalGemDrop = 0.0001f + (Luck * 0.00005f) + equipBonus.gemDrop; 
-            
         }
 
         /// <summary>

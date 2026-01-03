@@ -13,7 +13,6 @@ namespace Bird.Idle.Gameplay
 
         [Header("Player Attack Settings")]
         [SerializeField] private float baseAttackInterval = 3f;
-        private float currentAttackCooldown;
 
         private CharacterManager characterManager;
         private EnemyManager enemyManager;
@@ -39,8 +38,6 @@ namespace Bird.Idle.Gameplay
             
             characterManager = CharacterManager.Instance;
             enemyManager = EnemyManager.Instance;
-
-            currentAttackCooldown = 0f;
         }
         
         /// <summary>
@@ -61,8 +58,6 @@ namespace Bird.Idle.Gameplay
             GameSpeed = speed;
             
             OnGameSpeedChanged?.Invoke(GameSpeed);
-            
-            Debug.Log($"[BattleManager] 게임 속도 변경: {GameSpeed}x");
         }
 
         /// <summary>

@@ -64,7 +64,6 @@ namespace Bird.Idle.Core
                     {
                         formatter.Serialize(stream, saveData);
                     }
-                    Debug.Log($"[DataManager] 게임 데이터 저장 완료. 시간: {lastExitTime}");
                 }
                 catch (Exception e)
                 {
@@ -80,7 +79,6 @@ namespace Bird.Idle.Core
         {
             if (!File.Exists(savePath))
             {
-                Debug.LogWarning("[DataManager] 저장된 파일이 없습니다. 새 게임 시작.");
                 lastExitTime = DateTime.UtcNow;
                 return new GameSaveData { LastExitTimeTicks = lastExitTime.Ticks };
             }
@@ -138,9 +136,9 @@ namespace Bird.Idle.Core
             long totalExp = 0;
             Dictionary<EquipmentData, int> acquiredItems = new Dictionary<EquipmentData, int>();
             
-            float secondsPerKill = 10.0f; // TODO ::: 평균 사냥 속도 => 나중에 Player의 스탯에 맞춰야 할듯, 안 그러면 Player 스탯이 딸린데도 10초마다 원콤내는 방치 계산이 되어버림.
-            int totalKills = (int)(effectiveSeconds / secondsPerKill);
+            float secondsPerKill = 10.0f; // TODO ::: 평균 사냥 속도 => 나중에 Player의 스탯에 맞춰야 함, 안 그러면 Player 스탯이 딸린데도 10초마다 원콤내는 방치 계산이 되어버림.
             
+            int totalKills = (int)(effectiveSeconds / secondsPerKill);
             for (int i = 0; i < totalKills; i++)
             {
                 if (stageData.MonsterIDs.Count == 0) break;

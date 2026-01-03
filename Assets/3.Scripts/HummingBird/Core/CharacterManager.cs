@@ -77,7 +77,6 @@ namespace Bird.Idle.Core
             DontDestroyOnLoad(gameObject);
             
             currentHealth = MaxHealth;
-            
             LoadLevelUpCostDataAsync();
         }
 
@@ -91,7 +90,6 @@ namespace Bird.Idle.Core
         /// </summary>
         public void Initialize(GameSaveData data)
         {
-            // 레벨 복원
             characterLevel = data.PlayerLevel;
             
             // 영구 보너스 스탯 복원 (Slot 강화 등으로 얻은 스탯)
@@ -109,8 +107,6 @@ namespace Bird.Idle.Core
             
             RecalculateAllFinalStats();
             currentHealth = MaxHealth;
-            
-            Debug.Log($"[CharacterManager] 캐릭터 데이터 로드 완료.");
             
             // UI 갱신
             OnLevelUp?.Invoke(characterLevel);
@@ -194,9 +190,7 @@ namespace Bird.Idle.Core
         private void Die()
         {
             currentHealth = 0;
-            Debug.Log("[CharacterManager] 플레이어가 사망했습니다!");
             OnPlayerDied?.Invoke();
-            
             OnRequestStageRestart?.Invoke();
         }
         
@@ -246,7 +240,6 @@ namespace Bird.Idle.Core
 
             await handle.Task; 
         
-            // 로드 성공 시 데이터 캐시
             if (handle.Status == AsyncOperationStatus.Succeeded)
             {
                 loadedLevelUpCostData = handle.Result;
@@ -254,12 +247,7 @@ namespace Bird.Idle.Core
                 
                 CheckUnlockGameSpeed(characterLevel);
             }
-            else
-            {
-                
-            }
-        
-            // TODO: 사용이 끝난 시점에 handle.Release()를 호출하여 메모리를 해제 추가
+            else { }
         }
         
         public void RecalculateAllFinalStats()
@@ -288,7 +276,6 @@ namespace Bird.Idle.Core
             permanentHealthBonus += healthIncrease;
     
             RecalculateAllFinalStats();
-            // OnStatsRecalculated?.Invoke(); 
         }
     }
 }

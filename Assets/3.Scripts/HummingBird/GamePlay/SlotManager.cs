@@ -123,9 +123,6 @@ namespace Bird.Idle.Gameplay
             if (handle.Status == AsyncOperationStatus.Succeeded)
             {
                 loadedSlotEnhanceData = handle.Result;
-                Debug.Log("[SlotManager] SlotEnhanceData Addressables 로드 완료!");
-                
-                // OnSlotDataLoaded?.Invoke();
                 tcs.SetResult(true);
             }
             else
@@ -138,23 +135,19 @@ namespace Bird.Idle.Gameplay
         /// <summary>
         /// 장비 칸 강화 시도
         /// </summary>
-        public bool TryEnhanceSlot(EquipmentType type)
+        public void TryEnhanceSlot(EquipmentType type)
         {
-            if (loadedSlotEnhanceData == null) return false;
-            
             int currentLevel = slotLevels[type];
             SlotEnhanceData.SlotEnhanceEntry nextEntry = loadedSlotEnhanceData.GetEnhanceEntry(type, currentLevel);
 
             if (nextEntry.EnhanceLevel == -1)
             {
                 UI_ToastMessage.Instance.Show("Max Level Reached!");
-                return false;
             }
 
             if (!CurrencyManager.Instance.CanAfford(CurrencyType.Masuk, nextEntry.MasukCost))
             {
                 UI_ToastMessage.Instance.Show("Required Add Masuk.");
-                return false;
             }
             CurrencyManager.Instance.ChangeCurrency(CurrencyType.Masuk, -(nextEntry.MasukCost));
 
@@ -166,12 +159,10 @@ namespace Bird.Idle.Gameplay
                 OnSlotEnhanceChanged?.Invoke();
                 OnSlotEnhanced?.Invoke(type);
                 UI_ToastMessage.Instance.Show("Reinforce Success!");
-                return true;
             }
             else
             {
                 UI_ToastMessage.Instance.Show("Reinforce Failed!");
-                return false;
             }
         }
         

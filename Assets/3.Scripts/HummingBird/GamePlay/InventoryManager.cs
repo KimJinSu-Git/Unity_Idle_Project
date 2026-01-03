@@ -170,10 +170,6 @@ namespace Bird.Idle.Gameplay
             {
                 totalAttack += item.attackBonus;
                 totalHealth += item.healthBonus;
-            
-                // ItemData에 CritChance, CritDamage, AttackSpeed 등 필드 필요
-                // 임시로 0 반환.
-                // 실제 구현 시 EquipmentData에 해당 Stat 필드를 추가해야 합니다.
             }
 
             return (totalAttack, totalHealth, totalCritChance, totalCritDamage, totalAttackSpeed, totalDefensivePower, totalMagicResistance, totalHealthRegen, totalEvasion, totalAccuracy, totalLuckBonus);
