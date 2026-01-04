@@ -209,8 +209,8 @@ namespace Bird.Idle.Gameplay
             return true;
         }
         
-        public long CalculateGoldCost(int currentLevel) => 1000 * (currentLevel * 3); 
-        public long CalculateMasukCost(int currentLevel) => 100 * (currentLevel * 3);
+        public long CalculateGoldCost(int currentLevel) => 1000 * ((currentLevel + 1) * 3); 
+        public long CalculateMasukCost(int currentLevel) => 100 * ((currentLevel + 1) * 3);
         
         /// <summary>
         /// 업그레이드 가능 여부를 검사

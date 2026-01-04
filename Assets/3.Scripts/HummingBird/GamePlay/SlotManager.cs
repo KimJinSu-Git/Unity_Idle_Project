@@ -148,11 +148,12 @@ namespace Bird.Idle.Gameplay
             if (!CurrencyManager.Instance.CanAfford(CurrencyType.Masuk, nextEntry.MasukCost))
             {
                 UI_ToastMessage.Instance.Show("Required Add Masuk.");
+                return;
             }
             CurrencyManager.Instance.ChangeCurrency(CurrencyType.Masuk, -(nextEntry.MasukCost));
 
             if (UnityEngine.Random.value <= nextEntry.SuccessRate)
-            {
+            { 
                 slotLevels[type]++;
                 CharacterManager.Instance.ApplyBaseStatUpgrade(nextEntry.AttackIncrease, nextEntry.HealthIncrease);
                 
