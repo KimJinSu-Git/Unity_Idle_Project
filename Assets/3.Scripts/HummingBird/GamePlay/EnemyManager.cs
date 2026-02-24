@@ -11,7 +11,7 @@ using Unity.VisualScripting;
 namespace Bird.Idle.Gameplay
 {
     /// <summary>
-    /// 몬스터 스폰 및 처치를 관리하고, 처치 시 재화를 지급
+    /// 몬스터 스폰 및 처치를 관리하고, 처치 시 재화를 지급 (오브젝트 풀링 추가)
     /// </summary>
     public class EnemyManager : MonoBehaviour
     {
@@ -36,6 +36,7 @@ namespace Bird.Idle.Gameplay
         private bool isInfiniteSpawnMode = false; // 몬스터 스폰 무한 모드
         
         private Dictionary<int, MonsterData> loadedMonsterDictionary = new Dictionary<int, MonsterData>();
+        private Dictionary<int, Queue<MonsterController>> monsterPools = new Dictionary<int, Queue<MonsterController>>();
         
         private StageData currentStageData;
         private List<int> currentStageMonsterIDs;
@@ -78,7 +79,6 @@ namespace Bird.Idle.Gameplay
         private async void LoadMonsterDataAsync()
         {
             AsyncOperationHandle<IList<MonsterData>> handle = Addressables.LoadAssetsAsync<MonsterData>(monsterDataLabel, null);
-
             await handle.Task; 
         
             if (handle.Status == AsyncOperationStatus.Succeeded)
@@ -187,7 +187,6 @@ namespace Bird.Idle.Gameplay
             if (currentStageData.IsBossStage)
             {
                 monsterIdToSpawn = currentStageData.BossMonsterID;
-                
                 if (currentMonsterCount > 0) return; 
             }
             else
@@ -212,37 +211,47 @@ namespace Bird.Idle.Gameplay
         /// </summary>
         private async void SpawnMonsterFromAddress(MonsterData monsterData)
         {
-            if (string.IsNullOrEmpty(monsterData.prefabAddress))
+            int id = monsterData.monsterID;
+            
+            if (monsterPools.TryGetValue(id, out Queue<MonsterController> pool) && pool.Count > 0)
             {
-                Debug.LogError($"[EnemyManager] {monsterData.monsterName} 프리팹 주소(string)가 비어있습니다.");
+                MonsterController pooledMonster = pool.Dequeue();
+                pooledMonster.gameObject.SetActive(true);
+                SetupMonster(pooledMonster, monsterData);
                 return;
             }
             
             AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(monsterData.prefabAddress);
-        
             await handle.Task;
         
             if (handle.Status != AsyncOperationStatus.Succeeded)
             {
-                Debug.LogError($"[EnemyManager] {monsterData.monsterName} 프리팹 로드 실패: {handle.OperationException}");
+                Debug.LogError($"[EnemyManager] {monsterData.monsterName} 프리팹 로드 실패");
                 return;
             }
 
             GameObject monsterGO = handle.Result;
-            MonsterController controller = monsterGO.GetComponent<MonsterController>();
+            MonsterController newController = monsterGO.GetComponent<MonsterController>();
 
-            if (controller == null)
+            if (newController == null)
             {
-                Debug.LogError($"[EnemyManager] 스폰된 {monsterData.monsterName} 프리팹에 MonsterController가 없습니다!");
                 Addressables.ReleaseInstance(handle); 
                 return;
             }
             
-            float prefabOriginalY = monsterGO.transform.position.y;
-            float prefabOriginalZ = monsterGO.transform.position.z;
+            SetupMonster(newController, monsterData);
+        }
+        
+        /// <summary>
+        /// 몬스터 스폰 시 공통 세팅 로직
+        /// </summary>
+        private void SetupMonster(MonsterController controller, MonsterData monsterData)
+        {
+            float prefabOriginalY = controller.transform.position.y;
+            float prefabOriginalZ = controller.transform.position.z;
             
-            monsterGO.transform.position = new Vector3(spawnPosition.x, prefabOriginalY, prefabOriginalZ);
-            monsterGO.transform.rotation = spawnRotation;
+            controller.transform.position = new Vector3(spawnPosition.x, prefabOriginalY, prefabOriginalZ);
+            controller.transform.rotation = spawnRotation;
 
             monsterInstanceCounter++;
             controller.Initialize(monsterData, 1.0f, monsterInstanceCounter);
@@ -305,24 +314,42 @@ namespace Bird.Idle.Gameplay
         }
         
         /// <summary>
+        /// 몬스터를 비활성화하고 큐에 반환
+        /// </summary>
+        public void ReturnMonsterToPool(MonsterController controller)
+        {
+            if (controller == null) return;
+
+            controller.gameObject.SetActive(false);
+            
+            int id = controller.MonsterData.monsterID;
+            if (!monsterPools.ContainsKey(id))
+            {
+                monsterPools[id] = new Queue<MonsterController>();
+            }
+            monsterPools[id].Enqueue(controller);
+        }
+        
+        /// <summary>
         /// 필드에 있는 모든 몬스터를 삭제
         /// </summary>
         public void ClearAllMonsters()
         {
             if (activeMonsters == null) return;
 
-            foreach (var monster in activeMonsters)
+            for (int i = activeMonsters.Count - 1; i >= 0; i--)
             {
+                var monster = activeMonsters[i];
                 if (monster != null)
                 {
-                    Destroy(monster.gameObject); // TODO ::: 나중에 오브젝트 풀링으로 바꿔야 해요.
+                    monster.StopAllCoroutines();
+                    ReturnMonsterToPool(monster);
                 }
             }
             
             activeMonsters.Clear();
             currentMonsterCount = 0;
             frontMonster = null;
-            
             totalSpawnedInCurrentStage = 0;
             
             CheckBattleState();

@@ -43,7 +43,7 @@ namespace Bird.Idle.Gameplay
         public int InstanceID { get; private set; } 
 
         /// <summary>
-        /// EnemyManager에 의해 스폰될 때 초기화
+        /// EnemyManager에 의해 스폰될 때 호출되어 내부 상태 초기화
         /// </summary>
         public void Initialize(MonsterData data, float stageDifficultyMultiplier, int instanceID)
         {
@@ -53,14 +53,23 @@ namespace Bird.Idle.Gameplay
             maxHealth = MonsterData.baseHealth * stageDifficultyMultiplier;
             currentHealth = maxHealth;
             
+            isMoving = true;
+            currentlyAttacking = false;
+            
             gameObject.name = $"{MonsterData.monsterName}_{InstanceID}";
             
             OnHealthChanged?.Invoke();
             
             Animator = GetComponentInChildren<Animator>();
+            
+            if (Animator != null)
+            {
+                Animator.Rebind();
+                Animator.Update(0f);
+            }
         }
         
-        private void Start()
+        private void OnEnable()
         {
             if (BattleManager.Instance != null)
             {
@@ -109,7 +118,7 @@ namespace Bird.Idle.Gameplay
             StartCoroutine(AttackLoop());
         }
         
-        private void OnDestroy()
+        private void OnDisable()
         {
             if (BattleManager.Instance != null)
             {
@@ -182,7 +191,7 @@ namespace Bird.Idle.Gameplay
             }
             else
             {
-                Destroy(gameObject, 0.7f);
+                EnemyManager.Instance.ReturnMonsterToPool(this);
             }
         }
         
@@ -195,7 +204,7 @@ namespace Bird.Idle.Gameplay
                 yield return null;
             }
 
-            Destroy(gameObject);
+            EnemyManager.Instance.ReturnMonsterToPool(this);
         }
     }
 }
