@@ -390,8 +390,32 @@ namespace Bird.Idle.Gameplay
                 if (randomValue <= cumulative)
                 {
                     EquipmentCollectionManager.Instance.AddItem(dropItem.itemSO);
+
+                    if (RewardLogManager.Instance != null)
+                    {
+                        Color nameColor = GetColorByGrade(dropItem.itemSO.grade);
+                        
+                        RewardLogManager.Instance.ShowLog(
+                            dropItem.itemSO.iconAddress, 
+                            $"+ EquipItem", // {dropItem.itemSO.equipName}
+                            nameColor
+                        );
+                    }
                     return; 
                 }
+            }
+        }
+        
+        // 장비 등급별 색상 반환 함수
+        private Color GetColorByGrade(EquipmentGrade grade)
+        {
+            switch (grade)
+            {
+                case EquipmentGrade.Common: return Color.white;
+                case EquipmentGrade.Rare: return new Color(0.2f, 0.8f, 1f); // 파랑
+                case EquipmentGrade.Epic: return new Color(0.8f, 0.2f, 1f); // 보라
+                case EquipmentGrade.Legendary: return new Color(1f, 0.8f, 0.2f); // 주황
+                default: return Color.white;
             }
         }
         
