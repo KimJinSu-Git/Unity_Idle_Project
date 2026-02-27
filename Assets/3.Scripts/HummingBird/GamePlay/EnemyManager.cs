@@ -6,6 +6,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using Bird.Idle.Core;
 using Bird.Idle.Data;
 using Bird.Idle.UI;
+using Bird.Idle.Utils;
 using Bird.Idle.Visual;
 using Unity.VisualScripting;
 
@@ -295,17 +296,15 @@ namespace Bird.Idle.Gameplay
                 CharacterManager.Instance.GainExperience(expReward);
             }
 
-            Debug.Log(expReward);
-            Debug.Log(RewardLogManager.Instance);
             if (expReward > 0 && RewardLogManager.Instance != null)
             {
-                Debug.Log("호출했어?");
-                RewardLogManager.Instance.ShowLog(RewardLogManager.Instance.expIcon, $"+ {expReward} EXP", Color.cyan);
+                string formattedExp = BigNumberFormatter.Format(expReward);
+                RewardLogManager.Instance.ShowLog(RewardLogManager.Instance.expIcon, $"+ {formattedExp} EXP", Color.cyan);
             }
-            Debug.Log("지나갔어?");
             if (goldReward > 0 && RewardLogManager.Instance != null)
             {
-                RewardLogManager.Instance.ShowLog(RewardLogManager.Instance.goldIcon, $"+ {goldReward} Gold", Color.yellow);
+                string formattedGold = BigNumberFormatter.Format(goldReward);
+                RewardLogManager.Instance.ShowLog(RewardLogManager.Instance.goldIcon, $"+ {formattedGold} Gold", Color.yellow);
             }
             
             DropEquipment(monsterData.dropTable);

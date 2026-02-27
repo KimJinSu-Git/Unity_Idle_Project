@@ -2,6 +2,7 @@ using UnityEngine;
 using Bird.Idle.Core;
 using Bird.Idle.Data;
 using System.Collections.Generic;
+using Bird.Idle.Utils;
 using TMPro;
 
 namespace Bird.Idle.UI
@@ -71,7 +72,8 @@ namespace Bird.Idle.UI
         {
             if (currencyUIMap.ContainsKey(type) && currencyUIMap[type] != null)
             {
-                string formattedAmount = FormatNumber(newAmount);
+                // string formattedAmount = FormatNumber(newAmount);
+                string formattedAmount = BigNumberFormatter.Format(newAmount);
                 currencyUIMap[type].text = formattedAmount;
             }
         }
