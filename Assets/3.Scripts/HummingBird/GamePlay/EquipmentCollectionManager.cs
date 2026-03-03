@@ -209,8 +209,23 @@ namespace Bird.Idle.Gameplay
             return true;
         }
         
-        public long CalculateGoldCost(int currentLevel) => 1000 * ((currentLevel + 1) * 3); 
-        public long CalculateMasukCost(int currentLevel) => 100 * ((currentLevel + 1) * 3);
+        /// <summary>
+        /// 업그레이드에 필요한 골드 계산 (지수 함수 적용)
+        /// Base Cost: 1000 / Growth Factor: 1.15 (15%씩 증가)
+        /// </summary>
+        public long CalculateGoldCost(int currentLevel) 
+        {
+            return UpgradeCalculator.GetUpgradeCost(1000, 1.15f, currentLevel + 1); 
+        }
+
+        /// <summary>
+        /// 업그레이드에 필요한 마석 계산 (지수 함수 적용)
+        /// Base Cost: 100 / Growth Factor: 1.12 (12%씩 증가)
+        /// </summary>
+        public long CalculateMasukCost(int currentLevel) 
+        {
+            return UpgradeCalculator.GetUpgradeCost(100, 1.12f, currentLevel + 1);
+        }
         
         /// <summary>
         /// 업그레이드 가능 여부를 검사

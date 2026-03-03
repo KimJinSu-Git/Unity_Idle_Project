@@ -143,14 +143,18 @@ namespace Bird.Idle.Gameplay
             if (nextEntry.EnhanceLevel == -1)
             {
                 UI_ToastMessage.Instance.Show("Max Level Reached!");
+                return;
             }
+            
+            long requiredMasuk = GetDynamicMasukCost(type, currentLevel);
 
-            if (!CurrencyManager.Instance.CanAfford(CurrencyType.Masuk, nextEntry.MasukCost))
+            if (!CurrencyManager.Instance.CanAfford(CurrencyType.Masuk, requiredMasuk))
             {
                 UI_ToastMessage.Instance.Show("Required Add Masuk.");
                 return;
             }
-            CurrencyManager.Instance.ChangeCurrency(CurrencyType.Masuk, -(nextEntry.MasukCost));
+            
+            CurrencyManager.Instance.ChangeCurrency(CurrencyType.Masuk, -requiredMasuk);
 
             if (UnityEngine.Random.value <= nextEntry.SuccessRate)
             { 
@@ -165,6 +169,14 @@ namespace Bird.Idle.Gameplay
             {
                 UI_ToastMessage.Instance.Show("Reinforce Failed!");
             }
+        }
+        
+        public long GetDynamicMasukCost(EquipmentType type, int currentLevel)
+        {
+            long baseCost = 200;  // 1레벨업 기본 마석 비용
+            float growthFactor = 1.12f; // 레벨당 12% 증가
+
+            return UpgradeCalculator.GetUpgradeCost(baseCost, growthFactor, currentLevel + 1);
         }
         
         public int GetSlotLevel(EquipmentType type) => slotLevels[type];

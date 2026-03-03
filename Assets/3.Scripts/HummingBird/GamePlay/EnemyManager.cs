@@ -282,29 +282,31 @@ namespace Bird.Idle.Gameplay
         public void ProcessMonsterDefeat(MonsterData monsterData)
         {
             if (monsterData == null || currentStageData == null) return;
-
             StageManager.Instance.OnMonsterKilled();
-            
-            // 보상 지급
-            long goldReward = (long)(monsterData.goldReward * currentStageData.GoldRewardMultiplier);
-            long expReward = (long)(monsterData.expReward * currentStageData.ExpRewardMultiplier);
-            
-            CurrencyManager.Instance.ChangeCurrency(CurrencyType.Gold, goldReward);
-            
-            if (CharacterManager.Instance != null)
-            {
-                CharacterManager.Instance.GainExperience(expReward);
-            }
 
-            if (expReward > 0 && RewardLogManager.Instance != null)
+            float goldBonus = 1.0f;
+            if (CharacterManager.Instance != null && CharacterManager.Instance.PlayerStats != null)
             {
-                string formattedExp = BigNumberFormatter.Format(expReward);
-                RewardLogManager.Instance.ShowLog(RewardLogManager.Instance.expIcon, $"+ {formattedExp} EXP", Color.cyan);
+                goldBonus = CharacterManager.Instance.PlayerStats.FinalGoldDrop;
             }
-            if (goldReward > 0 && RewardLogManager.Instance != null)
+            
+            // 최종 골드 연산 (기본보상 * 스테이지배율 * LUK 스탯 배율)
+            long baseGold = (long)(monsterData.goldReward * currentStageData.GoldRewardMultiplier);
+            long finalGoldReward = (long)(baseGold * goldBonus);
+            long finalExpReward = (long)(monsterData.expReward * currentStageData.ExpRewardMultiplier);
+            
+            if (CharacterManager.Instance != null && finalExpReward > 0)
             {
-                string formattedGold = BigNumberFormatter.Format(goldReward);
-                RewardLogManager.Instance.ShowLog(RewardLogManager.Instance.goldIcon, $"+ {formattedGold} Gold", Color.yellow);
+                CharacterManager.Instance.GainExperience(finalExpReward);
+                if (RewardLogManager.Instance != null)
+                    RewardLogManager.Instance.ShowLog(RewardLogManager.Instance.expIcon, $"+ {BigNumberFormatter.Format(finalExpReward)} EXP", Color.cyan);
+            }
+            
+            if (finalGoldReward > 0)
+            {
+                CurrencyManager.Instance.ChangeCurrency(CurrencyType.Gold, finalGoldReward);
+                if (RewardLogManager.Instance != null)
+                    RewardLogManager.Instance.ShowLog(RewardLogManager.Instance.goldIcon, $"+ {BigNumberFormatter.Format(finalGoldReward)} Gold", Color.yellow);
             }
             
             DropEquipment(monsterData.dropTable);
@@ -374,6 +376,13 @@ namespace Bird.Idle.Gameplay
         {
             if (dropTable == null || dropTable.Count == 0) return;
 
+            float itemDropBonus = 1.0f;
+            if (CharacterManager.Instance != null && CharacterManager.Instance.PlayerStats != null)
+            {
+                itemDropBonus = CharacterManager.Instance.PlayerStats.FinalItemDrop;
+            }
+            
+            // 전체 확률 총합 계산 (기본 확률 * 스탯 보너스)
             float totalChance = 0f;
             foreach (var dropItem in dropTable)
             {
@@ -385,7 +394,9 @@ namespace Bird.Idle.Gameplay
 
             foreach (var dropItem in dropTable)
             {
-                cumulative += dropItem.dropRate;
+                float chance = dropItem.dropRate * itemDropBonus;
+                cumulative += chance;
+                
                 if (randomValue <= cumulative)
                 {
                     EquipmentCollectionManager.Instance.AddItem(dropItem.itemSO);
@@ -393,12 +404,7 @@ namespace Bird.Idle.Gameplay
                     if (RewardLogManager.Instance != null)
                     {
                         Color nameColor = GetColorByGrade(dropItem.itemSO.grade);
-                        
-                        RewardLogManager.Instance.ShowLog(
-                            dropItem.itemSO.iconAddress, 
-                            $"+ EquipItem", // {dropItem.itemSO.equipName}
-                            nameColor
-                        );
+                        RewardLogManager.Instance.ShowLog(dropItem.itemSO.iconAddress, $"+ EquipItem", nameColor);
                     }
                     return; 
                 }

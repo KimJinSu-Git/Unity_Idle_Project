@@ -3,6 +3,7 @@ using TMPro;
 using Bird.Idle.Data;
 using System;
 using System.Collections.Generic;
+using Bird.Idle.Utils;
 using UnityEngine.UI;
 
 namespace Bird.Idle.UI
@@ -43,8 +44,8 @@ namespace Bird.Idle.UI
             rewardedGold = gold;
 
             durationText.text = $"AFK Time\n{duration.Hours}h {duration.Minutes}m {duration.Seconds}s";
-            goldRewardText.text = $"Gold: {gold.ToString("N0")}";
-            masukRewardText.text = $"Masuk Change : {masuk:N0}";
+            goldRewardText.text = $"Gold: {BigNumberFormatter.Format(gold)}";
+            masukRewardText.text = $"Masuk Change : {BigNumberFormatter.Format(masuk)}";
 
             if (itemContentParent != null)
             {

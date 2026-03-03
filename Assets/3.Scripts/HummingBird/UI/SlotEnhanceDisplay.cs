@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine.UI;
 using Bird.Idle.Data;
 using Bird.Idle.Gameplay;
-using Bird.Idle.Core;
+using Bird.Idle.Utils;
 
 namespace Bird.Idle.UI
 {
@@ -61,9 +61,10 @@ namespace Bird.Idle.UI
             
             if (nextEntry.EnhanceLevel != -1)
             {
-                // 다음 스탯 및 비용 표시
+                long dynamicCost = slotManager.GetDynamicMasukCost(enhanceType, currentLevel);
+                
                 statText.text = $"+ATK: {nextEntry.AttackIncrease:F1} | +HP: {nextEntry.HealthIncrease:F1}";
-                costText.text = $"{nextEntry.MasukCost:N0} Masuk ({nextEntry.SuccessRate * 100}%)";
+                costText.text = $"{BigNumberFormatter.Format(dynamicCost)} Masuk ({nextEntry.SuccessRate * 100}%)";
                 
                 enhanceButton.interactable = true;
             }

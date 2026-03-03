@@ -51,9 +51,9 @@ namespace Bird.Idle.Gameplay
             FinalEvasion = (Dexterity * 0.001f) + equipBonus.evasion; // DEX당 0.1% 증가
             FinalAccuracy = 1.0f + (Dexterity * 0.005f) + equipBonus.accuracy; // 기본 100% (1.0) + DEX 기여
             
-            FinalGoldDrop = 1.0f + (Luck * 0.01f) + equipBonus.luckBonus; // 기본 100% (1.0) + LCK 기여
-            // FinalItemDrop = 0.01f + (Luck * 0.0005f) + equipBonus.itemDrop;
-            // FinalGemDrop = 0.0001f + (Luck * 0.00005f) + equipBonus.gemDrop; 
+            FinalGoldDrop = 1.0f + (Luck * 0.01f) + equipBonus.luckBonus; // 1 LUK = +1% 골드 획득량 증가
+            FinalItemDrop = 1.0f + (Luck * 0.001f) + equipBonus.luckBonus; // 1 LUK = +0.1% 장비 드랍률 증가
+            FinalGemDrop = 1.0f + (Luck * 0.0005f) + equipBonus.luckBonus;  // 1 LUK = +0.05% 보석 드랍률 증가
         }
 
         /// <summary>
