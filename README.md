@@ -90,8 +90,8 @@ ___
 * BinaryFormatter 기반 직렬화
 * 비동기 File I/O
 ___
-* 🎥 플레이 영상 :
-* 📄 기술 문서 PDF :
+* 🎥 플레이 영상 : [IdleProject.mp4](https://drive.google.com/file/d/1f4vUQNC4aLQRWeNsTS6_piY1ebEP-6G5/view?usp=drive_link)
+* 📄 기술 문서 PDF : [IdleProject.pdf](https://drive.google.com/file/d/1UFjZURXI7pulfHppEOWuHdrubqLXyMnO/view?usp=drive_link)
 
 
 
